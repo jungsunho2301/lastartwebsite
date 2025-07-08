@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Walid Jahin</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .dashboard {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+    .dashboard h2 {
+      margin-bottom: 1.5rem;
+    }
+    .upload-section {
+      background: #f4f4f4;
+      padding: 1.5rem;
+      border-radius: 6px;
+    }
+    .upload-section label,
+    .upload-section input,
+    .upload-section textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    .upload-section input,
+    .upload-section textarea {
+      padding: 0.5rem;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+    }
+    .upload-section button {
+      padding: 0.5rem 1rem;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <h2>Admin Dashboard</h2>
+
+    <section class="upload-section">
+      <h3>Upload New Artwork</h3>
+      <form action="#" method="post" enctype="multipart/form-data">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required />
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+
+        <label for="image">Artwork Image</label>
+        <input type="file" id="image" name="image" accept="image/*" required />
+
+        <button type="submit">Upload</button>
+      </form>
+    </section>
+  </div>
+</body>
+</html>
