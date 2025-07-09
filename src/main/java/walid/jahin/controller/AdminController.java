@@ -23,8 +23,8 @@ public class AdminController {
         if (adminService.login(loginRequest.getUsername(), loginRequest.getPassword())) {
             HttpSession session = request.getSession();
             session.setAttribute(SessionConst.LOGIN_ADMIN, loginRequest.getUsername());
-            return "redirect:/dashboard.html";
+            return "redirect:/admin/dashboard.html";  // ✅ 수정된 리다이렉트 경로
         }
-        return "redirect:/login.html?error";
+        return "redirect:/admin/login.html?error";  // ❗실패 시 경로도 수정
     }
 }
