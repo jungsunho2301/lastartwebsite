@@ -1,8 +1,10 @@
 spring:
+  application:
+    name: jahin
   datasource:
-    url: jdbc:mysql://localhost:3306/walid_db?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/artshop?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password: 1234
+    password: '@3fdF39d2$5dFFdn3'
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,3 +19,6 @@ spring:
 
 file:
   upload-dir: uploads
+
+server:
+  port: 8080
