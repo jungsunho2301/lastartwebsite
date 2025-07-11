@@ -19,7 +19,7 @@ public class MailService {
     public void sendInquiryMail(BuyRequest request) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(artistEmail);
-        message.setSubject("New Inquiry from " + request.getName());
+        message.setSubject("New Purchase Inquiry from " + request.getName());
         message.setText(buildEmailContent(request));
         mailSender.send(message);
     }
