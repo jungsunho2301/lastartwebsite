@@ -26,8 +26,10 @@ public class MailService {
 
     private String buildEmailContent(BuyRequest r) {
         return String.format(
-            "Name: %s\nEmail: %s\nAddress: %s\nPhone: %s\nMessage:\n%s",
-            r.getName(), r.getEmail(), r.getAddress(), r.getPhone(), r.getMessage()
+            "Name: %s\nEmail: %s\nArt number: %s\nPhone: %s\nMessage:\n%s",
+            r.getName(), r.getEmail(), r.getArtnum(), r.getPhone(), r.getMessage()
         );
     }
 }
+
+
