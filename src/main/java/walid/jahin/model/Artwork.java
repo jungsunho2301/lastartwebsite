@@ -17,8 +17,9 @@ public class Artwork {
 
     private String title;
 
+    private String imageUrl;  // 기존 imagePath → imageUrl로 변경
+
     @Column(length = 1000)
     private String description;
-
     private String imagePath;
 }
