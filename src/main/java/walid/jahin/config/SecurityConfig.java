@@ -13,7 +13,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/buy").permitAll()  // 비인증 허용
+                .requestMatchers("/api/buy", "/api/inquiry").permitAll()  // 비인증 허용
                 .anyRequest().authenticated()             // 나머지는 인증 필요
             )
             .csrf(csrf -> csrf.disable())                // CSRF 비활성화 (POST 요청 허용)
