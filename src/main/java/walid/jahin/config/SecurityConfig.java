@@ -10,14 +10,17 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/buy", "/api/inquiry").permitAll()  // 비인증 허용
-                .anyRequest().authenticated()             // 나머지는 인증 필요
+                .requestMatchers("/login.html", "/css/**", "/js/**", "/assets/**").permitAll()
+                .requestMatchers("/admin/login").permitAll()
+                .anyRequest().authenticated()
             )
-            .csrf(csrf -> csrf.disable())                // CSRF 비활성화 (POST 요청 허용)
-            .httpBasic(Customizer.withDefaults())        // 기본 로그인 허용 (원하는 방식으로 바꿔도 됨)
-            .build();
+            .csrf(csrf -> csrf.disable()) // HTML 폼 테스트용: CSRF 임시로 끔
+            .formLogin(form -> form.disable()) // 우리가 직접 만든 login.html 쓰기 때문에 disable
+            .httpBasic(Customizer.withDefaults());
+
+        return http.build();
     }
 }
