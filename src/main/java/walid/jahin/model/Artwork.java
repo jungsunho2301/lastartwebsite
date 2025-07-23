@@ -3,23 +3,21 @@ package walid.jahin.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Entity
 public class Artwork {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-
-    private String imageUrl;  // 기존 imagePath → imageUrl로 변경
-
-    @Column(length = 1000)
-    private String description;
-    private String imagePath;
+    private String title;           // 작품명
+    private String description;     // 설명
+    private int price;              // 가격
+    private String imagePath;       // 이미지 경로 (/uploads/artwork/xxx.jpg)
+    private boolean forSale;        // 아트샵 등록 여부
 }
