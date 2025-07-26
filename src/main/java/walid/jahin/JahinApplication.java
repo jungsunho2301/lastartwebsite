@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
+
 
 @SpringBootApplication
 @ComponentScan(basePackages = "walid.jahin")
@@ -32,7 +31,7 @@ public class JahinApplication {
         	System.out.println("📦 Registered Beans:");
         	String[] beanNames = ctx.getBeanDefinitionNames();
         	for (String name : beanNames) {
-            	if (name.toLowerCase().contains("artwork")) {
+            	if (name.toLowerCase().contains("artshop")) {
                 	System.out.println("✅ Found: " + name);
             	}
         	}
