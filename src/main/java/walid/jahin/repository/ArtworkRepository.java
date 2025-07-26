@@ -1,6 +1,9 @@
 package walid.jahin.repository;
 
 import walid.jahin.model.Artwork;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 

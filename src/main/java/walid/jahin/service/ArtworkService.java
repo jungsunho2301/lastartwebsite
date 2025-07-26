@@ -3,7 +3,11 @@ package walid.jahin.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+
 import walid.jahin.model.Artwork;
 import walid.jahin.repository.ArtworkRepository;
 
@@ -107,14 +111,19 @@ public class ArtworkService {
         artworkRepository.deleteById(id);
     }
 
-    public List<Artwork> getSortedArtworkItems(String sort) {
-        System.out.println("🔍 정렬 기준: " + sort);
+    public Page<Artwork> getPagedArtworkItems(String sort, int page) {
+        System.out.println("🔍 정렬 기준: " + sort + ", 페이지 번호: " + page);
         
         Sort sortOption = switch (sort) {
             case "latest" -> Sort.by(Sort.Direction.DESC, "id");
             default -> throw new IllegalArgumentException("에러");
         };
-        return artworkRepository.findAll(sortOption);
+
+        // 페이지당 20개 고정
+        Pageable pageable = PageRequest.of(page, 3, sortOption);
+        System.out.println("📦 Pageable 객체: " + pageable);
+
+        return artworkRepository.findAll(pageable);
     }
 
 }

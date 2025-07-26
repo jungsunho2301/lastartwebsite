@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
 
 import lombok.RequiredArgsConstructor;
 import walid.jahin.model.Artwork;
@@ -22,12 +23,13 @@ public class ArtworkController {
 
     // 조회 + 정렬 (latest, lowprice, highprice)
     @GetMapping("/artwork")
-    public ResponseEntity<?> getArtworkItems(
-        @RequestParam(defaultValue = "latest") String sort
+    public ResponseEntity<?> getPagedArtworkItems(
+        @RequestParam(defaultValue = "latest") String sort,
+        @RequestParam(defaultValue = "0") int page  // 0부터 시작
     ) {
         try {
-            List<Artwork> items = artworkService.getSortedArtworkItems(sort);
-            return ResponseEntity.ok(items);
+            Page<Artwork> pagedItems = artworkService.getPagedArtworkItems(sort, page);
+            return ResponseEntity.ok(pagedItems);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }

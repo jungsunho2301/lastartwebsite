@@ -22,6 +22,7 @@ public class BuyController {
             mailService.sendBuyInquiryMail(request);
             return ResponseEntity.ok("Buy Inquiry Email sent successfully.");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Failed to send email: " + e.getMessage());
         }
@@ -33,6 +34,7 @@ public class BuyController {
             mailService.sendInquiryMail(request);
             return ResponseEntity.ok("Inquiry email sent successfully.");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                  .body("Failed to send inquiry: " + e.getMessage());
         }
