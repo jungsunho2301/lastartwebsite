@@ -2,9 +2,10 @@ spring:
   application:
     name: jahin
   datasource:
-    url: jdbc:mysql://localhost:3306/walid_db?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/walid_db?serverTimezone=Asia/Seoul
     username: root
-    password: ejddjfl2512!@#
+    password: ergS2B3BOoi45oi@#$dnmD
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,6 +13,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
   servlet:
     multipart:
       max-file-size: 10MB
@@ -27,12 +29,23 @@ spring:
           auth: true
           starttls:
             enable: true
-            
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
 artist:
   email: rlawlgud157@gmail.com      
 
-file:
-  upload-dir: uploads
+app:
+  upload:
+    artshop-dir: uploads/artshop/
 
 server:
   port: 8080
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: false
