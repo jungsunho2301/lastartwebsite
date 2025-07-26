@@ -57,6 +57,48 @@ public class ArtworkService {
         return artworkRepository.save(artwork);
     }
 
+    public Artwork updateArtworkImage(Long id, MultipartFile newImage) throws IOException {
+        Artwork artwork = artworkRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 작품이 없습니다."));
+
+        // ✅ 경로 준비
+        File uploadPath = new File(uploadDir);
+        if (!uploadPath.exists()) {
+            boolean created = uploadPath.mkdirs();
+            System.out.println("디렉토리 생성 여부: " + created);
+        }
+
+        //  ✅ 파일명 검증
+        String originalFilename = newImage.getOriginalFilename();
+        if (originalFilename == null || originalFilename.isBlank()) {
+            throw new IOException("파일명이 유효하지 않습니다.");
+        }
+
+        // ✅ 새 파일명 생성 및 저장
+        String filename = UUID.randomUUID() + "_" + originalFilename;
+        File dest = new File(uploadPath, filename);
+        newImage.transferTo(dest);
+
+        // ✅ 기존 파일 삭제
+        String oldImagePath = artwork.getImagePath();
+        if (oldImagePath != null && oldImagePath.startsWith("/uploads/artwork/")) {
+            String fullOldPath = uploadDir + oldImagePath.replace("/uploads/artwork/", "");
+            File oldFile = new File(fullOldPath);
+            System.out.println("삭제 시도 경로: " + oldFile.getAbsolutePath());
+            if (oldFile.exists()) {
+                boolean deleted = oldFile.delete();
+                System.out.println("삭제 성공 여부: " + deleted);
+            } else {
+                System.out.println("삭제할 파일 없음");
+            }
+        }
+
+        // ✅ DB 갱신
+        artwork.setImagePath("/uploads/artwork/" + filename);
+        System.out.println("업데이트된 imagePath: " + artwork.getImagePath());
+        return artworkRepository.save(artwork);
+    }
+
     public List<Artwork> getAllArtworks() {
         return artworkRepository.findAll();
     }

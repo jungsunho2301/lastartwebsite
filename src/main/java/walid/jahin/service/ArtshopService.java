@@ -12,8 +12,10 @@ import org.springframework.data.domain.Sort;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
+import java.nio.file.Path;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class ArtshopService {
     // ✅ 운영 서버용 업로드 디렉토리 (JAR 파일 기준 외부 경로)
     private final String uploadDir = System.getProperty("user.dir") + "/uploads/artshop/";
 
-    public Artshop saveArtshop(String title, String description, int price, MultipartFile image) throws IOException {
+    public Artshop saveArtshop(String title, String description, Integer price, MultipartFile image) throws IOException {
         // 1. 경로 준비
         File uploadPath = new File(uploadDir);
         if (!uploadPath.exists()) {
@@ -62,6 +64,68 @@ public class ArtshopService {
 
         return artshopRepository.save(artshop);
     }
+
+    public Artshop updateArtshop(Long id, String title, String description, Integer price, MultipartFile image) throws IOException {
+        // 1. 기존 작품 가져오기
+        Artshop artshop = artshopRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 작품입니다."));
+
+        // 2. 변경 요청된 필드만 조건부로 업데이트
+        if (title != null && !title.isBlank()) {
+            artshop.setTitle(title);
+        }
+
+        if (description != null && !description.isBlank()) {
+            artshop.setDescription(description);
+        }
+
+        if (price != null) {
+            artshop.setPrice(price);
+        }
+
+        // 3. 이미지가 첨부된 경우에만 교체
+        if (image != null && !image.isEmpty()) {
+            // ✅ 경로 준비
+            File uploadPath = new File(uploadDir);
+                if (!uploadPath.exists()) uploadPath.mkdirs();
+
+            // ✅ 파일명 검증
+            String originalFilename = image.getOriginalFilename();
+            if (originalFilename == null || originalFilename.isBlank()) {
+                throw new IOException("파일명이 유효하지 않습니다.");
+            }
+
+            // ✅ 새 파일명 생성 및 저장
+            String filename = UUID.randomUUID() + "_" + originalFilename;
+            File dest = new File(uploadPath, filename);
+            image.transferTo(dest);
+
+        // ✅ 기존 파일 삭제
+        String oldImagePath = artshop.getImagePath();
+        if (oldImagePath != null && oldImagePath.startsWith("/uploads/artshop/")) {
+            // 파일명만 추출
+            String filenameOnly = Paths.get(oldImagePath).getFileName().toString();
+    
+            // 전체 경로 생성
+            Path fullOldPath = Paths.get(uploadDir).resolve(filenameOnly);
+            File oldFile = fullOldPath.toFile();
+
+            System.out.println("🧾 삭제 대상 파일 경로: " + fullOldPath);
+
+            if (oldFile.exists()) {
+                boolean deleted = oldFile.delete();
+                System.out.println("🗑 삭제 성공 여부: " + deleted);
+            } else {
+                System.out.println("❌ 삭제 대상 파일이 존재하지 않음");
+            }
+        }
+
+            // ✅ DB 갱신
+            artshop.setImagePath("/uploads/artshop/" + filename);
+            }
+        return artshopRepository.save(artshop);
+    }
+
 
     public List<Artshop> getAllArtshops() {
         return artshopRepository.findAll();
