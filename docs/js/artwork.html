@@ -3,52 +3,191 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Walid Jahin | Art Work</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Art Work - Walid Jahin</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
+
+    header {
+      background-color: #f9f9f9;
+      padding: 32px 40px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-grow: 1;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #111;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #f0f0f0;
+    }
+
+    .lang {
+      font-size: 14px;
+      color: #111;
+      white-space: nowrap;
+    }
+
+    .artwork-intro {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+
+    .artwork-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .artwork-intro p {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px 40px 60px;
+    }
+
+    .art-img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      background-color: #191A1B;
+      color: #fff;
+      padding: 60px 20px 40px;
+      text-align: center;
+    }
+
+    footer nav a {
+      color: #ccc;
+      margin: 0 12px;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    footer nav a:hover {
+      color: #fff;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 800;
+      margin-top: 30px;
+    }
+
+    .footer-bottom {
+      font-size: 12px;
+      color: #888;
+      margin-top: 20px;
+    }
+
+    .sns-icon svg {
+      fill: #ccc;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
+  <!-- Header -->
   <header>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="artist.html">Artist</a></li>
-        <li><a href="artwork.html" class="active">Artwork</a></li>
-        <li><a href="artshop.html">Artshop</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">Walid Jahin</div>
+        <div class="nav-links">
+          <a href="index.html">HOME</a>
+          <a href="artist.html">ARTIST</a>
+          <a href="artwork.html" class="active">ART WORK</a>
+          <a href="artshop.html">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">ENG▼</div>
+    </div>
   </header>
 
-  <main class="artwork-container">
-    <h1>Walid Jahin Art Work</h1>
-    <p>Selected pieces from Walid Jahin's creative journey.</p>
+  <!-- Artwork Introduction -->
+  <section class="artwork-intro">
+    <h2>Selected Artworks</h2>
+    <p>
+      A curated selection of paintings by Walid Jahin that span across decades,
+      styles, and cultural inspirations.
+    </p>
+  </section>
 
-    <section class="concept">
-      <h2>CONCEPT 1</h2>
-      <div class="concept-image-row">
-        <img src="assets/images/concept1_main.png" alt="Main Concept Image" class="main-concept-image" />
-      </div>
-      <div class="thumbnail-grid">
-        <img src="assets/images/thumb1.png" alt="Thumbnail 1" />
-        <img src="assets/images/thumb2.png" alt="Thumbnail 2" />
-        <img src="assets/images/thumb3.png" alt="Thumbnail 3" />
-        <img src="assets/images/thumb4.png" alt="Thumbnail 4" />
-        <img src="assets/images/thumb5.png" alt="Thumbnail 5" />
-        <img src="assets/images/thumb6.png" alt="Thumbnail 6" />
-        <img src="assets/images/thumb7.png" alt="Thumbnail 7" />
-      </div>
-    </section>
-  </main>
+  <!-- Artwork Gallery -->
+  <section class="artwork-gallery">
+    <div class="gallery-grid">
+      <img src="assets/images/art1.jpg" alt="Artwork 1" class="art-img" />
+      <img src="assets/images/art2.jpg" alt="Artwork 2" class="art-img" />
+      <img src="assets/images/art3.jpg" alt="Artwork 3" class="art-img" />
+      <img src="assets/images/art4.jpg" alt="Artwork 4" class="art-img" />
+      <img src="assets/images/art5.jpg" alt="Artwork 5" class="art-img" />
+      <img src="assets/images/art6.jpg" alt="Artwork 6" class="art-img" />
+    </div>
+  </section>
 
+  <!-- Footer -->
   <footer>
-    <p>© Walid Jahin Art Studio</p>
     <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="privacy.html">Privacy</a></li>
-        <li><a href="terms.html">Terms</a></li>
-      </ul>
+      <a href="index.html">HOME</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+      <a href="terms.html">TERMS OF USE</a>
+      <a href="contact.html">CONTACT</a>
     </nav>
+    <div class="sns-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 5 3.657 9.127 8.438 9.878v-6.987H7.898v-2.89h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.462h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.127 22 17 22 12z"/>
+      </svg>
+    </div>
+    <div class="footer-logo">Walid Jahin Art Studio</div>
+    <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
   </footer>
 </body>
 </html>
