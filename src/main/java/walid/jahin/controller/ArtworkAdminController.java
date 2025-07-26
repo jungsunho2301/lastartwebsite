@@ -1,32 +1,31 @@
 package walid.jahin.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import walid.jahin.model.SessionConst;
-import walid.jahin.model.Artshop;
-import walid.jahin.repository.ArtshopRepository;
-import walid.jahin.service.ArtshopService;
 import java.io.IOException;
+import walid.jahin.model.Artwork;
+import walid.jahin.repository.ArtworkRepository;
+import walid.jahin.service.ArtworkService;
+import lombok.RequiredArgsConstructor;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
+
+
 
 @RestController
-@RequestMapping("/admin/api/artshop")
+@RequestMapping("/admin/api/artwork")
 @RequiredArgsConstructor
-public class ArtshopAdminController {
+public class ArtworkAdminController {
 
-    private final ArtshopService artshopService;
-    private final ArtshopRepository artshopRepository;
+    private final ArtworkService artworkService;
+    private final ArtworkRepository artworkRepository;
 
     // ✅ 작품 등록
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadArtshop(@RequestParam("title") String title,
-                                           @RequestParam("description") String description,
-                                           @RequestParam("price") int price,
-                                           @RequestParam("image") MultipartFile image,
+    public ResponseEntity<?> uploadArtwork(@RequestParam("image") MultipartFile image,
                                            HttpServletRequest request) {
 
         // ✅ 세션 확인 및 로그 출력
@@ -42,7 +41,7 @@ public class ArtshopAdminController {
         }
 
         try {
-            Artshop saved = artshopService.saveArtshop(title, description, price, image);
+            Artwork saved = artworkService.saveArtwork(image);
             return ResponseEntity.ok(saved);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업로드 실패");
@@ -51,7 +50,7 @@ public class ArtshopAdminController {
 
     // ✅ 작품 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteArtshop(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<?> deleteArtwork(@PathVariable Long id, HttpServletRequest request) {
 
         // ✅ 세션 확인 및 로그 출력
         HttpSession session = request.getSession(false);
@@ -65,11 +64,11 @@ public class ArtshopAdminController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("관리자 로그인 필요");
         }
 
-        if (!artshopRepository.existsById(id)) {
+        if (!artworkRepository.existsById(id)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 작품이 존재하지 않습니다.");
         }
 
-        artshopService.deleteArtshop(id);
+        artworkService.deleteArtwork(id);
         return ResponseEntity.ok("작품 삭제 완료");
     }
 }
