@@ -18,16 +18,19 @@
       background: #f4f4f4;
       padding: 1.5rem;
       border-radius: 6px;
+      margin-bottom: 2rem;
     }
     .upload-section label,
     .upload-section input,
-    .upload-section textarea {
+    .upload-section textarea,
+    .upload-section select {
       display: block;
       width: 100%;
       margin-bottom: 1rem;
     }
     .upload-section input,
-    .upload-section textarea {
+    .upload-section textarea,
+    .upload-section select {
       padding: 0.5rem;
       border: 1px solid #aaa;
       border-radius: 4px;
@@ -46,9 +49,50 @@
   <div class="dashboard">
     <h2>Admin Dashboard</h2>
 
+    <!-- Artist Email -->
+    <section class="upload-section">
+      <h3>Update Artist Email</h3>
+      <form id="emailForm">
+        <label for="newEmail">New Email Address</label>
+        <input type="email" id="newEmail" required />
+        <button type="submit">Update Email</button>
+      </form>
+    </section>
+
+    <!-- Instagram -->
+    <section class="upload-section">
+      <h3>Instagram Connection</h3>
+      <form id="instagramForm">
+        <label for="instagramUrl">Instagram URL</label>
+        <input type="url" id="instagramUrl" required />
+        <button type="submit">Connect</button>
+      </form>
+    </section>
+
+    <!-- Facebook -->
+    <section class="upload-section">
+      <h3>Facebook Connection</h3>
+      <form id="facebookForm">
+        <label for="facebookUrl">Facebook URL</label>
+        <input type="url" id="facebookUrl" required />
+        <button type="submit">Connect</button>
+      </form>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="upload-section">
+      <h3>Send Newsletter</h3>
+      <form id="newsletterForm">
+        <label for="newsletterContent">Newsletter Content</label>
+        <textarea id="newsletterContent" rows="5" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </section>
+
+    <!-- Upload Artwork -->
     <section class="upload-section">
       <h3>Upload New Artwork</h3>
-      <form action="#" method="post" enctype="multipart/form-data">
+      <form id="artworkForm" enctype="multipart/form-data">
         <label for="title">Title</label>
         <input type="text" id="title" name="title" required />
 
@@ -61,6 +105,85 @@
         <button type="submit">Upload</button>
       </form>
     </section>
+
+    <!-- Upload Artshop Item -->
+    <section class="upload-section">
+      <h3>Upload Artshop Item</h3>
+      <form id="artshopForm" enctype="multipart/form-data">
+        <label for="productName">Product Name</label>
+        <input type="text" id="productName" name="productName" required />
+
+        <label for="price">Price (₩)</label>
+        <input type="number" id="price" name="price" required />
+
+        <label for="productImage">Product Image</label>
+        <input type="file" id="productImage" name="productImage" accept="image/*" required />
+
+        <button type="submit">Upload</button>
+      </form>
+    </section>
   </div>
+
+  <script>
+    document.getElementById("emailForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const res = await fetch("/admin/api/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: document.getElementById("newEmail").value })
+      });
+      alert(await res.text());
+    });
+
+    document.getElementById("instagramForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const res = await fetch("/admin/api/social/instagram", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: document.getElementById("instagramUrl").value })
+      });
+      alert(await res.text());
+    });
+
+    document.getElementById("facebookForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const res = await fetch("/admin/api/social/facebook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: document.getElementById("facebookUrl").value })
+      });
+      alert(await res.text());
+    });
+
+    document.getElementById("newsletterForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const res = await fetch("/admin/api/news/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: document.getElementById("newsletterContent").value })
+      });
+      alert(await res.text());
+    });
+
+    document.getElementById("artworkForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const res = await fetch("/admin/api/artwork/upload", {
+        method: "POST",
+        body: formData
+      });
+      alert(await res.text());
+    });
+
+    document.getElementById("artshopForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const res = await fetch("/admin/api/artshop/upload", {
+        method: "POST",
+        body: formData
+      });
+      alert(await res.text());
+    });
+  </script>
 </body>
 </html>
