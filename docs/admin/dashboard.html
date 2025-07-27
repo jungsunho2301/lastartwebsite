@@ -146,7 +146,7 @@
       const res = await fetch("/admin/api/social/instagram", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: document.getElementById("instagramUrl").value })
+        body: JSON.stringify({ url: document.getElementById("facebookUrl").value })
       });
       alert(await res.text());
     });
