@@ -147,3 +147,23 @@ footer .links a:hover {
   fill: #fff;
 }
 
+.admin-login {
+  position: absolute;
+  top: 32px;
+  right: 100px;
+}
+
+.admin-login a {
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  background: black;
+  color: white;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.admin-login a:hover {
+  background-color: #333;
+}

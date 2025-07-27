@@ -128,20 +128,44 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="header-inner">
-      <div class="nav-wrapper">
-        <div class="logo">Walid Jahin</div>
-        <div class="nav-links">
-          <a href="index.html">HOME</a>
-          <a href="artist.html">ARTIST</a>
-          <a href="artwork.html">ART WORK</a>
-          <a href="artshop.html">ART SHOP</a>
-        </div>
+  <!-- Header -->
+<header>
+  <div class="header-inner">
+    <div class="nav-wrapper">
+      <div class="logo">Walid Jahin</div>
+      <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="artist.html">ARTIST</a>
+        <a href="artwork.html">ART WORK</a>
+        <a href="artshop.html">ART SHOP</a>
       </div>
-      <div class="lang">ENG▼</div>
     </div>
-  </header>
+    <div class="lang">
+      ENG▼
+      <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const adminButton = document.getElementById('adminButton');
+
+  function updateAdminButton() {
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+    adminButton.onclick = () => {
+      if (isAdmin) {
+        localStorage.removeItem('isAdmin');
+        location.reload(); // 로그아웃 시 새로고침
+      } else {
+  location.href = '/docs/admin/login.html'; // 로그인 페이지로 이동
+      }
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded', updateAdminButton);
+</script>
+
 
   <section class="terms-section">
     <h2>이용약관</h2>
