@@ -257,40 +257,79 @@
     </div>
   </section>
 
-  <!-- Newsletter Section -->
-  <section class="w-full py-20 bg-white text-center">
-    <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-10">
-      SUBSCRIBE TO <br />WALID JAHIN NEWSLETTER
-    </h3>
-    <form class="max-w-3xl mx-auto space-y-6">
-      <div class="flex flex-col md:flex-row gap-6 justify-center">
-        <input type="text" placeholder="Name" class="subscribe-input md:w-1/2" />
-        <input type="email" placeholder="Email" class="subscribe-input md:w-1/2" />
-      </div>
-      <div class="flex items-center justify-center gap-3 text-sm text-gray-600">
-        <input type="checkbox" id="agree" class="w-5 h-5 border-gray-400" />
-        <label for="agree">I AGREE TO RECEIVE EMAILS FROM YOUR COMPANY</label>
-      </div>
-      <button type="submit" class="subscribe-button">SUBSCRIBE</button>
-    </form>
-  </section>
+<!-- Newsletter Section -->
+<style>
+  .subscribe-input {
+    border: 1px solid #ccc;
+    padding: 0.75rem;
+    border-radius: 4px;
+  }
 
-  <!-- Footer -->
-  <footer>
-    <nav>
-      <a href="index.html">HOME</a>
-      <a href="privacy.html">PRIVACY POLICY</a>
-      <a href="terms.html">TERMS OF USE</a>
-      <a href="contact.html">CONTACT</a>
-    </nav>
-    <div class="sns-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 5 3.657 9.127 8.438 9.878v-6.987H7.898v-2.89h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.462h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.127 22 17 22 12z"/>
-      </svg>
+  .subscribe-button {
+    border: 1px solid #ccc;
+    padding: 0.75rem 2rem;
+    background-color: black;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .subscribe-button:hover {
+    background-color: #333;
+  }
+
+  input[type="checkbox"] {
+    border: 1px solid #ccc;
+  }
+</style>
+
+<section class="w-full py-20 bg-white text-center">
+  <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-10">
+    SUBSCRIBE TO <br />WALID JAHIN NEWSLETTER
+  </h3>
+  <form class="max-w-3xl mx-auto space-y-6">
+    <div class="flex flex-col md:flex-row gap-6 justify-center">
+      <input type="text" placeholder="Name" class="subscribe-input md:w-1/2" />
+      <input type="email" placeholder="Email" class="subscribe-input md:w-1/2" />
     </div>
-    <div class="footer-logo">Walid Jahin Art Studio</div>
-    <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
-  </footer>
+    <div class="flex items-center justify-center gap-3 text-sm text-gray-600">
+      <input type="checkbox" id="agree" class="w-5 h-5 border-gray-400" />
+      <label for="agree">I AGREE TO RECEIVE EMAILS FROM YOUR COMPANY</label>
+    </div>
+    <button type="submit" class="subscribe-button">SUBSCRIBE</button>
+  </form>
+</section>
+
+
+<!-- Footer -->
+<footer>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="privacy.html">PRIVACY POLICY</a>
+    <a href="terms.html">TERMS OF USE</a>
+    <a href="contact.html">CONTACT</a>
+  </nav>
+
+  <div class="sns-icon flex justify-center gap-4 mt-4">
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ccc" viewBox="0 0 24 24">
+        <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
+      </svg>
+    </a>
+    <!-- Facebook (예시로 남겨둠) -->
+    <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ccc" viewBox="0 0 24 24">
+        <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="footer-logo">Walid Jahin Art Studio</div>
+  <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+</footer>
+
 </body>
 </html>
 

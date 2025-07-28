@@ -1,11 +1,74 @@
+<!-- 관리자 대시보드 - 수정 반영된 전체 코드 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Dashboard | Walid Jahin</title>
-  <link rel="stylesheet" href="../css/style.css" />
-  <style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Walid Jahin Art Studio</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
+
+    header {
+      background-color: #f9f9f9;
+      padding: 32px 40px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-grow: 1;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #111;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #f0f0f0;
+    }
+
+    .lang {
+      font-size: 14px;
+      color: #111;
+      white-space: nowrap;
+    }
+
     .dashboard {
       max-width: 800px;
       margin: 2rem auto;
@@ -23,7 +86,8 @@
     .upload-section label,
     .upload-section input,
     .upload-section textarea,
-    .upload-section select {
+    .upload-section select,
+    .upload-section button {
       display: block;
       width: 100%;
       margin-bottom: 1rem;
@@ -43,13 +107,35 @@
       border-radius: 4px;
       cursor: pointer;
     }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
   </style>
 </head>
 <body>
-  <div class="dashboard">
-    <h2>Admin Dashboard</h2>
+  <header>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">Walid Jahin</div>
+        <div class="nav-links">
+          <a href="index.html">HOME</a>
+          <a href="artist.html">ARTIST</a>
+          <a href="artwork.html">ART WORK</a>
+          <a href="artshop.html">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">
+        ENG▼
+        <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+      </div>
+    </div>
+  </header>
 
-    <!-- Email -->
+  <div class="dashboard">
+
     <section class="upload-section">
       <h3>Update Artist Email</h3>
       <form id="emailForm">
@@ -59,7 +145,6 @@
       </form>
     </section>
 
-    <!-- Instagram -->
     <section class="upload-section">
       <h3>Instagram Connection</h3>
       <form id="instagramForm">
@@ -69,7 +154,6 @@
       </form>
     </section>
 
-    <!-- Facebook -->
     <section class="upload-section">
       <h3>Facebook Connection</h3>
       <form id="facebookForm">
@@ -79,7 +163,6 @@
       </form>
     </section>
 
-    <!-- Newsletter -->
     <section class="upload-section">
       <h3>Send Newsletter</h3>
       <form id="newsletterForm">
@@ -90,47 +173,98 @@
         <button type="submit">Send</button>
       </form>
     </section>
+    <h2>Admin Dashboard</h2>
 
-    <!-- Artwork -->
     <section class="upload-section">
       <h3>Upload New Artwork</h3>
       <form id="artworkForm" enctype="multipart/form-data">
-        <label for="title">Title</label>
-        <input type="text" id="title" name="title" required />
-        <label for="description">Description</label>
-        <textarea id="description" name="description" rows="4" required></textarea>
         <label for="image">Artwork Image</label>
         <input type="file" id="image" name="image" accept="image/*" required />
         <button type="submit">Upload</button>
       </form>
-
       <h4>Update / Delete Artwork</h4>
       <input type="text" id="artworkId" placeholder="Artwork ID" />
-      <button onclick="deleteArtwork()">Delete</button>
-      <button onclick="updateArtwork()">Update</button>
+      <div class="button-group">
+        <button onclick="fetchArtwork()">조회하기</button>
+        <button onclick="deleteArtwork()">Delete</button>
+        <button onclick="updateArtwork()">Update</button>
+      </div>
     </section>
 
-    <!-- Artshop -->
     <section class="upload-section">
-      <h3>Upload Artshop Item</h3>
+      <h3>Edit Artist Page Text</h3>
+      <form id="artistTextForm">
+        <label for="artistTextId">Text ID</label>
+        <input type="text" id="artistTextId" required />
+        <label for="artistTextContent">Content</label>
+        <textarea id="artistTextContent" rows="4" required></textarea>
+        <div class="button-group">
+          <button type="submit">Update</button>
+          <button type="button" onclick="deleteArtistText()">Delete</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="upload-section">
+      <h3>Upload New Artshop Item</h3>
       <form id="artshopForm" enctype="multipart/form-data">
         <label for="productName">Product Name</label>
         <input type="text" id="productName" name="productName" required />
-        <label for="price">Price (₩)</label>
+        <label for="price">Price</label>
         <input type="number" id="price" name="price" required />
         <label for="productImage">Product Image</label>
         <input type="file" id="productImage" name="productImage" accept="image/*" required />
         <button type="submit">Upload</button>
       </form>
+    </section>
 
-      <h4>Update / Delete Artshop Item</h4>
+    <section class="upload-section">
+      <h3>Update / Delete Artshop Item</h3>
       <input type="text" id="artshopId" placeholder="Artshop Item ID" />
-      <button onclick="deleteArtshop()">Delete</button>
-      <button onclick="updateArtshop()">Update</button>
+      <div class="button-group">
+        <button onclick="fetchArtshop()">조회하기</button>
+        <button onclick="deleteArtshop()">Delete</button>
+        <button onclick="updateArtshop()">Update</button>
+      </div>
     </section>
   </div>
 
   <script>
+    const adminButton = document.getElementById('adminButton');
+    function updateAdminButton() {
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+      adminButton.onclick = () => {
+        if (isAdmin) {
+          localStorage.removeItem('isAdmin');
+          location.reload();
+        } else {
+          location.href = '/docs/admin/login.html';
+        }
+      };
+    }
+    document.addEventListener('DOMContentLoaded', updateAdminButton);
+
+    document.getElementById("artworkForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const res = await fetch("/admin/api/artwork/upload", {
+        method: "POST",
+        body: formData
+      });
+      alert(await res.text());
+    });
+
+    document.getElementById("artshopForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const res = await fetch("/admin/api/artshop/upload", {
+        method: "POST",
+        body: formData
+      });
+      alert(await res.text());
+    });
+
     document.getElementById("emailForm").addEventListener("submit", async e => {
       e.preventDefault();
       const res = await fetch("/admin/api/email", {
@@ -146,7 +280,7 @@
       const res = await fetch("/admin/api/social/instagram", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: document.getElementById("facebookUrl").value })
+        body: JSON.stringify({ url: document.getElementById("instagramUrl").value })
       });
       alert(await res.text());
     });
@@ -173,16 +307,15 @@
       });
       alert(await res.text());
     });
-
-    document.getElementById("artworkForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const res = await fetch("/admin/api/artwork/upload", {
-        method: "POST",
-        body: formData
-      });
       alert(await res.text());
     });
+
+    async function fetchArtwork() {
+      const id = document.getElementById("artworkId").value;
+      const res = await fetch(`/admin/api/artwork/${id}`);
+      const data = await res.json();
+      alert(`Artwork Info\nID: ${id}\nTitle: ${data.title || 'N/A'}`);
+    }
 
     async function deleteArtwork() {
       const id = document.getElementById("artworkId").value;
@@ -200,15 +333,12 @@
       alert(await res.text());
     }
 
-    document.getElementById("artshopForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const res = await fetch("/admin/api/artshop/upload", {
-        method: "POST",
-        body: formData
-      });
-      alert(await res.text());
-    });
+    async function fetchArtshop() {
+      const id = document.getElementById("artshopId").value;
+      const res = await fetch(`/admin/api/artshop/${id}`);
+      const data = await res.json();
+      alert(`Artshop Info\nID: ${id}\nName: ${data.productName || 'N/A'}\nPrice: ${data.price || 'N/A'}`);
+    }
 
     async function deleteArtshop() {
       const id = document.getElementById("artshopId").value;
@@ -223,6 +353,24 @@
         method: "PUT",
         body: formData
       });
+      alert(await res.text());
+    }
+
+    document.getElementById("artistTextForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      const id = document.getElementById("artistTextId").value;
+      const content = document.getElementById("artistTextContent").value;
+      const res = await fetch(`/admin/api/artist-text/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content })
+      });
+      alert(await res.text());
+    });
+
+    async function deleteArtistText() {
+      const id = document.getElementById("artistTextId").value;
+      const res = await fetch(`/admin/api/artist-text/${id}`, { method: "DELETE" });
       alert(await res.text());
     }
   </script>
