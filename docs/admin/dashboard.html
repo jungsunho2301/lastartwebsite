@@ -1,14 +1,17 @@
-<!-- 관리자 대시보드 - 수정 반영된 전체 코드 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Walid Jahin Art Studio</title>
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <script defer src="../js/dashboard.js"></script>
+</head>
 
-    body {
+<style>
+
+      body {
       margin: 0;
       font-family: 'Noto Sans KR', sans-serif;
       background-color: #fff;
@@ -21,121 +24,78 @@
       border-bottom: 1px solid #e5e5e5;
     }
 
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
 
-    .nav-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex-grow: 1;
-    }
+      .header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 36px;
-      font-weight: 800;
-      letter-spacing: -1px;
-    }
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
 
-    .nav-links {
-      display: flex;
-      gap: 16px;
-      margin-top: 12px;
-    }
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
 
-    .nav-links a {
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #111;
-      border: 1px solid #ccc;
-      transition: background-color 0.3s;
-    }
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
 
-    .nav-links a:hover,
-    .nav-links a.active {
-      background-color: #f0f0f0;
-    }
+.nav-links a {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #111;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
 
-    .lang {
-      font-size: 14px;
-      color: #111;
-      white-space: nowrap;
-    }
+.nav-links a:hover {
+  background-color: #f0f0f0;
+}
 
-    .dashboard {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 2rem;
-    }
-    .dashboard h2 {
-      margin-bottom: 1.5rem;
-    }
-    .upload-section {
-      background: #f4f4f4;
-      padding: 1.5rem;
-      border-radius: 6px;
-      margin-bottom: 2rem;
-    }
-    .upload-section label,
-    .upload-section input,
-    .upload-section textarea,
-    .upload-section select,
-    .upload-section button {
-      display: block;
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    .upload-section input,
-    .upload-section textarea,
-    .upload-section select {
-      padding: 0.5rem;
-      border: 1px solid #aaa;
-      border-radius: 4px;
-    }
-    .upload-section button {
-      padding: 0.5rem 1rem;
-      background: black;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .button-group {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+.lang {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
 
-  </style>
-</head>
+</style>
+
+
 <body>
-  <header>
-    <div class="header-inner">
-      <div class="nav-wrapper">
-        <div class="logo">Walid Jahin</div>
-        <div class="nav-links">
-          <a href="index.html">HOME</a>
-          <a href="artist.html">ARTIST</a>
-          <a href="artwork.html">ART WORK</a>
-          <a href="artshop.html">ART SHOP</a>
-        </div>
-      </div>
-      <div class="lang">
-        ENG▼
-        <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+  <!-- Header -->
+<header>
+  <div class="header-inner">
+    <div class="nav-wrapper">
+      <div class="logo">Walid Jahin</div>
+      <div class="nav-links">
+        <a href="../js/index.html">HOME</a>
+        <a href="../js/artist.html">ARTIST</a>
+        <a href="../js/artwork.html">ART WORK</a>
+        <a href="../js/artshop.html">ART SHOP</a>
       </div>
     </div>
-  </header>
+    <div class="lang">
+      ENG▼
+      <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+    </div>
+  </div>
+</header>
 
-  <div class="dashboard">
 
+  <main class="dashboard">
+    <!-- 이메일 수정 -->
     <section class="upload-section">
       <h3>Update Artist Email</h3>
       <form id="emailForm">
@@ -145,6 +105,7 @@
       </form>
     </section>
 
+    <!-- SNS 연결 -->
     <section class="upload-section">
       <h3>Instagram Connection</h3>
       <form id="instagramForm">
@@ -163,6 +124,7 @@
       </form>
     </section>
 
+    <!-- 뉴스레터 -->
     <section class="upload-section">
       <h3>Send Newsletter</h3>
       <form id="newsletterForm">
@@ -173,24 +135,8 @@
         <button type="submit">Send</button>
       </form>
     </section>
-    <h2>Admin Dashboard</h2>
 
-    <section class="upload-section">
-      <h3>Upload New Artwork</h3>
-      <form id="artworkForm" enctype="multipart/form-data">
-        <label for="image">Artwork Image</label>
-        <input type="file" id="image" name="image" accept="image/*" required />
-        <button type="submit">Upload</button>
-      </form>
-      <h4>Update / Delete Artwork</h4>
-      <input type="text" id="artworkId" placeholder="Artwork ID" />
-      <div class="button-group">
-        <button onclick="fetchArtwork()">조회하기</button>
-        <button onclick="deleteArtwork()">Delete</button>
-        <button onclick="updateArtwork()">Update</button>
-      </div>
-    </section>
-
+    <!-- 아티스트 텍스트 수정 -->
     <section class="upload-section">
       <h3>Edit Artist Page Text</h3>
       <form id="artistTextForm">
@@ -205,174 +151,67 @@
       </form>
     </section>
 
-    <section class="upload-section">
-      <h3>Upload New Artshop Item</h3>
-      <form id="artshopForm" enctype="multipart/form-data">
-        <label for="productName">Product Name</label>
-        <input type="text" id="productName" name="productName" required />
-        <label for="price">Price</label>
-        <input type="number" id="price" name="price" required />
-        <label for="productImage">Product Image</label>
-        <input type="file" id="productImage" name="productImage" accept="image/*" required />
-        <button type="submit">Upload</button>
-      </form>
-    </section>
+    <!-- 아트워크 관리 -->
+    <section class="artwork-manage">
+      <h2>아트워크 관리 (수정 / 삭제)</h2>
+      <div class="artwork-box">
+        <div class="image-preview" id="artworkPreviewContainer">
+          <img id="artworkPreviewImage" src="" alt="미리보기 이미지" style="display:none; width:100%; height:100%; object-fit:contain;" />
+          <span id="artworkPlaceholderText">이미지</span>
+        </div>
 
-    <section class="upload-section">
-      <h3>Update / Delete Artshop Item</h3>
-      <input type="text" id="artshopId" placeholder="Artshop Item ID" />
-      <div class="button-group">
-        <button onclick="fetchArtshop()">조회하기</button>
-        <button onclick="deleteArtshop()">Delete</button>
-        <button onclick="updateArtshop()">Update</button>
+        <div class="file-input-wrapper">
+          <label for="artworkFile">파일 첨부</label>
+          <input type="file" id="artworkFile" accept="image/*" hidden />
+        </div>
+
+        <div class="id-search-group">
+          <input type="text" id="artworkId" placeholder="ID" />
+          <button id="btnApply">적용</button>
+          <button id="btnDelete">삭제</button>
+          <button id="btnCancel">취소</button>
+        </div>
+
+        <p class="guide-text">
+          ID 칸에 수정/삭제하고 싶은 작품 ID를 입력하면, 해당 작품의 이미지가 전시되고 수정 가능하도록 합니다.
+        </p>
       </div>
     </section>
-  </div>
 
-  <script>
-    const adminButton = document.getElementById('adminButton');
-    function updateAdminButton() {
-      const isAdmin = localStorage.getItem('isAdmin') === 'true';
-      adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
-      adminButton.onclick = () => {
-        if (isAdmin) {
-          localStorage.removeItem('isAdmin');
-          location.reload();
-        } else {
-          location.href = '/docs/admin/login.html';
-        }
-      };
-    }
-    document.addEventListener('DOMContentLoaded', updateAdminButton);
 
-    document.getElementById("artworkForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const res = await fetch("/admin/api/artwork/upload", {
-        method: "POST",
-        body: formData
-      });
-      alert(await res.text());
-    });
-
-    document.getElementById("artshopForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const res = await fetch("/admin/api/artshop/upload", {
-        method: "POST",
-        body: formData
-      });
-      alert(await res.text());
-    });
-
-    document.getElementById("emailForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const res = await fetch("/admin/api/email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: document.getElementById("newEmail").value })
-      });
-      alert(await res.text());
-    });
-
-    document.getElementById("instagramForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const res = await fetch("/admin/api/social/instagram", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: document.getElementById("instagramUrl").value })
-      });
-      alert(await res.text());
-    });
-
-    document.getElementById("facebookForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const res = await fetch("/admin/api/social/facebook", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: document.getElementById("facebookUrl").value })
-      });
-      alert(await res.text());
-    });
-
-    document.getElementById("newsletterForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const res = await fetch("/admin/api/news/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: document.getElementById("newsletterTitle").value,
-          content: document.getElementById("newsletterContent").value
-        })
-      });
-      alert(await res.text());
-    });
-      alert(await res.text());
-    });
-
-    async function fetchArtwork() {
-      const id = document.getElementById("artworkId").value;
-      const res = await fetch(`/admin/api/artwork/${id}`);
-      const data = await res.json();
-      alert(`Artwork Info\nID: ${id}\nTitle: ${data.title || 'N/A'}`);
-    }
-
-    async function deleteArtwork() {
-      const id = document.getElementById("artworkId").value;
-      const res = await fetch(`/admin/api/artwork/${id}`, { method: "DELETE" });
-      alert(await res.text());
-    }
-
-    async function updateArtwork() {
-      const id = document.getElementById("artworkId").value;
-      const formData = new FormData(document.getElementById("artworkForm"));
-      const res = await fetch(`/admin/api/artwork/${id}`, {
-        method: "PUT",
-        body: formData
-      });
-      alert(await res.text());
-    }
-
-    async function fetchArtshop() {
-      const id = document.getElementById("artshopId").value;
-      const res = await fetch(`/admin/api/artshop/${id}`);
-      const data = await res.json();
-      alert(`Artshop Info\nID: ${id}\nName: ${data.productName || 'N/A'}\nPrice: ${data.price || 'N/A'}`);
-    }
-
-    async function deleteArtshop() {
-      const id = document.getElementById("artshopId").value;
-      const res = await fetch(`/admin/api/artshop/${id}`, { method: "DELETE" });
-      alert(await res.text());
-    }
-
-    async function updateArtshop() {
-      const id = document.getElementById("artshopId").value;
-      const formData = new FormData(document.getElementById("artshopForm"));
-      const res = await fetch(`/admin/api/artshop/${id}`, {
-        method: "PUT",
-        body: formData
-      });
-      alert(await res.text());
-    }
-
-    document.getElementById("artistTextForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const id = document.getElementById("artistTextId").value;
-      const content = document.getElementById("artistTextContent").value;
-      const res = await fetch(`/admin/api/artist-text/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content })
-      });
-      alert(await res.text());
-    });
-
-    async function deleteArtistText() {
-      const id = document.getElementById("artistTextId").value;
-      const res = await fetch(`/admin/api/artist-text/${id}`, { method: "DELETE" });
-      alert(await res.text());
-    }
-  </script>
+    <!-- 아트샵 관리 -->
+    <section class="shop-manage">
+      <h2>아트샵 관리 (등록 / 수정 / 삭제)</h2>
+      <div class="shop-box">
+        <div class="image-preview" id="shopPreviewContainer">
+          <img id="shopPreviewImage" src="" alt="미리보기 이미지" style="display:none; width:100%; height:100%; object-fit:contain;" />
+          <span id="shopPlaceholderText">이미지</span>
+        </div>
+        <div class="file-input-wrapper">
+          <label for="shopImage">파일 첨부</label>
+          <input type="file" id="shopImage" accept="image/*" hidden />
+        </div>
+        <div class="info-inputs">
+          <label for="productId">작품 ID</label>
+          <div class="id-search-group">
+            <input type="text" id="productId" placeholder="작품 ID" />
+            <button id="btnSearch">조회</button>
+          </div>
+          <label for="titleInput">작품명</label>
+          <input type="text" id="titleInput" placeholder="작품명을 입력하세요" />
+          <label for="descInput">설명</label>
+          <textarea id="descInput" placeholder="작품 설명을 입력하세요"></textarea>
+          <label for="priceInput">가격</label>
+          <input type="number" id="priceInput" placeholder="가격을 입력하세요" />
+          <div class="btn-group">
+            <button id="btnRegister">등록</button>
+            <button id="btnUpdate">수정</button>
+            <button id="btnDelete">삭제</button>
+            <button id="btnClear">초기화</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </body>
 </html>

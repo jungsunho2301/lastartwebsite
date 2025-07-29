@@ -168,3 +168,205 @@ footer .links a:hover {
   background-color: #333;
 }
 
+/* 기본 폰트 및 전역 스타일 */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #fff;
+  color: #111;
+}
+
+header {
+  background-color: #f9f9f9;
+  padding: 32px 40px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111;
+  border: 1px solid #ccc;
+  transition: background-color 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background-color: #f0f0f0;
+}
+
+.lang {
+  font-size: 14px;
+  color: #111;
+  white-space: nowrap;
+}
+
+.dashboard {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.upload-section {
+  background: #f4f4f4;
+  padding: 1.5rem;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+}
+
+.upload-section label,
+.upload-section input,
+.upload-section textarea,
+.upload-section button {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.upload-section input,
+.upload-section textarea {
+  padding: 0.5rem;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.upload-section button {
+  padding: 0.5rem 1rem;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.artwork-manage, .shop-manage {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.artwork-manage h2, .shop-manage h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.artwork-box, .shop-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.image-preview {
+  width: 300px;
+  height: 400px;
+  border: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fafafa;
+  position: relative;
+}
+
+.image-preview span {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.file-input-wrapper label {
+  padding: 0.5rem 1rem;
+  background-color: #eee;
+  border: 1px solid #999;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.id-search-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.id-search-group input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.id-search-group button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #333;
+  background-color: white;
+  cursor: pointer;
+}
+
+.btn-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-group button {
+  padding: 0.5rem 1.2rem;
+  border: 1px solid #333;
+  background-color: white;
+  cursor: pointer;
+}
+
+.info-inputs input,
+.info-inputs textarea {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  width: 100%;
+  border-radius: 4px;
+}
+
+textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+.guide-text {
+  font-size: 0.9rem;
+  color: #555;
+  text-align: center;
+}
