@@ -69,6 +69,9 @@
       font-size: 14px;
       color: #111;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .terms-section {
@@ -141,7 +144,7 @@
       </div>
     </div>
     <div class="lang">
-      ENG▼
+      <div class="gtranslate_wrapper"></div>
       <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
     </div>
   </div>
@@ -156,9 +159,9 @@
     adminButton.onclick = () => {
       if (isAdmin) {
         localStorage.removeItem('isAdmin');
-        location.reload(); // 로그아웃 시 새로고침
+        location.reload();
       } else {
-  location.href = '/docs/admin/login.html'; // 로그인 페이지로 이동
+        location.href = '/docs/admin/login.html';
       }
     };
   }
@@ -166,25 +169,24 @@
   document.addEventListener('DOMContentLoaded', updateAdminButton);
 </script>
 
-
   <section class="terms-section">
-    <h2>이용약관</h2>
-    <p>본 이용약관은 Walid Jahin 웹사이트 이용과 관련하여 사용자의 권리, 의무 및 책임사항을 규정합니다.</p>
+    <h2>Terms of Use</h2>
+    <p>These Terms of Use govern the rights, obligations, and responsibilities of users when using the Walid Jahin website.</p>
 
-    <h3>1. 서비스의 제공</h3>
-    <p>본 사이트는 예술작품의 소개, 구매 문의 및 관련 콘텐츠 제공을 목적으로 운영됩니다.</p>
+    <h3>1. Provision of Services</h3>
+    <p>This site operates for the purpose of introducing artworks, handling purchase inquiries, and providing related content.</p>
 
-    <h3>2. 저작권 및 지적재산권</h3>
-    <p>사이트에 게시된 모든 콘텐츠(텍스트, 이미지 등)의 저작권은 Walid Jahin 또는 해당 작가에게 있으며 무단 복제 및 배포를 금지합니다.</p>
+    <h3>2. Copyright and Intellectual Property</h3>
+    <p>All content (text, images, etc.) posted on this site is the property of Walid Jahin or the respective artist, and unauthorized reproduction or distribution is prohibited.</p>
 
-    <h3>3. 사용자 의무</h3>
-    <p>사용자는 본 사이트를 불법적인 목적이나 타인에게 피해를 주는 방식으로 이용할 수 없습니다.</p>
+    <h3>3. User Obligations</h3>
+    <p>Users shall not use this site for illegal purposes or in ways that cause harm to others.</p>
 
-    <h3>4. 약관의 변경</h3>
-    <p>운영자는 필요한 경우 본 약관을 사전 고지 없이 변경할 수 있으며, 변경 사항은 웹사이트에 게시된 시점부터 효력이 발생합니다.</p>
+    <h3>4. Changes to Terms</h3>
+    <p>The operator may modify these terms at any time without prior notice. Changes take effect once posted on the website.</p>
 
-    <h3>5. 면책조항</h3>
-    <p>서비스 이용 중 발생한 손해에 대해 본 사이트는 고의 또는 중대한 과실이 없는 한 책임을 지지 않습니다.</p>
+    <h3>5. Disclaimer</h3>
+    <p>The site is not liable for any damages incurred during service use, except in cases of intentional or gross negligence.</p>
   </section>
 
 <!-- Footer -->
@@ -197,13 +199,11 @@
   </nav>
 
   <div class="sns-icon flex justify-center gap-4 mt-4">
-    <!-- Instagram -->
     <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ccc" viewBox="0 0 24 24">
         <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
       </svg>
     </a>
-    <!-- Facebook (예시로 남겨둠) -->
     <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ccc" viewBox="0 0 24 24">
         <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
@@ -214,6 +214,18 @@
   <div class="footer-logo">Walid Jahin Art Studio</div>
   <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
 </footer>
+
+<script>
+  window.gtranslateSettings = {
+    "default_language": "en",
+    "native_language_names": true,
+    "languages": ["en", "ar", "ko"],
+    "wrapper_selector": ".gtranslate_wrapper",
+    "flag_size": 24,
+    "switcher_horizontal_position": "inline"
+  };
+</script>
+<script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
 
 </body>
 </html>
