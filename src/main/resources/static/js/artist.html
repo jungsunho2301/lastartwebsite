@@ -3,47 +3,265 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Artist | Walid Jahin</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Artist - Walid Jahin</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
+
+    header {
+      background-color: #f9f9f9;
+      padding: 32px 40px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-grow: 1;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #111;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #f0f0f0;
+    }
+
+    .lang {
+      font-size: 14px;
+      color: #111;
+      white-space: nowrap;
+    }
+
+    .artwork-intro {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+
+    .artwork-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .artwork-intro p {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px 40px 60px;
+    }
+
+    .art-img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      background-color: #191A1B;
+      color: #fff;
+      padding: 60px 20px 40px;
+      text-align: center;
+    }
+
+    footer nav a {
+      color: #ccc;
+      margin: 0 12px;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    footer nav a:hover {
+      color: #fff;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 800;
+      margin-top: 30px;
+    }
+
+    .footer-bottom {
+      font-size: 12px;
+      color: #888;
+      margin-top: 20px;
+    }
+
+    .sns-icon svg {
+      fill: #ccc;
+      margin-top: 20px;
+    }
+  </style>
+  <link href="style.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-white text-gray-900 font-sans">
+
+  <!-- Header -->
   <header>
-    <h1>Walid Jahin</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="artist.html" class="active">Artist</a></li>
-        <li><a href="artshop.html">Art Shop</a></li>
-        <li><a href="artwork.html">Art Work</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">Walid Jahin</div>
+        <div class="nav-links">
+          <a href="index.html">HOME</a>
+          <a href="artist.html">ARTIST</a>
+          <a href="artwork.html" class="active">ART WORK</a>
+          <a href="artshop.html">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">ENG▼</div>
+    </div>
   </header>
 
-  <main class="artist-page">
-    <section class="intro">
-      <h2>About the Artist</h2>
-      <p>Walid Jahin is an Egyptian painter known for his abstract expressionist style and his ability to communicate emotion through color and form.</p>
-    </section>
+  <!-- Bio Section -->
+  <section class="w-full py-16 text-center">
+    <h2 class="text-4xl font-serif font-semibold mb-2">Walid Jahin</h2>
+    <p class="text-gray-600">Born in 1974</p>
+    <p class="text-gray-600 mt-2 text-sm px-4 max-w-3xl mx-auto">
+      He lives in Alexandria and works as a professor at the Faculty of Fine Arts, Alexandria University, Department of Painting. <br />
+      He received his Master's Degree in Coptic Icons in 2005, and a Doctorate in Painting Techniques in 2010.
+    </p>
+  </section>
 
-    <section class="major-work">
-      <h2>Major Works</h2>
-      <div class="work-gallery">
-        <img src="assets/images/work1.jpg" alt="Major Work 1" />
-        <img src="assets/images/work2.jpg" alt="Major Work 2" />
-        <img src="assets/images/work3.jpg" alt="Major Work 3" />
+  <!-- Gallery Row -->
+  <section class="w-full py-10">
+    <div class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-6 gap-4">
+      <img src="assets/images/photo1.png" alt="Photo 1" class="rounded shadow" />
+      <img src="assets/images/photo2.png" alt="Photo 2" class="rounded shadow" />
+      <img src="assets/images/photo3.png" alt="Photo 3" class="rounded shadow" />
+      <img src="assets/images/photo4.png" alt="Photo 4" class="rounded shadow" />
+      <img src="assets/images/photo5.png" alt="Photo 5" class="rounded shadow" />
+      <img src="assets/images/photo6.png" alt="Photo 6" class="rounded shadow" />
+    </div>
+  </section>
+
+  <!-- Major Work Slider -->
+  <section class="text-center py-12">
+    <h3 class="text-3xl font-serif mb-6">Major Work</h3>
+    <div class="max-w-4xl mx-auto grid grid-cols-4 gap-4">
+      <img src="assets/images/major1.png" alt="Major Work 1" class="rounded" />
+      <img src="assets/images/major2.png" alt="Major Work 2" class="rounded" />
+      <img src="assets/images/major3.png" alt="Major Work 3" class="rounded" />
+      <img src="assets/images/major4.png" alt="Major Work 4" class="rounded" />
+    </div>
+  </section>
+
+  <!-- Exhibition Sections -->
+  <section class="max-w-4xl mx-auto px-4 py-12 space-y-10">
+    <div>
+      <h4 class="font-serif text-xl mb-2">Major Solo Shows In Cairo</h4>
+      <p class="text-sm text-gray-600">
+        "Eve" — Cairo Opera House, 2020<br />
+        "The Ego" — Omm Contemporary Art Gallery, 2021<br />
+        "Into The Scene" — Zamalek Art Gallery, 2022
+      </p>
+    </div>
+
+    <div>
+      <h4 class="font-serif text-xl mb-2">International Solo Exhibitions</h4>
+      <p class="text-sm text-gray-600">
+        "An Egyptian Voice In Diaspora" — Alliance Francais Centre, Dhaka, Bangladesh, 2014<br />
+        "Time" — Bongsan Art Center, Daegu, South Korea, 2018
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-8">
+      <div>
+        <h4 class="font-serif text-xl mb-2">Solo Exhibitions</h4>
+        <p class="text-sm text-gray-600">19 Solo Exhibitions In Painting Since 2000, Egypt And Abroad.</p>
       </div>
-    </section>
-  </main>
+      <div>
+        <h4 class="font-serif text-xl mb-2">Group Exhibitions</h4>
+        <p class="text-sm text-gray-600">Active Participant In Group Exhibitions And Cultural Events In Egypt Since 1995.</p>
+      </div>
+    </div>
 
+    <div>
+      <h4 class="font-serif text-xl mb-2">Achievement</h4>
+      <p class="text-sm text-gray-600">
+        First Prize, 7th International Biennial Of Tashkent, 2013<br />
+        Grand Prize, International Exhibition For Contemporary Art, South Korea, 2016<br />
+        Best Artwork Award, LA International Invitational Exhibition, Loyola Marymount University, USA, 2022
+      </p>
+    </div>
+
+    <div>
+      <h4 class="font-serif text-xl mb-2">Collections</h4>
+      <p class="text-sm text-gray-600">
+        Walid Jahin’s artworks are held in private cultural institutions in Egypt and across many Arab and international countries:<br />
+        Germany, Spain, France, Italy, Poland, Montenegro, Turkey, Dubai, Saudi Arabia, South Korea, Tunisia, Bangladesh.
+      </p>
+    </div>
+
+    <div>
+      <h4 class="font-serif text-xl mb-2">Work Style</h4>
+      <p class="text-sm text-gray-600">
+        Blends Contemporary Aesthetics With Symbolic Depth.<br />
+        Randomly Employs Abstract Forms And Vibrant Colors.<br />
+        Explores Diverse Subjects, Including Nature, Humanity, And Urban Landscapes.<br />
+        Widely Acknowledged By Collectors And Recognized In The Contemporary Art Scene.<br />
+        Holds A Distinguished Position In The Global Art Community.
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Walid Jahin Art Studio</p>
     <nav>
-      <ul>
-        <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="terms.html">Terms of Use</a></li>
-      </ul>
+      <a href="index.html">HOME</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+      <a href="terms.html">TERMS OF USE</a>
+      <a href="contact.html">CONTACT</a>
     </nav>
+    <div class="sns-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 5 3.657 9.127 8.438 9.878v-6.987H7.898v-2.89h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.462h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.127 22 17 22 12z"/>
+      </svg>
+    </div>
+    <div class="footer-logo">Walid Jahin Art Studio</div>
+    <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
   </footer>
 </body>
 </html>

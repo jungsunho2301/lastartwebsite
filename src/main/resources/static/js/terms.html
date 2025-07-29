@@ -1,38 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Terms of Use | Walid Jahin</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Terms of Use - Walid Jahin</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
+
+    header {
+      background-color: #f9f9f9;
+      padding: 32px 40px;
+      border-bottom: 1px solid #e5e5e5;
+      position: relative;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #111;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #f0f0f0;
+    }
+
+    .lang {
+      position: absolute;
+      right: 40px;
+      top: 32px;
+      font-size: 14px;
+      color: #111;
+      white-space: nowrap;
+    }
+
+    .terms-section {
+      max-width: 800px;
+      margin: 80px auto;
+      padding: 0 20px;
+      line-height: 1.8;
+    }
+
+    .terms-section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .terms-section h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 40px;
+    }
+
+    .terms-section p {
+      font-size: 14px;
+      color: #333;
+    }
+
+    footer {
+      background-color: #191A1B;
+      color: #fff;
+      padding: 60px 20px 40px;
+      text-align: center;
+    }
+
+    footer nav a {
+      color: #ccc;
+      margin: 0 12px;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    footer nav a:hover {
+      color: #fff;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 800;
+      margin-top: 30px;
+    }
+
+    .footer-bottom {
+      font-size: 12px;
+      color: #888;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1><a href="index.html">Walid Jahin</a></h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="artist.html">Artist</a></li>
-        <li><a href="artshop.html">Art Shop</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">Walid Jahin</div>
+        <div class="nav-links">
+          <a href="index.html">HOME</a>
+          <a href="artist.html">ARTIST</a>
+          <a href="artwork.html">ART WORK</a>
+          <a href="artshop.html">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">ENG▼</div>
+    </div>
   </header>
 
-  <main>
-    <section class="terms">
-      <h2>Terms of Use</h2>
-      <p>All content and artworks displayed on this site are the intellectual property of Walid Jahin and may not be used, reproduced, or distributed without explicit permission.</p>
-      <p>By accessing this website, you agree not to misuse the content and services provided. Unauthorized use may result in legal action.</p>
-    </section>
-  </main>
+  <section class="terms-section">
+    <h2>이용약관</h2>
+    <p>본 이용약관은 Walid Jahin 웹사이트 이용과 관련하여 사용자의 권리, 의무 및 책임사항을 규정합니다.</p>
+
+    <h3>1. 서비스의 제공</h3>
+    <p>본 사이트는 예술작품의 소개, 구매 문의 및 관련 콘텐츠 제공을 목적으로 운영됩니다.</p>
+
+    <h3>2. 저작권 및 지적재산권</h3>
+    <p>사이트에 게시된 모든 콘텐츠(텍스트, 이미지 등)의 저작권은 Walid Jahin 또는 해당 작가에게 있으며 무단 복제 및 배포를 금지합니다.</p>
+
+    <h3>3. 사용자 의무</h3>
+    <p>사용자는 본 사이트를 불법적인 목적이나 타인에게 피해를 주는 방식으로 이용할 수 없습니다.</p>
+
+    <h3>4. 약관의 변경</h3>
+    <p>운영자는 필요한 경우 본 약관을 사전 고지 없이 변경할 수 있으며, 변경 사항은 웹사이트에 게시된 시점부터 효력이 발생합니다.</p>
+
+    <h3>5. 면책조항</h3>
+    <p>서비스 이용 중 발생한 손해에 대해 본 사이트는 고의 또는 중대한 과실이 없는 한 책임을 지지 않습니다.</p>
+  </section>
 
   <footer>
-    <p>&copy; 2025 Walid Jahin Art Studio</p>
     <nav>
-      <a href="privacy.html">Privacy Policy</a> |
-      <a href="terms.html" class="active">Terms of Use</a>
+      <a href="index.html">HOME</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+      <a href="terms.html">TERMS OF USE</a>
+      <a href="contact.html">CONTACT</a>
     </nav>
+    <div class="footer-logo">Walid Jahin Art Studio</div>
+    <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
   </footer>
 </body>
 </html>
