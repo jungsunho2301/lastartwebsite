@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artist - Walid Jahin</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+    body { margin: 0; font-family: 'Noto Sans KR', sans-serif; background-color: #fff; color: #111; }
+    header { background-color: #f9f9f9; padding: 32px 40px; border-bottom: 1px solid #e5e5e5; position: relative; }
+    .header-inner { display: flex; justify-content: center; align-items: center; }
+    .nav-wrapper { display: flex; flex-direction: column; align-items: center; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 800; letter-spacing: -1px; }
+    .nav-links { display: flex; gap: 16px; margin-top: 12px; }
+    .nav-links a { text-decoration: none; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 500; color: #111; border: 1px solid #ccc; transition: background-color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { background-color: #f0f0f0; }
+    .lang { position: absolute; right: 40px; top: 32px; font-size: 14px; color: #111; white-space: nowrap; display: flex; align-items: center; gap: 12px; }
+    footer { background-color: #191A1B; color: #fff; padding: 60px 20px 40px; text-align: center; }
+    footer nav a { color: #ccc; margin: 0 12px; font-size: 14px; text-decoration: none; }
+    footer nav a:hover { color: #fff; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; margin-top: 30px; }
+    .footer-bottom { font-size: 12px; color: #888; margin-top: 20px; }
+    .sns-icon svg {
+      margin-top: 20px;
+      transition: fill 0.3s;
+      fill: #000;
+    }
+    .sns-icon svg:hover {
+      fill: #fff;
+    }
+        .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 20px;
+    }
+
+    .product-card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 16px;
+      background-color: #fff;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .product-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .product-meta {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 4px;
+    }
+
+    .product-price {
+      font-size: 16px;
+      color: #000;
+    }
+
+        .artwork-intro {
+      text-align: center;
+      margin-top: 60px;
+    }
+    .artwork-intro h2 {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .artwork-intro p {
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans">
+  <header>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">Walid Jahin</div>
+        <div class="nav-links">
+          <a href="/index.html">HOME</a>
+          <a href="/artist.html">ARTIST</a>
+          <a href="/artwork.html">ART WORK</a>
+          <a href="/artshop.html">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">
+        <div class="gtranslate_wrapper"></div>
+        <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+      </div>
+    </div>
+  </header>
+
+  <script>
+    const adminButton = document.getElementById('adminButton');
+    function updateAdminButton() {
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+      adminButton.onclick = () => {
+        if (isAdmin) {
+          localStorage.removeItem('isAdmin');
+          location.reload();
+        } else {
+          location.href = '/admin/login';
+        }
+      };
+    }
+    document.addEventListener('DOMContentLoaded', updateAdminButton);
+  </script>
+
+<!-- Artwork Introduction -->
+<section class="artwork-intro">
+  <h2>WALID JAHIN</h2>
+  <h2>ART WORK SHOP</h2>
+  <p>
+   Lörem ipsum divis mask. Fare tärat förutom apobel och meganade. .
+Stenode pysyr kavis som terracism reaska. Hexalig epigt tehuvis. Ditrengen a gon. 
+  </p>
+</section>
+
+<script>
+  const adminButton = document.getElementById('adminButton');
+
+  function updateAdminButton() {
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+    adminButton.onclick = () => {
+      if (isAdmin) {
+        localStorage.removeItem('isAdmin');
+        location.reload();
+      } else {
+        location.href = '/docs/admin/login.html';
+      }
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded', updateAdminButton);
+</script>
+
+<section class="product-grid">
+  <!-- Product 1~30 -->
+  <!-- 1 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art1.jpg" alt="Artwork 1" />
+    <div class="product-title">Artwork 1</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 300,000</div>
+  </button>
+
+  <!-- 2 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art2.jpg" alt="Artwork 2" />
+    <div class="product-title">Artwork 2</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 310,000</div>
+  </button>
+
+  <!-- 3 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art3.jpg" alt="Artwork 3" />
+    <div class="product-title">Artwork 3</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 320,000</div>
+  </button>
+
+  <!-- 4 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art4.jpg" alt="Artwork 4" />
+    <div class="product-title">Artwork 4</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 330,000</div>
+  </button>
+
+  <!-- 5 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art5.jpg" alt="Artwork 5" />
+    <div class="product-title">Artwork 5</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 340,000</div>
+  </button>
+
+  <!-- 6 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art6.jpg" alt="Artwork 6" />
+    <div class="product-title">Artwork 6</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 350,000</div>
+  </button>
+
+  <!-- 7 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art7.jpg" alt="Artwork 7" />
+    <div class="product-title">Artwork 7</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 360,000</div>
+  </button>
+
+  <!-- 8 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art8.jpg" alt="Artwork 8" />
+    <div class="product-title">Artwork 8</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 370,000</div>
+  </button>
+
+    <!-- 1 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art1.jpg" alt="Artwork 1" />
+    <div class="product-title">Artwork 1</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 300,000</div>
+  </button>
+
+  <!-- 2 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art2.jpg" alt="Artwork 2" />
+    <div class="product-title">Artwork 2</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 310,000</div>
+  </button>
+
+  <!-- 3 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art3.jpg" alt="Artwork 3" />
+    <div class="product-title">Artwork 3</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 320,000</div>
+  </button>
+
+  <!-- 4 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art4.jpg" alt="Artwork 4" />
+    <div class="product-title">Artwork 4</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 330,000</div>
+  </button>
+
+  <!-- 5 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art5.jpg" alt="Artwork 5" />
+    <div class="product-title">Artwork 5</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 340,000</div>
+  </button>
+
+  <!-- 6 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art6.jpg" alt="Artwork 6" />
+    <div class="product-title">Artwork 6</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 350,000</div>
+  </button>
+
+  <!-- 7 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art7.jpg" alt="Artwork 7" />
+    <div class="product-title">Artwork 7</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 360,000</div>
+  </button>
+
+  <!-- 8 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art8.jpg" alt="Artwork 8" />
+    <div class="product-title">Artwork 8</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 370,000</div>
+  </button>
+
+    <!-- 1 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art1.jpg" alt="Artwork 1" />
+    <div class="product-title">Artwork 1</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 300,000</div>
+  </button>
+
+  <!-- 2 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art2.jpg" alt="Artwork 2" />
+    <div class="product-title">Artwork 2</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 310,000</div>
+  </button>
+
+  <!-- 3 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art3.jpg" alt="Artwork 3" />
+    <div class="product-title">Artwork 3</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 320,000</div>
+  </button>
+
+  <!-- 4 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art4.jpg" alt="Artwork 4" />
+    <div class="product-title">Artwork 4</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 330,000</div>
+  </button>
+
+  <!-- 5 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art5.jpg" alt="Artwork 5" />
+    <div class="product-title">Artwork 5</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 340,000</div>
+  </button>
+
+  <!-- 6 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art6.jpg" alt="Artwork 6" />
+    <div class="product-title">Artwork 6</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 350,000</div>
+  </button>
+
+  <!-- 7 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art7.jpg" alt="Artwork 7" />
+    <div class="product-title">Artwork 7</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 360,000</div>
+  </button>
+
+  <!-- 8 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art8.jpg" alt="Artwork 8" />
+    <div class="product-title">Artwork 8</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 370,000</div>
+  </button>
+
+</section>
+
+  <div th:insert="~{::content}" />
+
+  
+  <footer>
+    <nav>
+      <a th:href="@{/index}">HOME</a>
+      <a th:href="@{/privacy}">PRIVACY POLICY</a>
+      <a th:href="@{/terms}">TERMS OF USE</a>
+      <a th:href="@{/contact}">CONTACT</a>
+    </nav>
+    <div class="sns-icon flex justify-center gap-4 mt-4">
+      <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
+        </svg>
+      </a>
+    </div>
+    <div class="footer-logo">Walid Jahin Art Studio</div>
+    <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+  </footer>
+
+  <script>
+    window.gtranslateSettings = {
+      "default_language": "en",
+      "native_language_names": true,
+      "languages": ["en", "ar", "ko"],
+      "wrapper_selector": ".gtranslate_wrapper",
+      "flag_size": 24,
+      "switcher_horizontal_position": "inline"
+    };
+  </script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+</body>
+</html>

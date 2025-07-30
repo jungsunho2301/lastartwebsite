@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Art Work - Walid Jahin</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    body { margin: 0; font-family: 'Noto Sans KR', sans-serif; background-color: #fff; color: #111; }
+    header { background-color: #f9f9f9; padding: 32px 40px; border-bottom: 1px solid #e5e5e5; position: relative; }
+    .header-inner { display: flex; justify-content: center; align-items: center; }
+    .nav-wrapper { display: flex; flex-direction: column; align-items: center; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 800; letter-spacing: -1px; }
+    .nav-links { display: flex; gap: 16px; margin-top: 12px; }
+    .nav-links a { text-decoration: none; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 500; color: #111; border: 1px solid #ccc; transition: background-color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { background-color: #f0f0f0; }
+    .lang { position: absolute; right: 40px; top: 32px; font-size: 14px; color: #111; white-space: nowrap; display: flex; align-items: center; gap: 12px; }
+
+    .artwork-intro { text-align: center; padding: 60px 20px 20px; }
+    .artwork-intro h2 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; }
+    .artwork-intro p { margin-top: 10px; font-size: 16px; color: #555; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 20px 40px 60px; }
+    .art-img { width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+
+    footer { background-color: #191A1B; color: #fff; padding: 60px 20px 40px; text-align: center; }
+    footer nav a { color: #ccc; margin: 0 12px; font-size: 14px; text-decoration: none; }
+    footer nav a:hover { color: #fff; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; margin-top: 30px; }
+    .footer-bottom { font-size: 12px; color: #888; margin-top: 20px; }
+    .sns-icon svg { margin-top: 20px; transition: fill 0.3s; fill: #000; }
+    .sns-icon svg:hover { fill: #fff; }
+      .subscribe-input {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc; /* 테두리 추가 */
+    border-radius: 8px;     /* 모서리 둥글게 */
+    outline: none;
+  }
+
+  .subscribe-input:focus {
+    border-color: #999;
+  }
+
+  .subscribe-button {
+    background-color: black;
+    color: white;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+
+  .subscribe-button:hover {
+    background-color: #333;
+  }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">Walid Jahin</div>
+        <div class="nav-links">
+          <a href="/index.html">HOME</a>
+          <a href="/artist.html">ARTIST</a>
+          <a href="/artwork.html">ART WORK</a>
+          <a href="/artshop.html">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">
+        <div class="gtranslate_wrapper"></div>
+        <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+      </div>
+    </div>
+  </header>
+
+  <script>
+    const adminButton = document.getElementById('adminButton');
+    function updateAdminButton() {
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+      adminButton.onclick = () => {
+        if (isAdmin) {
+          localStorage.removeItem('isAdmin');
+          location.reload();
+        } else {
+          location.href = '/admin/login';
+        }
+      };
+    }
+    document.addEventListener('DOMContentLoaded', updateAdminButton);
+  </script>
+
+  <!-- Hero Section -->
+  <section class="w-full py-24 bg-white text-center">
+    <div class="max-w-3xl mx-auto px-4">
+      <h2 class="text-6xl font-serif text-gray-900 leading-tight mb-10">
+        Walid Jahin<br />art Studio
+      </h2>
+      <p class="text-lg text-gray-600 leading-relaxed font-light">
+        Connecting With The World Through Art,<br />
+        I strive to add meaning to everyday moments.<br />
+        Join me on this artistic journey at Walid Jahin Art Studio.
+      </p>
+    </div>
+  </section>
+
+  <!-- Palette Banner -->
+  <section class="w-full overflow-hidden">
+    <img src="https://c.animaapp.com/Lw4WE84t/img/---1-frame-2.svg" alt="Color Palette" class="w-full h-auto" />
+  </section>
+
+  <!-- ARTIST Section -->
+  <section class="w-full py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-center">
+      <div class="w-full md:w-1/2">
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4201-1.png" alt="Artist Banner" class="w-full h-auto rounded-xl shadow-md" />
+      </div>
+      <div class="w-full md:w-1/2 space-y-6">
+        <div class="flex justify-between items-center">
+          <h3 class="card-title">ARTIST</h3>
+          <a href="artist.html" class="btn-outline">View More</a>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233-1@2x.png" alt="Artist Work 1" class="card-image" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234-1@2x.png" alt="Artist Work 2" class="card-image" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235-1@2x.png" alt="Artist Work 3" class="card-image" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ART WORK Section -->
+  <section class="w-full py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-center">
+      <div class="w-full md:w-1/2 space-y-6">
+        <div class="flex justify-between items-center">
+          <h3 class="card-title">Art Work</h3>
+          <a href="artwork.html" class="btn-outline">View More</a>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233-2@2x.png" alt="Work 1" class="card-image" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234-2@2x.png" alt="Work 2" class="card-image" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235-2@2x.png" alt="Work 3" class="card-image" />
+        </div>
+      </div>
+      <div class="w-full md:w-1/2">
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4200.png" alt="Art Work Banner" class="w-full h-auto rounded-xl shadow-md" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ART SHOP Section -->
+  <section class="w-full py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-center">
+      <div class="w-full md:w-1/2">
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4201.png" alt="Art Shop Banner" class="w-full h-auto rounded-xl shadow-md" />
+      </div>
+      <div class="w-full md:w-1/2 space-y-6">
+        <div class="flex justify-between items-center">
+          <h3 class="card-title">Art Shop</h3>
+          <a href="artshop.html" class="btn-outline">View More</a>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233@2x.png" alt="Art 1" class="card-image" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234@2x.png" alt="Art 2" class="card-image" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235@2x.png" alt="Art 3" class="card-image" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- 2. NEWSLETTER 섹션 수정 -->
+<section class="w-full py-20 bg-white text-center">
+  <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-10">
+    SUBSCRIBE TO <br />WALID JAHIN NEWSLETTER
+  </h3>
+  <form id="newsletterForm" class="max-w-3xl mx-auto space-y-6">
+    <div class="flex flex-col md:flex-row gap-6 justify-center">
+      <input type="text" placeholder="Name" class="subscribe-input md:w-1/2" />
+      <input type="email" placeholder="Email" class="subscribe-input md:w-1/2" />
+    </div>
+    <div class="flex items-center justify-center gap-3 text-sm text-gray-600">
+      <input type="checkbox" id="agree" class="w-5 h-5 border-gray-400" />
+      <label for="agree">I AGREE TO RECEIVE EMAILS FROM YOUR COMPANY</label>
+    </div>
+    <div class="flex justify-center">
+      <div class="g-recaptcha" data-sitekey="6Lc4XJQrAAAAAKgFydsKuyqsb7Iulz5DAO66i_HV"></div>
+
+    </div>
+    <button type="button" class="subscribe-button" onclick="handleSubscribe()">SUBSCRIBE</button>
+  </form>
+</section>
+
+
+  <footer>
+    <nav>
+      <a th:href="@{/index}">HOME</a>
+      <a th:href="@{/privacy}">PRIVACY POLICY</a>
+      <a th:href="@{/terms}">TERMS OF USE</a>
+      <a th:href="@{/contact}">CONTACT</a>
+    </nav>
+    <div class="sns-icon flex justify-center gap-4 mt-4">
+      <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
+        </svg>
+      </a>
+    </div>
+    <div class="footer-logo">Walid Jahin Art Studio</div>
+    <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+  </footer>
+
+  <script>
+    window.gtranslateSettings = {
+      "default_language": "en",
+      "native_language_names": true,
+      "languages": ["en", "ar", "ko"],
+      "wrapper_selector": ".gtranslate_wrapper",
+      "flag_size": 24,
+      "switcher_horizontal_position": "inline"
+    };
+  </script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+</body>
+</html>
