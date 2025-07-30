@@ -106,6 +106,9 @@
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
         <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+      <!-- lang 영역 안에 추가 -->
+<button id="logoutButton" style="margin-left: 10px; background: #111; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">LOGOUT</button>
+
       </div>
     </div>
   </header>
@@ -264,5 +267,27 @@
       alert('Section updated!');
     });
   </script>
+  
+<script>
+  // 🚫 로그인하지 않은 사용자는 login.html로 이동
+  const isAdmin = localStorage.getItem("isAdmin");
+  if (isAdmin !== "true") {
+    window.location.href = "login.html";
+  }
+
+  // 🔓 로그아웃 버튼 기능
+  const logoutBtn = document.getElementById("logoutButton");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("isAdmin");
+      window.location.href = "login.html";
+    });
+  }
+</script>
+
+
+  <!-- 페이지 맨 아래 <body> 닫히기 직전에 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+
 </body>
 </html>

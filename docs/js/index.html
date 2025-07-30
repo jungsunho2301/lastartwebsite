@@ -140,6 +140,33 @@
       fill: #ccc;
       margin-top: 20px;
     }
+
+  .subscribe-input {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc; /* 테두리 추가 */
+    border-radius: 8px;     /* 모서리 둥글게 */
+    outline: none;
+  }
+
+  .subscribe-input:focus {
+    border-color: #999;
+  }
+
+  .subscribe-button {
+    background-color: black;
+    color: white;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+
+  .subscribe-button:hover {
+    background-color: #333;
+  }
+
   </style>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
@@ -311,6 +338,9 @@
     };
   </script>
   <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+
+  <!-- 페이지 맨 아래 <body> 닫히기 직전에 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
 
 </body>
 </html>
