@@ -6,8 +6,10 @@
   <title>Walid Jahin Art Studio</title>
   <meta name="_csrf" content="{{csrf_token}}" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="../css/style.css" />
-  <script defer src="../js/dashboard.js"></script>
+  <script defer src="dashboard.js"></script>
+
   <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
   <script>
     window.gtranslateSettings = {
@@ -97,15 +99,19 @@
       <div class="nav-wrapper">
         <div class="logo">Walid Jahin</div>
         <div class="nav-links">
-          <a href="../js/index.html">HOME</a>
-          <a href="../js/artist.html">ARTIST</a>
-          <a href="../js/artwork.html">ART WORK</a>
-          <a href="../js/artshop.html">ART SHOP</a>
+<a href="../index.html">HOME</a>
+<a href="../artist.html">ARTIST</a>
+<a href="../artwork.html">ART WORK</a>
+<a href="../artshop.html">ART SHOP</a>
+
         </div>
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
         <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+      <!-- lang 영역 안에 추가 -->
+<button id="logoutButton" style="margin-left: 10px; background: #111; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">LOGOUT</button>
+
       </div>
     </div>
   </header>
@@ -177,6 +183,18 @@
         </div>
       </form>
     </section>
+  
+<!-- Artist 텍스트 수정/삭제 -->
+<section class="upload-section">
+  <h3>Artist Text Editor</h3>
+  <form id="artistTextForm">
+    <input type="text" id="artistTextId" placeholder="Text ID" required />
+    <textarea id="artistTextContent" placeholder="Enter new text" rows="4" required></textarea>
+    <button type="submit">Update Text</button>
+  </form>
+  <button id="deleteArtistTextBtn">Delete Text</button>
+</section>
+
 
     <!-- Artwork Management -->
     <section class="artwork-manage">
@@ -204,6 +222,8 @@
         </p>
       </div>
     </section>
+
+    <hr style="margin: 40px 0; border-top: 2px solid #eee;" />
 
     <!-- Artshop Management -->
     <section class="shop-manage">
@@ -263,6 +283,425 @@
       });
       alert('Section updated!');
     });
+
+
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+   <script>
+
+    async function loadInstagramUrl() {
+      try {
+        const res = await fetch('/admin/api/social/instagram');
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('instagramUrl').value = data.url || '';
+        }
+      } catch (err) {
+        console.error('Instagram URL load error:', err);
+      }
+    }
+
+    async function loadFacebookUrl() {
+      try {
+        const res = await fetch('/admin/api/social/facebook');
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('facebookUrl').value = data.url || '';
+        }
+      } catch (err) {
+        console.error('Facebook URL load error:', err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // ✅ 세션 인증 확인
+      try {
+        const res = await fetch("/api/admin/check", {
+          credentials: "include"
+        });
+        if (!res.ok) {
+          window.location.href = "login.html";
+        }
+      } catch (err) {
+        window.location.href = "login.html";
+      }
+
+      // ✅ 이메일 변경
+      const emailForm = document.getElementById("emailForm");
+      if (emailForm) {
+        emailForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const email = document.getElementById("newEmail").value;
+          try {
+            const res = await fetch("/admin/api/email", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": csrfToken
+              },
+              body: JSON.stringify({ email }),
+              credentials: "include"
+            });
+            if (res.ok) {
+              alert("Email updated successfully.");
+            } else {
+              alert("Failed to update email.");
+            }
+          } catch (err) {
+            console.error("Error updating email:", err);
+            alert("An error occurred. Please try again.");
+          }
+        });
+      }
+
+      // ✅ SNS 초기값 불러오기
+      await loadInstagramUrl();
+      await loadFacebookUrl();
+    });
+
+    // ✅ SNS URL 등록
+    document.getElementById('instagramForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = document.getElementById('instagramUrl').value;
+      await fetch('/admin/api/social/instagram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ url }),
+        credentials: 'include'
+      });
+      alert('Instagram connected!');
+    });
+
+    document.getElementById('facebookForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = document.getElementById('facebookUrl').value;
+      await fetch('/admin/api/social/facebook', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ url }),
+        credentials: 'include'
+      });
+      alert('Facebook connected!');
+    });
+
+    // ✅ 뉴스레터 발송
+    document.getElementById('newsletterForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('newsletterTitle').value;
+      const content = document.getElementById('newsletterContent').value;
+
+      await fetch('/admin/api/news/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ title, content }),
+        credentials: 'include'
+      });
+      alert('Newsletter sent!');
+    });
+
+    // ✅ 섹션 조회 및 수정
+    async function getSection() {
+      const key = document.getElementById('sectionKey').value;
+      const res = await fetch(`/admin/api/artist/section/${key}`);
+      const data = await res.json();
+      document.getElementById('sectionContent').value = data.content || '';
+    }
+
+    document.getElementById('artistSectionForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const key = document.getElementById('sectionKey').value;
+      const content = document.getElementById('sectionContent').value;
+      await fetch(`/admin/api/artist/section/${key}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ content })
+      });
+      alert('Section updated!');
+    });
+
+    // ✅ 로그아웃
+    const logoutBtn = document.getElementById("logoutButton");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", async () => {
+        await fetch("/api/admin/logout", {
+          credentials: "include",
+          method: "POST"
+        });
+        window.location.href = "login.html";
+      });
+    }
+
+
+
+// ✅ 아트워크 이미지 미리보기
+document.getElementById('artworkFile')?.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  const previewImage = document.getElementById('artworkPreviewImage');
+  const placeholder = document.getElementById('artworkPlaceholderText');
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      previewImage.src = event.target.result;
+      previewImage.style.display = 'block';
+      placeholder.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// ✅ 아트워크 등록 (PUT)
+document.getElementById('btnApply')?.addEventListener('click', async () => {
+  const id = document.getElementById('artworkId').value;
+  const file = document.getElementById('artworkFile').files[0];
+
+  if (!id || !file) {
+    alert('Artwork ID와 파일을 모두 입력해주세요.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(`/admin/api/artwork/${id}`, {
+    method: 'PUT',
+    body: formData,
+    credentials: 'include'
+  });
+
+  if (res.ok) {
+    alert('Artwork updated!');
+  } else {
+    alert('Failed to update artwork.');
+  }
+});
+
+// ✅ 아트워크 삭제 (DELETE)
+document.getElementById('btnDelete')?.addEventListener('click', async () => {
+  const id = document.getElementById('artworkId').value;
+  if (!id || !confirm(`${id}번 아트워크를 삭제할까요?`)) return;
+
+  const res = await fetch(`/admin/api/artwork/${id}`, {
+    method: 'DELETE',
+    credentials: 'include'
+  });
+
+  if (res.ok) {
+    alert('Artwork deleted!');
+    document.getElementById('artworkFile').value = '';
+    document.getElementById('artworkPreviewImage').style.display = 'none';
+    document.getElementById('artworkPlaceholderText').style.display = 'block';
+  } else {
+    alert('Failed to delete artwork.');
+  }
+});
+
+// ✅ 초기화 버튼
+document.getElementById('btnCancel')?.addEventListener('click', () => {
+  document.getElementById('artworkId').value = '';
+  document.getElementById('artworkFile').value = '';
+  document.getElementById('artworkPreviewImage').style.display = 'none';
+  document.getElementById('artworkPlaceholderText').style.display = 'block';
+});
+
+// ✅ 미리보기 처리
+document.getElementById('shopImage')?.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  const preview = document.getElementById('shopPreviewImage');
+  const placeholder = document.getElementById('shopPlaceholderText');
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      preview.src = event.target.result;
+      preview.style.display = 'block';
+      placeholder.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// ✅ 아트샵 조회
+document.getElementById('btnSearch')?.addEventListener('click', async () => {
+  const id = document.getElementById('productId').value;
+  if (!id) {
+    alert('Artwork ID를 입력하세요.');
+    return;
+  }
+
+  try {
+    const res = await fetch(`/admin/api/artshop/${id}`);
+    const data = await res.json();
+
+    if (res.ok) {
+      document.getElementById('titleInput').value = data.title || '';
+      document.getElementById('descInput').value = data.description || '';
+      document.getElementById('priceInput').value = data.price || '';
+      document.getElementById('shopPreviewImage').src = data.image_url || '';
+      document.getElementById('shopPreviewImage').style.display = 'block';
+      document.getElementById('shopPlaceholderText').style.display = 'none';
+    } else {
+      alert('해당 아트샵 데이터를 찾을 수 없습니다.');
+    }
+  } catch (err) {
+    console.error('조회 실패:', err);
+  }
+});
+
+// ✅ 아트샵 등록
+document.getElementById('btnRegister')?.addEventListener('click', async () => {
+  const file = document.getElementById('shopImage').files[0];
+  const title = document.getElementById('titleInput').value;
+  const description = document.getElementById('descInput').value;
+  const price = document.getElementById('priceInput').value;
+
+  if (!file || !title || !price) {
+    alert('이미지, 제목, 가격을 모두 입력하세요.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('title', title);
+  formData.append('description', description);
+  formData.append('price', price);
+
+  const res = await fetch('/admin/api/artshop', {
+    method: 'POST',
+    body: formData,
+    credentials: 'include'
+  });
+
+  res.ok ? alert('등록 완료!') : alert('등록 실패');
+});
+
+// ✅ 아트샵 수정
+document.getElementById('btnUpdate')?.addEventListener('click', async () => {
+  const id = document.getElementById('productId').value;
+  const title = document.getElementById('titleInput').value;
+  const description = document.getElementById('descInput').value;
+  const price = document.getElementById('priceInput').value;
+
+  if (!id || !title || !price) {
+    alert('ID, 제목, 가격을 입력하세요.');
+    return;
+  }
+
+  const body = { title, description, price };
+
+  const res = await fetch(`/admin/api/artshop/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': csrfToken
+    },
+    body: JSON.stringify(body),
+    credentials: 'include'
+  });
+
+  res.ok ? alert('수정 완료!') : alert('수정 실패');
+});
+
+// ✅ 아트샵 삭제
+document.getElementById('btnDelete')?.addEventListener('click', async () => {
+  const id = document.getElementById('productId').value;
+  if (!id || !confirm(`${id}번 아트샵 상품을 삭제할까요?`)) return;
+
+  const res = await fetch(`/admin/api/artshop/${id}`, {
+    method: 'DELETE',
+    credentials: 'include'
+  });
+
+  if (res.ok) {
+    alert('삭제 완료!');
+    clearShopForm();
+  } else {
+    alert('삭제 실패');
+  }
+});
+
+// ✅ 초기화
+document.getElementById('btnClear')?.addEventListener('click', () => {
+  clearShopForm();
+});
+
+function clearShopForm() {
+  document.getElementById('productId').value = '';
+  document.getElementById('titleInput').value = '';
+  document.getElementById('descInput').value = '';
+  document.getElementById('priceInput').value = '';
+  document.getElementById('shopImage').value = '';
+  document.getElementById('shopPreviewImage').style.display = 'none';
+  document.getElementById('shopPlaceholderText').style.display = 'block';
+}
+
+// Artist 텍스트 수정
+document.getElementById('artistTextForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const id = document.getElementById('artistTextId').value;
+  const content = document.getElementById('artistTextContent').value;
+
+  try {
+    const res = await fetch(`/admin/api/artist-text/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': csrfToken
+      },
+      body: JSON.stringify({ content }),
+      credentials: 'include'
+    });
+
+    if (res.ok) {
+      alert('Artist text updated!');
+    } else {
+      alert('Failed to update artist text.');
+    }
+  } catch (err) {
+    console.error('Update error:', err);
+  }
+});
+
+// Artist 텍스트 삭제
+document.getElementById('deleteArtistTextBtn')?.addEventListener('click', async () => {
+  const id = document.getElementById('artistTextId').value;
+  if (!id || !confirm(`Delete artist text with ID ${id}?`)) return;
+
+  try {
+    const res = await fetch(`/admin/api/artist-text/${id}`, {
+      method: 'DELETE',
+      headers: { 'X-CSRF-TOKEN': csrfToken },
+      credentials: 'include'
+    });
+
+    if (res.ok) {
+      alert('Artist text deleted!');
+      document.getElementById('artistTextContent').value = '';
+    } else {
+      alert('Failed to delete artist text.');
+    }
+  } catch (err) {
+    console.error('Delete error:', err);
+  }
+});
+
+  </script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+
 </body>
 </html>

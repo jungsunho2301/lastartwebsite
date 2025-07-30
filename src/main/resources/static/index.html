@@ -140,9 +140,37 @@
       fill: #ccc;
       margin-top: 20px;
     }
+
+  .subscribe-input {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc; /* 테두리 추가 */
+    border-radius: 8px;     /* 모서리 둥글게 */
+    outline: none;
+  }
+
+  .subscribe-input:focus {
+    border-color: #999;
+  }
+
+  .subscribe-button {
+    background-color: black;
+    color: white;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+
+  .subscribe-button:hover {
+    background-color: #333;
+  }
+
   </style>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body class="bg-white text-gray-900 font-sans">
 
@@ -160,7 +188,7 @@
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="margin-left: 10px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+        <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
       </div>
     </div>
   </header>
@@ -168,34 +196,21 @@
   <script>
     const adminButton = document.getElementById('adminButton');
 
-    async function checkAdminSession() {
-      try {
-        const res = await fetch('/api/admin/check-session', {
-          method: 'GET',
-          credentials: 'include'
-        });
-
-        const isLoggedIn = res.ok;
-
-        adminButton.textContent = isLoggedIn ? 'LOGOUT' : 'LOGIN';
-        adminButton.onclick = () => {
-          if (isLoggedIn) {
-            fetch('/api/admin/logout', { method: 'POST', credentials: 'include' })
-              .then(() => location.reload());
-          } else {
-            location.href = '/admin/login.html';
-          }
-        };
-      } catch (e) {
-        console.error('세션 확인 실패', e);
-        adminButton.textContent = 'LOGIN';
-        adminButton.onclick = () => location.href = '/admin/login.html';
-      }
+    function updateAdminButton() {
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+      adminButton.onclick = () => {
+        if (isAdmin) {
+          localStorage.removeItem('isAdmin');
+          location.reload();
+        } else {
+          location.href = 'admin/login.html';
+        }
+      };
     }
 
-    document.addEventListener('DOMContentLoaded', checkAdminSession);
+    document.addEventListener('DOMContentLoaded', updateAdminButton);
   </script>
-
 
   <!-- Hero Section -->
   <section class="w-full py-24 bg-white text-center">
@@ -276,23 +291,26 @@
     </div>
   </section>
 
-  <!-- Newsletter Section -->
-  <section class="w-full py-20 bg-white text-center">
-    <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-10">
-      SUBSCRIBE TO <br />WALID JAHIN NEWSLETTER
-    </h3>
-    <form class="max-w-3xl mx-auto space-y-6">
-      <div class="flex flex-col md:flex-row gap-6 justify-center">
-        <input type="text" placeholder="Name" class="subscribe-input md:w-1/2" />
-        <input type="email" placeholder="Email" class="subscribe-input md:w-1/2" />
-      </div>
-      <div class="flex items-center justify-center gap-3 text-sm text-gray-600">
-        <input type="checkbox" id="agree" class="w-5 h-5 border-gray-400" />
-        <label for="agree">I AGREE TO RECEIVE EMAILS FROM YOUR COMPANY</label>
-      </div>
-      <button type="submit" class="subscribe-button">SUBSCRIBE</button>
-    </form>
-  </section>
+<!-- 2. NEWSLETTER 섹션 수정 -->
+<section class="w-full py-20 bg-white text-center">
+  <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-10">
+    SUBSCRIBE TO <br />WALID JAHIN NEWSLETTER
+  </h3>
+  <form id="newsletterForm" class="max-w-3xl mx-auto space-y-6">
+    <div class="flex flex-col md:flex-row gap-6 justify-center">
+      <input type="text" placeholder="Name" class="subscribe-input md:w-1/2" />
+      <input type="email" placeholder="Email" class="subscribe-input md:w-1/2" />
+    </div>
+    <div class="flex items-center justify-center gap-3 text-sm text-gray-600">
+      <input type="checkbox" id="agree" class="w-5 h-5 border-gray-400" />
+      <label for="agree">I AGREE TO RECEIVE EMAILS FROM YOUR COMPANY</label>
+    </div>
+    <div class="flex justify-center">
+      <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
+    </div>
+    <button type="button" class="subscribe-button" onclick="handleSubscribe()">SUBSCRIBE</button>
+  </form>
+</section>
 
   <!-- Footer -->
   <footer>
@@ -327,5 +345,55 @@
   </script>
   <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
 
+  <!-- 페이지 맨 아래 <body> 닫히기 직전에 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+
+<script>
+  async function handleSubscribe() {
+    const name = document.querySelector('input[placeholder="Name"]').value.trim();
+    const email = document.querySelector('input[placeholder="Email"]').value.trim();
+    const agree = document.getElementById('agree').checked;
+    const token = grecaptcha.getResponse();
+
+    if (!name || !email) {
+      alert('Please enter both your name and email.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    if (!agree) {
+      alert('Please agree to receive emails from us.');
+      return;
+    }
+    if (!token) {
+      alert('Please verify that you are not a robot.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/subscribe?g-recaptcha-response=${token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email })
+      });
+
+      if (response.ok) {
+        alert('You have successfully subscribed to the newsletter.');
+        document.getElementById('newsletterForm').reset();
+        grecaptcha.reset();
+      } else if (response.status === 403) {
+        alert('reCAPTCHA verification failed.');
+      } else {
+        const err = await response.json();
+        alert(err.message || 'An error occurred while processing your request.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('A network error occurred. Please try again later.');
+    }
+  }
+</script>
 </body>
 </html>

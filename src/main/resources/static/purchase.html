@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy - Walid Jahin</title>
+  <title>Contact - Walid Jahin</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
@@ -75,28 +75,55 @@
     }
 
 
-    .privacy-section {
-      max-width: 800px;
+    .contact-section {
+      max-width: 640px;
       margin: 80px auto;
       padding: 0 20px;
-      line-height: 1.8;
+      text-align: center;
     }
 
-    .privacy-section h2 {
+    .contact-section h2 {
       font-size: 28px;
       font-weight: 700;
-      margin-bottom: 24px;
     }
 
-    .privacy-section h3 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-top: 40px;
-    }
-
-    .privacy-section p {
+    .contact-section p {
       font-size: 14px;
-      color: #333;
+      color: #555;
+      margin-bottom: 40px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .contact-form textarea {
+      height: 160px;
+      resize: none;
+    }
+
+    .contact-form button {
+      width: 100%;
+      padding: 14px;
+      background-color: #111;
+      color: #fff;
+      border: none;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .contact-form button:hover {
+      background-color: #333;
     }
 
     footer {
@@ -133,64 +160,56 @@
 </head>
 <body>
 
-<!-- Header -->
-<header>
-  <div class="header-inner">
-    <div class="nav-wrapper">
-      <div class="logo">Walid Jahin</div>
-      <div class="nav-links">
-        <a href="index.html">HOME</a>
-        <a href="artist.html">ARTIST</a>
-        <a href="artwork.html">ART WORK</a>
-        <a href="artshop.html">ART SHOP</a>
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">Walid Jahin</div>
+        <div class="nav-links">
+          <a href="index.html">HOME</a>
+          <a href="artist.html">ARTIST</a>
+          <a href="artwork.html">ART WORK</a>
+          <a href="artshop.html">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">
+        <div class="gtranslate_wrapper"></div>
+        <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
       </div>
     </div>
-    <div class="lang">
-      <div class="gtranslate_wrapper"></div>
-      <button id="adminButton" style="margin-left: 10px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
-    </div>
-  </div>
-</header>
+  </header>
 
-<script>
-  const adminButton = document.getElementById('adminButton');
-  function updateAdminButton() {
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
-    adminButton.onclick = () => {
-      if (isAdmin) {
-        localStorage.removeItem('isAdmin');
-        location.reload();
-      } else {
-        location.href = '/docs/admin/login.html';
-      }
-    };
-  }
-  document.addEventListener('DOMContentLoaded', updateAdminButton);
-</script>
+  <script>
+    const adminButton = document.getElementById('adminButton');
 
-<section class="privacy-section">
-<h2>Privacy Policy</h2>
-<p>This website prioritizes the protection of users' personal information, and the collected data is used solely for artwork purchases and service provision.</p>
+    function updateAdminButton() {
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+      adminButton.onclick = () => {
+        if (isAdmin) {
+          localStorage.removeItem('isAdmin');
+          location.reload();
+        } else {
+          location.href = 'admin/login.html';
+        }
+      };
+    }
 
-<h3>1. Personal Information Collected</h3>
-<p>Name, email address, inquiry details, and other information directly provided by the user</p>
+    document.addEventListener('DOMContentLoaded', updateAdminButton);
+  </script>
 
-<h3>2. Purpose of Use</h3>
-<p>To respond to inquiries, provide services, manage customers, and deliver notifications</p>
-
-<h3>3. Retention and Use Period</h3>
-<p>Personal information is retained until the purpose of use is fulfilled and then promptly destroyed.</p>
-
-<h3>4. Provision to Third Parties</h3>
-<p>Personal information is not shared with third parties without the user's consent.</p>
-
-<h3>5. User Rights</h3>
-<p>Users may request to view, correct, or delete their personal information at any time.</p>
-
+<section class="contact-section">
+  <h2>Inquiry to purchase works</h2>
+  <p>Please inquire about the work you are interested in.</p>
+  <form class="contact-form">
+    <input type="text" placeholder="name" required />
+    <input type="email" placeholder="email address" required />
+    <input type="text" placeholder="Title of work or inquiry title" required />
+    <textarea placeholder="Please enter your inquiry details." required></textarea>
+    <button type="submit">문의 보내기</button>
+  </form>
 </section>
 
-<!-- Footer -->
 <footer>
   <nav>
     <a href="index.html">HOME</a>
@@ -198,6 +217,7 @@
     <a href="terms.html">TERMS OF USE</a>
     <a href="contact.html">CONTACT</a>
   </nav>
+
   <div class="sns-icon flex justify-center gap-4 mt-4">
     <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ccc" viewBox="0 0 24 24">
@@ -210,11 +230,11 @@
       </svg>
     </a>
   </div>
+
   <div class="footer-logo">Walid Jahin Art Studio</div>
   <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
 </footer>
 
-<!-- GTranslate Script -->
 <script>
   window.gtranslateSettings = {
     "default_language": "en",
@@ -226,6 +246,9 @@
   };
 </script>
 <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+
+<!-- 페이지 맨 아래 <body> 닫히기 직전에 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
 
 </body>
 </html>
