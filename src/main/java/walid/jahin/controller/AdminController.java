@@ -21,17 +21,21 @@ public class AdminController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
-        System.out.println("입력된 아이디: " + loginRequest.getUsername());
-        System.out.println("입력된 비밀번호: " + loginRequest.getPassword());
-
         if (adminService.login(loginRequest.getUsername(), loginRequest.getPassword())) {
-            // 여기서 세션 생성
-            HttpSession session = request.getSession(true);
-            session.setAttribute(SessionConst.LOGIN_ADMIN, loginRequest.getUsername());
+
+            // ✅ 기존 세션 무효화
+            HttpSession oldSession = request.getSession(false);
+            if (oldSession != null) {
+                oldSession.invalidate();
+            }
+
+            // ✅ 새로운 세션 생성 후 로그인 정보 저장
+            HttpSession newSession = request.getSession(true);
+            newSession.setAttribute(SessionConst.LOGIN_ADMIN, loginRequest.getUsername());
+
             return ResponseEntity.ok("관리자 로그인 성공");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
         }
-}
-
+    }
 }

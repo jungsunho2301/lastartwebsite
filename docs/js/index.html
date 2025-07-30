@@ -151,11 +151,19 @@
         <a href="artshop.html">ART SHOP</a>
       </div>
     </div>
-    <div class="lang">
-      ENG▼
-      <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+    <div class="lang" style="display: flex; align-items: center; gap: 12px;">
+
+      <!-- ✅ 로그인 버튼 -->
+      <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">
+        LOGIN
+      </button>
+      
+      <div class="gtranslate_wrapper"></div>
+        <script>window.gtranslateSettings = {"default_language":"en","native_language_names":true,"languages":["en","ar","ko"],"wrapper_selector":".gtranslate_wrapper","flag_size":24,"switcher_horizontal_position":"inline"}</script>
+        <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer>
+        </script>
+
     </div>
-  </div>
 </header>
 
 <script>

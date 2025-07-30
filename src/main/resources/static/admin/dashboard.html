@@ -1,66 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Walid Jahin</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <style>
-    .dashboard {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 2rem;
-    }
-    .dashboard h2 {
-      margin-bottom: 1.5rem;
-    }
-    .upload-section {
-      background: #f4f4f4;
-      padding: 1.5rem;
-      border-radius: 6px;
-    }
-    .upload-section label,
-    .upload-section input,
-    .upload-section textarea {
-      display: block;
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    .upload-section input,
-    .upload-section textarea {
-      padding: 0.5rem;
-      border: 1px solid #aaa;
-      border-radius: 4px;
-    }
-    .upload-section button {
-      padding: 0.5rem 1rem;
-      background: black;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Walid Jahin Art Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <script defer src="../js/dashboard.js"></script>
 </head>
+
+<style>
+
+      body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
+
+    header {
+      background-color: #f9f9f9;
+      padding: 32px 40px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+
+      .header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #111;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.nav-links a:hover {
+  background-color: #f0f0f0;
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+</style>
+
+
 <body>
-  <div class="dashboard">
-    <h2>Admin Dashboard</h2>
+  <!-- Header -->
+<header>
+  <div class="header-inner">
+    <div class="nav-wrapper">
+      <div class="logo">Walid Jahin</div>
+      <div class="nav-links">
+        <a href="../js/index.html">HOME</a>
+        <a href="../js/artist.html">ARTIST</a>
+        <a href="../js/artwork.html">ART WORK</a>
+        <a href="../js/artshop.html">ART SHOP</a>
+      </div>
+    </div>
+    <div class="lang">
+      ENG▼
+      <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+    </div>
+  </div>
+</header>
 
+
+  <main class="dashboard">
+    <!-- 이메일 수정 -->
     <section class="upload-section">
-      <h3>Upload New Artwork</h3>
-      <form action="#" method="post" enctype="multipart/form-data">
-        <label for="title">Title</label>
-        <input type="text" id="title" name="title" required />
-
-        <label for="description">Description</label>
-        <textarea id="description" name="description" rows="4" required></textarea>
-
-        <label for="image">Artwork Image</label>
-        <input type="file" id="image" name="image" accept="image/*" required />
-
-        <button type="submit">Upload</button>
+      <h3>Update Artist Email</h3>
+      <form id="emailForm">
+        <label for="newEmail">New Email Address</label>
+        <input type="email" id="newEmail" required />
+        <button type="submit">Update Email</button>
       </form>
     </section>
-  </div>
+
+    <!-- SNS 연결 -->
+    <section class="upload-section">
+      <h3>Instagram Connection</h3>
+      <form id="instagramForm">
+        <label for="instagramUrl">Instagram URL</label>
+        <input type="url" id="instagramUrl" required />
+        <button type="submit">Connect</button>
+      </form>
+    </section>
+
+    <section class="upload-section">
+      <h3>Facebook Connection</h3>
+      <form id="facebookForm">
+        <label for="facebookUrl">Facebook URL</label>
+        <input type="url" id="facebookUrl" required />
+        <button type="submit">Connect</button>
+      </form>
+    </section>
+
+    <!-- 뉴스레터 -->
+    <section class="upload-section">
+      <h3>Send Newsletter</h3>
+      <form id="newsletterForm">
+        <label for="newsletterTitle">Newsletter Title</label>
+        <input type="text" id="newsletterTitle" required />
+        <label for="newsletterContent">Newsletter Content</label>
+        <textarea id="newsletterContent" rows="5" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </section>
+
+    <!-- 아티스트 텍스트 수정 -->
+    <section class="upload-section">
+      <h3>Edit Artist Page Text</h3>
+      <form id="artistTextForm">
+        <label for="artistTextId">Text ID</label>
+        <input type="text" id="artistTextId" required />
+        <label for="artistTextContent">Content</label>
+        <textarea id="artistTextContent" rows="4" required></textarea>
+        <div class="button-group">
+          <button type="submit">Update</button>
+          <button type="button" onclick="deleteArtistText()">Delete</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 아트워크 관리 -->
+    <section class="artwork-manage">
+      <h2>아트워크 관리 (수정 / 삭제)</h2>
+      <div class="artwork-box">
+        <div class="image-preview" id="artworkPreviewContainer">
+          <img id="artworkPreviewImage" src="" alt="미리보기 이미지" style="display:none; width:100%; height:100%; object-fit:contain;" />
+          <span id="artworkPlaceholderText">이미지</span>
+        </div>
+
+        <div class="file-input-wrapper">
+          <label for="artworkFile">파일 첨부</label>
+          <input type="file" id="artworkFile" accept="image/*" hidden />
+        </div>
+
+        <div class="id-search-group">
+          <input type="text" id="artworkId" placeholder="ID" />
+          <button id="btnApply">적용</button>
+          <button id="btnDelete">삭제</button>
+          <button id="btnCancel">취소</button>
+        </div>
+
+        <p class="guide-text">
+          ID 칸에 수정/삭제하고 싶은 작품 ID를 입력하면, 해당 작품의 이미지가 전시되고 수정 가능하도록 합니다.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- 아트샵 관리 -->
+    <section class="shop-manage">
+      <h2>아트샵 관리 (등록 / 수정 / 삭제)</h2>
+      <div class="shop-box">
+        <div class="image-preview" id="shopPreviewContainer">
+          <img id="shopPreviewImage" src="" alt="미리보기 이미지" style="display:none; width:100%; height:100%; object-fit:contain;" />
+          <span id="shopPlaceholderText">이미지</span>
+        </div>
+        <div class="file-input-wrapper">
+          <label for="shopImage">파일 첨부</label>
+          <input type="file" id="shopImage" accept="image/*" hidden />
+        </div>
+        <div class="info-inputs">
+          <label for="productId">작품 ID</label>
+          <div class="id-search-group">
+            <input type="text" id="productId" placeholder="작품 ID" />
+            <button id="btnSearch">조회</button>
+          </div>
+          <label for="titleInput">작품명</label>
+          <input type="text" id="titleInput" placeholder="작품명을 입력하세요" />
+          <label for="descInput">설명</label>
+          <textarea id="descInput" placeholder="작품 설명을 입력하세요"></textarea>
+          <label for="priceInput">가격</label>
+          <input type="number" id="priceInput" placeholder="가격을 입력하세요" />
+          <div class="btn-group">
+            <button id="btnRegister">등록</button>
+            <button id="btnUpdate">수정</button>
+            <button id="btnDelete">삭제</button>
+            <button id="btnClear">초기화</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </body>
 </html>

@@ -3,47 +3,300 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Artist | Walid Jahin</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Artist - Walid Jahin</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
+
+    header {
+      background-color: #f9f9f9;
+      padding: 32px 40px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-grow: 1;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #111;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #f0f0f0;
+    }
+
+    .lang {
+      font-size: 14px;
+      color: #111;
+      white-space: nowrap;
+    }
+
+    .artwork-intro {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+
+    .artwork-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .artwork-intro p {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px 40px 60px;
+    }
+
+    .art-img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      background-color: #191A1B;
+      color: #fff;
+      padding: 60px 20px 40px;
+      text-align: center;
+    }
+
+    footer nav a {
+      color: #ccc;
+      margin: 0 12px;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    footer nav a:hover {
+      color: #fff;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 800;
+      margin-top: 30px;
+    }
+
+    .footer-bottom {
+      font-size: 12px;
+      color: #888;
+      margin-top: 20px;
+    }
+
+    .sns-icon svg {
+      fill: #ccc;
+      margin-top: 20px;
+    }
+  </style>
+  <link href="style.css" rel="stylesheet">
 </head>
-<body>
-  <header>
-    <h1>Walid Jahin</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="artist.html" class="active">Artist</a></li>
-        <li><a href="artshop.html">Art Shop</a></li>
-        <li><a href="artwork.html">Art Work</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+<body class="bg-white text-gray-900 font-sans">
 
-  <main class="artist-page">
-    <section class="intro">
-      <h2>About the Artist</h2>
-      <p>Walid Jahin is an Egyptian painter known for his abstract expressionist style and his ability to communicate emotion through color and form.</p>
-    </section>
-
-    <section class="major-work">
-      <h2>Major Works</h2>
-      <div class="work-gallery">
-        <img src="assets/images/work1.jpg" alt="Major Work 1" />
-        <img src="assets/images/work2.jpg" alt="Major Work 2" />
-        <img src="assets/images/work3.jpg" alt="Major Work 3" />
+  <!-- Header -->
+<header>
+  <div class="header-inner">
+    <div class="nav-wrapper">
+      <div class="logo">Walid Jahin</div>
+      <div class="nav-links">
+        <a href="index.html">HOME</a>
+        <a href="artist.html">ARTIST</a>
+        <a href="artwork.html">ART WORK</a>
+        <a href="artshop.html">ART SHOP</a>
       </div>
-    </section>
-  </main>
+    </div>
+    <div class="lang">
+      ENG▼
+      <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+    </div>
+  </div>
+</header>
 
-  <footer>
-    <p>&copy; 2025 Walid Jahin Art Studio</p>
-    <nav>
-      <ul>
-        <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="terms.html">Terms of Use</a></li>
-      </ul>
-    </nav>
-  </footer>
+<script>
+  const adminButton = document.getElementById('adminButton');
+
+  function updateAdminButton() {
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+    adminButton.onclick = () => {
+      if (isAdmin) {
+        localStorage.removeItem('isAdmin');
+        location.reload(); // 로그아웃 시 새로고침
+      } else {
+  location.href = '/docs/admin/login.html'; // 로그인 페이지로 이동
+      }
+    };
+  }
+
+  document.addEventListener('DOMContentLoaded', updateAdminButton);
+</script>
+
+
+  <!-- Bio Section -->
+  <section class="w-full py-16 text-center">
+    <h2 class="text-4xl font-serif font-semibold mb-2">Walid Jahin</h2>
+    <p class="text-gray-600">Born in 1974</p>
+    <p class="text-gray-600 mt-2 text-sm px-4 max-w-3xl mx-auto">
+      He lives in Alexandria and works as a professor at the Faculty of Fine Arts, Alexandria University, Department of Painting. <br />
+      He received his Master's Degree in Coptic Icons in 2005, and a Doctorate in Painting Techniques in 2010.
+    </p>
+  </section>
+
+  <!-- Gallery Row -->
+  <section class="w-full py-10">
+    <div class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-6 gap-4">
+      <img src="assets/images/photo1.png" alt="Photo 1" class="rounded shadow" />
+      <img src="assets/images/photo2.png" alt="Photo 2" class="rounded shadow" />
+      <img src="assets/images/photo3.png" alt="Photo 3" class="rounded shadow" />
+      <img src="assets/images/photo4.png" alt="Photo 4" class="rounded shadow" />
+      <img src="assets/images/photo5.png" alt="Photo 5" class="rounded shadow" />
+      <img src="assets/images/photo6.png" alt="Photo 6" class="rounded shadow" />
+    </div>
+  </section>
+
+  <!-- Major Work Slider -->
+  <section class="text-center py-12">
+    <h3 class="text-3xl font-serif mb-6">Major Work</h3>
+    <div class="max-w-4xl mx-auto grid grid-cols-4 gap-4">
+      <img src="assets/images/major1.png" alt="Major Work 1" class="rounded" />
+      <img src="assets/images/major2.png" alt="Major Work 2" class="rounded" />
+      <img src="assets/images/major3.png" alt="Major Work 3" class="rounded" />
+      <img src="assets/images/major4.png" alt="Major Work 4" class="rounded" />
+    </div>
+  </section>
+
+  <!-- Exhibition Sections -->
+  <section class="max-w-4xl mx-auto px-4 py-12 space-y-10">
+    <div>
+      <h4 class="font-serif text-xl mb-2">Major Solo Shows In Cairo</h4>
+      <p class="text-sm text-gray-600">
+        "Eve" — Cairo Opera House, 2020<br />
+        "The Ego" — Omm Contemporary Art Gallery, 2021<br />
+        "Into The Scene" — Zamalek Art Gallery, 2022
+      </p>
+    </div>
+
+    <div>
+      <h4 class="font-serif text-xl mb-2">International Solo Exhibitions</h4>
+      <p class="text-sm text-gray-600">
+        "An Egyptian Voice In Diaspora" — Alliance Francais Centre, Dhaka, Bangladesh, 2014<br />
+        "Time" — Bongsan Art Center, Daegu, South Korea, 2018
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-8">
+      <div>
+        <h4 class="font-serif text-xl mb-2">Solo Exhibitions</h4>
+        <p class="text-sm text-gray-600">19 Solo Exhibitions In Painting Since 2000, Egypt And Abroad.</p>
+      </div>
+      <div>
+        <h4 class="font-serif text-xl mb-2">Group Exhibitions</h4>
+        <p class="text-sm text-gray-600">Active Participant In Group Exhibitions And Cultural Events In Egypt Since 1995.</p>
+      </div>
+    </div>
+
+    <div>
+      <h4 class="font-serif text-xl mb-2">Achievement</h4>
+      <p class="text-sm text-gray-600">
+        First Prize, 7th International Biennial Of Tashkent, 2013<br />
+        Grand Prize, International Exhibition For Contemporary Art, South Korea, 2016<br />
+        Best Artwork Award, LA International Invitational Exhibition, Loyola Marymount University, USA, 2022
+      </p>
+    </div>
+
+    <div>
+      <h4 class="font-serif text-xl mb-2">Collections</h4>
+      <p class="text-sm text-gray-600">
+        Walid Jahin’s artworks are held in private cultural institutions in Egypt and across many Arab and international countries:<br />
+        Germany, Spain, France, Italy, Poland, Montenegro, Turkey, Dubai, Saudi Arabia, South Korea, Tunisia, Bangladesh.
+      </p>
+    </div>
+
+    <div>
+      <h4 class="font-serif text-xl mb-2">Work Style</h4>
+      <p class="text-sm text-gray-600">
+        Blends Contemporary Aesthetics With Symbolic Depth.<br />
+        Randomly Employs Abstract Forms And Vibrant Colors.<br />
+        Explores Diverse Subjects, Including Nature, Humanity, And Urban Landscapes.<br />
+        Widely Acknowledged By Collectors And Recognized In The Contemporary Art Scene.<br />
+        Holds A Distinguished Position In The Global Art Community.
+      </p>
+    </div>
+  </section>
+
+<!-- Footer -->
+<footer>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="privacy.html">PRIVACY POLICY</a>
+    <a href="terms.html">TERMS OF USE</a>
+    <a href="contact.html">CONTACT</a>
+  </nav>
+
+  <div class="sns-icon flex justify-center gap-4 mt-4">
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ccc" viewBox="0 0 24 24">
+        <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
+      </svg>
+    </a>
+    <!-- Facebook (예시로 남겨둠) -->
+    <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ccc" viewBox="0 0 24 24">
+        <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="footer-logo">Walid Jahin Art Studio</div>
+  <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+</footer>
+
 </body>
 </html>
