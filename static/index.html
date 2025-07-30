@@ -188,13 +188,14 @@
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="margin-left: 10px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+        <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
       </div>
     </div>
   </header>
 
   <script>
     const adminButton = document.getElementById('adminButton');
+
     function updateAdminButton() {
       const isAdmin = localStorage.getItem('isAdmin') === 'true';
       adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
@@ -203,10 +204,11 @@
           localStorage.removeItem('isAdmin');
           location.reload();
         } else {
-          location.href = '/docs/admin/login.html';
+          location.href = 'admin/login.html';
         }
       };
     }
+
     document.addEventListener('DOMContentLoaded', updateAdminButton);
   </script>
 

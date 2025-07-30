@@ -160,43 +160,43 @@
 </head>
 <body>
 
-<!-- Header -->
-<header>
-  <div class="header-inner">
-    <div class="nav-wrapper">
-      <div class="logo">Walid Jahin</div>
-      <div class="nav-links">
-        <a href="index.html">HOME</a>
-        <a href="artist.html">ARTIST</a>
-        <a href="artwork.html">ART WORK</a>
-        <a href="artshop.html">ART SHOP</a>
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">Walid Jahin</div>
+        <div class="nav-links">
+          <a href="index.html">HOME</a>
+          <a href="artist.html">ARTIST</a>
+          <a href="artwork.html">ART WORK</a>
+          <a href="artshop.html">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">
+        <div class="gtranslate_wrapper"></div>
+        <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
       </div>
     </div>
-    <div class="lang">
-      <div class="gtranslate_wrapper"></div>
-      <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
-    </div>
-  </div>
-</header>
+  </header>
 
-<script>
-  const adminButton = document.getElementById('adminButton');
+  <script>
+    const adminButton = document.getElementById('adminButton');
 
-  function updateAdminButton() {
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
-    adminButton.onclick = () => {
-      if (isAdmin) {
-        localStorage.removeItem('isAdmin');
-        location.reload();
-      } else {
-        location.href = '/docs/admin/login.html';
-      }
-    };
-  }
+    function updateAdminButton() {
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+      adminButton.onclick = () => {
+        if (isAdmin) {
+          localStorage.removeItem('isAdmin');
+          location.reload();
+        } else {
+          location.href = 'admin/login.html';
+        }
+      };
+    }
 
-  document.addEventListener('DOMContentLoaded', updateAdminButton);
-</script>
+    document.addEventListener('DOMContentLoaded', updateAdminButton);
+  </script>
 
 <section class="contact-section">
   <h2>Inquiry to purchase works</h2>
