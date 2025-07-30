@@ -3,7 +3,7 @@ package walid.jahin.controller;
 import walid.jahin.dto.BuyRequest;
 import walid.jahin.dto.InquiryRequest;
 import walid.jahin.service.MailService;
-
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class BuyController {
     private MailService mailService;
 
     @PostMapping("/buy")
-    public ResponseEntity<String> sendBuyInquiry(@RequestBody BuyRequest request) {
+    public ResponseEntity<String> sendBuyInquiry(@RequestBody @Valid BuyRequest request) {
         try {
             mailService.sendBuyInquiryMail(request);
             return ResponseEntity.ok("Buy Inquiry Email sent successfully.");
@@ -29,7 +29,7 @@ public class BuyController {
     }
 
     @PostMapping("/inquiry")
-    public ResponseEntity<String> sendInquiry(@RequestBody InquiryRequest request) {
+    public ResponseEntity<String> sendInquiry(@RequestBody @Valid InquiryRequest request) {
         try {
             mailService.sendInquiryMail(request);
             return ResponseEntity.ok("Inquiry email sent successfully.");

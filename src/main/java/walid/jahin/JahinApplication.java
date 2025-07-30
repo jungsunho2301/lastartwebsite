@@ -20,7 +20,10 @@ public class JahinApplication {
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(JahinApplication.class, args);
 
-        if (ctx instanceof AnnotationConfigServletWebServerApplicationContext ac) {
+        String profile = System.getProperty("spring.profiles.active", "default");
+
+        // 개발 환경에서만 매핑 로그 출력
+        if ("dev".equals(profile) && ctx instanceof AnnotationConfigServletWebServerApplicationContext ac) {
             RequestMappingHandlerMapping mapping = ac.getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
             mapping.getHandlerMethods().forEach((k, v) -> {
                 System.out.println("✅ Mapping: " + k + " → " + v);
@@ -31,11 +34,13 @@ public class JahinApplication {
     @Bean
     public CommandLineRunner checkBeans(ApplicationContext ctx) {
         return args -> {
-            System.out.println("📦 Registered Beans:");
-            String[] beanNames = ctx.getBeanDefinitionNames();
-            for (String name : beanNames) {
-                if (name.toLowerCase().contains("artshop")) {
-                    System.out.println("✅ Found: " + name);
+            if ("dev".equals(System.getProperty("spring.profiles.active", "default"))) {
+                System.out.println("📦 Registered Beans:");
+                String[] beanNames = ctx.getBeanDefinitionNames();
+                for (String name : beanNames) {
+                    if (name.toLowerCase().contains("artshop")) {
+                        System.out.println("✅ Found: " + name);
+                    }
                 }
             }
         };

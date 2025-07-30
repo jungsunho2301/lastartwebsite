@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Walid Jahin Art Studio</title>
-    <style>
+  <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
     body {
@@ -18,19 +18,19 @@
       background-color: #f9f9f9;
       padding: 32px 40px;
       border-bottom: 1px solid #e5e5e5;
+      position: relative;
     }
 
     .header-inner {
       display: flex;
+      justify-content: center;
       align-items: center;
-      justify-content: space-between;
     }
 
     .nav-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
-      flex-grow: 1;
     }
 
     .logo {
@@ -63,10 +63,17 @@
     }
 
     .lang {
+      position: absolute;
+      right: 40px;
+      top: 32px;
       font-size: 14px;
       color: #111;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
+
 
     .artwork-intro {
       text-align: center;
@@ -147,13 +154,48 @@
         <div class="nav-links">
           <a href="index.html">HOME</a>
           <a href="artist.html">ARTIST</a>
-          <a href="artwork.html" class="active">ART WORK</a>
+          <a href="artwork.html">ART WORK</a>
           <a href="artshop.html">ART SHOP</a>
         </div>
       </div>
-      <div class="lang">ENG▼</div>
+      <div class="lang">
+        <div class="gtranslate_wrapper"></div>
+        <button id="adminButton" style="margin-left: 10px; background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+      </div>
     </div>
   </header>
+
+  <script>
+    const adminButton = document.getElementById('adminButton');
+
+    async function checkAdminSession() {
+      try {
+        const res = await fetch('/api/admin/check-session', {
+          method: 'GET',
+          credentials: 'include'
+        });
+
+        const isLoggedIn = res.ok;
+
+        adminButton.textContent = isLoggedIn ? 'LOGOUT' : 'LOGIN';
+        adminButton.onclick = () => {
+          if (isLoggedIn) {
+            fetch('/api/admin/logout', { method: 'POST', credentials: 'include' })
+              .then(() => location.reload());
+          } else {
+            location.href = '/admin/login.html';
+          }
+        };
+      } catch (e) {
+        console.error('세션 확인 실패', e);
+        adminButton.textContent = 'LOGIN';
+        adminButton.onclick = () => location.href = '/admin/login.html';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', checkAdminSession);
+  </script>
+
 
   <!-- Hero Section -->
   <section class="w-full py-24 bg-white text-center">
@@ -260,14 +302,30 @@
       <a href="terms.html">TERMS OF USE</a>
       <a href="contact.html">CONTACT</a>
     </nav>
-    <div class="sns-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 5 3.657 9.127 8.438 9.878v-6.987H7.898v-2.89h2.54V9.845c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.462h-1.26c-1.243 0-1.63.771-1.63 1.562v1.875h2.773l-.443 2.89h-2.33v6.987C18.343 21.127 22 17 22 12z"/>
-      </svg>
+    <div class="sns-icon flex justify-center gap-4 mt-4">
+      <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
+        <svg ...>[svg 코드 생략]</svg>
+      </a>
+      <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
+        <svg ...>[svg 코드 생략]</svg>
+      </a>
     </div>
     <div class="footer-logo">Walid Jahin Art Studio</div>
     <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
   </footer>
+
+  <!-- GTranslate Script -->
+  <script>
+    window.gtranslateSettings = {
+      "default_language": "en",
+      "native_language_names": true,
+      "languages": ["en", "ar", "ko"],
+      "wrapper_selector": ".gtranslate_wrapper",
+      "flag_size": 24,
+      "switcher_horizontal_position": "inline"
+    };
+  </script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+
 </body>
 </html>
-

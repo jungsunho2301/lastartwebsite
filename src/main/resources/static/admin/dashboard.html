@@ -1,65 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Walid Jahin</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <style>
-    .dashboard {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 2rem;
-    }
-    .dashboard h2 {
-      margin-bottom: 1.5rem;
-    }
-    .upload-section {
-      background: #f4f4f4;
-      padding: 1.5rem;
-      border-radius: 6px;
-      margin-bottom: 2rem;
-    }
-    .upload-section label,
-    .upload-section input,
-    .upload-section textarea,
-    .upload-section select {
-      display: block;
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    .upload-section input,
-    .upload-section textarea,
-    .upload-section select {
-      padding: 0.5rem;
-      border: 1px solid #aaa;
-      border-radius: 4px;
-    }
-    .upload-section button {
-      padding: 0.5rem 1rem;
-      background: black;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Walid Jahin Art Studio</title>
+  <meta name="_csrf" content="{{csrf_token}}" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <script defer src="../js/dashboard.js"></script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+  <script>
+    window.gtranslateSettings = {
+      "default_language": "en",
+      "native_language_names": true,
+      "languages": ["en", "ar", "ko"],
+      "wrapper_selector": ".gtranslate_wrapper",
+      "flag_size": 24,
+      "switcher_horizontal_position": "inline"
+    };
+  </script>
 </head>
-<body>
-  <div class="dashboard">
-    <h2>Admin Dashboard</h2>
 
-    <!-- Artist Email -->
+<style>
+  body {
+    margin: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #fff;
+    color: #111;
+  }
+
+  header {
+    background-color: #f9f9f9;
+    padding: 32px 40px;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .nav-links a {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #111;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+
+  .nav-links a:hover {
+    background-color: #f0f0f0;
+  }
+
+  .lang {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+  }
+
+  .gtranslate_wrapper {
+    margin-right: 10px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+</style>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">Walid Jahin</div>
+        <div class="nav-links">
+          <a href="../js/index.html">HOME</a>
+          <a href="../js/artist.html">ARTIST</a>
+          <a href="../js/artwork.html">ART WORK</a>
+          <a href="../js/artshop.html">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">
+        <div class="gtranslate_wrapper"></div>
+        <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <!-- Update Email -->
     <section class="upload-section">
       <h3>Update Artist Email</h3>
       <form id="emailForm">
         <label for="newEmail">New Email Address</label>
         <input type="email" id="newEmail" required />
-        <button type="submit">Update Email</button>
+        <button type="submit">Update</button>
       </form>
     </section>
 
-    <!-- Instagram -->
+    <!-- Instagram Connection -->
     <section class="upload-section">
       <h3>Instagram Connection</h3>
       <form id="instagramForm">
@@ -69,7 +131,7 @@
       </form>
     </section>
 
-    <!-- Facebook -->
+    <!-- Facebook Connection -->
     <section class="upload-section">
       <h3>Facebook Connection</h3>
       <form id="facebookForm">
@@ -79,113 +141,127 @@
       </form>
     </section>
 
-    <!-- Newsletter -->
+    <!-- Send Newsletter -->
     <section class="upload-section">
       <h3>Send Newsletter</h3>
       <form id="newsletterForm">
+        <label for="newsletterTitle">Newsletter Title</label>
+        <input type="text" id="newsletterTitle" required />
         <label for="newsletterContent">Newsletter Content</label>
         <textarea id="newsletterContent" rows="5" required></textarea>
         <button type="submit">Send</button>
       </form>
     </section>
 
-    <!-- Upload Artwork -->
+    <!-- Artist Section Update Form -->
     <section class="upload-section">
-      <h3>Upload New Artwork</h3>
-      <form id="artworkForm" enctype="multipart/form-data">
-        <label for="title">Title</label>
-        <input type="text" id="title" name="title" required />
+      <h3>Edit Artist Section Content</h3>
+      <form id="artistSectionForm">
+        <label for="sectionKey">Section Key</label>
+        <select id="sectionKey">
+          <option value="major_solo">Major Solo</option>
+          <option value="international">International</option>
+          <option value="solo">Solo</option>
+          <option value="group">Group</option>
+          <option value="achievement">Achievement</option>
+          <option value="collections">Collections</option>
+          <option value="work_style">Work Style</option>
+        </select>
 
-        <label for="description">Description</label>
-        <textarea id="description" name="description" rows="4" required></textarea>
+        <label for="sectionContent">Content</label>
+        <textarea id="sectionContent" rows="4" required></textarea>
 
-        <label for="image">Artwork Image</label>
-        <input type="file" id="image" name="image" accept="image/*" required />
-
-        <button type="submit">Upload</button>
+        <div class="button-group">
+          <button type="button" onclick="getSection()">GET</button>
+          <button type="submit">POST</button>
+        </div>
       </form>
     </section>
 
-    <!-- Upload Artshop Item -->
-    <section class="upload-section">
-      <h3>Upload Artshop Item</h3>
-      <form id="artshopForm" enctype="multipart/form-data">
-        <label for="productName">Product Name</label>
-        <input type="text" id="productName" name="productName" required />
+    <!-- Artwork Management -->
+    <section class="artwork-manage">
+      <h2>Artwork Management (Edit / Delete)</h2>
+      <div class="artwork-box">
+        <div class="image-preview" id="artworkPreviewContainer">
+          <img id="artworkPreviewImage" src="" alt="Preview Image" style="display:none; width:100%; height:100%; object-fit:contain;" />
+          <span id="artworkPlaceholderText">Image</span>
+        </div>
 
-        <label for="price">Price (₩)</label>
-        <input type="number" id="price" name="price" required />
+        <div class="file-input-wrapper">
+          <label for="artworkFile">Attach File</label>
+          <input type="file" id="artworkFile" accept="image/*" hidden />
+        </div>
 
-        <label for="productImage">Product Image</label>
-        <input type="file" id="productImage" name="productImage" accept="image/*" required />
+        <div class="id-search-group">
+          <input type="text" id="artworkId" placeholder="Artwork ID" />
+          <button id="btnApply">Apply</button>
+          <button id="btnDelete">Delete</button>
+          <button id="btnCancel">Cancel</button>
+        </div>
 
-        <button type="submit">Upload</button>
-      </form>
+        <p class="guide-text">
+          Enter the artwork ID you want to edit/delete. The image will be displayed and editable.
+        </p>
+      </div>
     </section>
-  </div>
 
+    <!-- Artshop Management -->
+    <section class="shop-manage">
+      <h2>Artshop Management (Register / Edit / Delete)</h2>
+      <div class="shop-box">
+        <div class="image-preview" id="shopPreviewContainer">
+          <img id="shopPreviewImage" src="" alt="Preview Image" style="display:none; width:100%; height:100%; object-fit:contain;" />
+          <span id="shopPlaceholderText">Image</span>
+        </div>
+        <div class="file-input-wrapper">
+          <label for="shopImage">Attach File</label>
+          <input type="file" id="shopImage" accept="image/*" hidden />
+        </div>
+        <div class="info-inputs">
+          <label for="productId">Artwork ID</label>
+          <div class="id-search-group">
+            <input type="text" id="productId" placeholder="Artwork ID" />
+            <button id="btnSearch">Search</button>
+          </div>
+          <label for="titleInput">Title</label>
+          <input type="text" id="titleInput" placeholder="Enter title" />
+          <label for="descInput">Description</label>
+          <textarea id="descInput" placeholder="Enter artwork description"></textarea>
+          <label for="priceInput">Price</label>
+          <input type="number" id="priceInput" placeholder="Enter price" />
+          <div class="btn-group">
+            <button id="btnRegister">Register</button>
+            <button id="btnUpdate">Update</button>
+            <button id="btnDelete">Delete</button>
+            <button id="btnClear">Clear</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
   <script>
-    document.getElementById("emailForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const res = await fetch("/admin/api/email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: document.getElementById("newEmail").value })
-      });
-      alert(await res.text());
-    });
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
 
-    document.getElementById("instagramForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const res = await fetch("/admin/api/social/instagram", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: document.getElementById("instagramUrl").value })
-      });
-      alert(await res.text());
-    });
+    async function getSection() {
+      const key = document.getElementById('sectionKey').value;
+      const res = await fetch(`/admin/api/artist/section/${key}`);
+      const data = await res.json();
+      document.getElementById('sectionContent').value = data.content || '';
+    }
 
-    document.getElementById("facebookForm").addEventListener("submit", async function (e) {
+    document.getElementById('artistSectionForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const res = await fetch("/admin/api/social/facebook", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: document.getElementById("facebookUrl").value })
+      const key = document.getElementById('sectionKey').value;
+      const content = document.getElementById('sectionContent').value;
+      await fetch(`/admin/api/artist/section/${key}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ content })
       });
-      alert(await res.text());
-    });
-
-    document.getElementById("newsletterForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const res = await fetch("/admin/api/news/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: document.getElementById("newsletterTitle").value,
-          content: document.getElementById("newsletterContent").value
-        })
-      });
-      alert(await res.text());
-    });
-
-    document.getElementById("artworkForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const res = await fetch("/admin/api/artwork/upload", {
-        method: "POST",
-        body: formData
-      });
-      alert(await res.text());
-    });
-
-    document.getElementById("artshopForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      const res = await fetch("/admin/api/artshop/upload", {
-        method: "POST",
-        body: formData
-      });
-      alert(await res.text());
+      alert('Section updated!');
     });
   </script>
 </body>

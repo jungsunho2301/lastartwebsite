@@ -47,9 +47,6 @@
     <form id="loginForm">
       <input type="text" id="username" placeholder="Username" required />
       <input type="password" id="password" placeholder="Password" required />
-    <form action="/admin/login" method="post">
-      <input type="text" name="username" placeholder="Username" required />
-      <input type="password" name="password" placeholder="Password" required />
       <button type="submit">Log In</button>
       <div class="error" id="errorMsg"></div>
     </form>
@@ -74,8 +71,9 @@
         });
 
         if (res.ok) {
-          // 로그인 성공 → 대시보드로 이동
-          window.location.href = 'dashboard.html';
+          // 기존 localStorage 삭제 (더 이상 사용하지 않음)
+          localStorage.removeItem("isAdmin");
+          window.location.href = '/';
         } else {
           const data = await res.json();
           errorMsg.textContent = data.message || 'Login failed. Please try again.';
