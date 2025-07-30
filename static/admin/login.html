@@ -82,7 +82,7 @@
     });
 
     document.addEventListener("DOMContentLoaded", async () => {
-  const res = await fetch("/api/admin/check", { credentials: "include" });
+  const res = await fetch("/api/admin/check-session", { credentials: "include" });
   if (res.ok) {
     window.location.href = "dashboard.html";
   }
