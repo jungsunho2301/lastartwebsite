@@ -2,6 +2,7 @@ package walid.jahin.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils; // ✅ 추가
 import walid.jahin.model.ArtistSection;
 import walid.jahin.repository.ArtistSectionRepository;
 
@@ -29,7 +30,11 @@ public class ArtistSectionService {
     public void updateSectionContent(String key, String newContent) {
         ArtistSection section = repository.findBySectionKey(key)
             .orElseThrow(() -> new IllegalArgumentException("Section not found: " + key));
-        section.setContent(newContent);
+
+        // ✅ XSS 방지 처리
+        String safeContent = HtmlUtils.htmlEscape(newContent);
+        section.setContent(safeContent);
+
         repository.save(section);
     }
 }

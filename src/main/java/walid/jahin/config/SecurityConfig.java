@@ -4,10 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
 public class SecurityConfig {
@@ -16,22 +17,40 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/admin/**").authenticated()  // admin 경로는 인증 필요
+                .requestMatchers("/admin/**").authenticated()
                 .anyRequest().permitAll()
             )
-            .csrf(withDefaults())
-            .formLogin(form -> form.disable())  // 우리가 직접 만든 login.html 쓰기 때문에 disable
-            .httpBasic(httpBasic -> httpBasic.disable())  // 인증 팝업 방지
+            .csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .ignoringRequestMatchers(
+                    "/api/buy",
+                    "/api/inquiry",
+                    "/api/subscribe"
+                )
+            )
+            .formLogin(form -> form.disable())
+            .httpBasic(httpBasic -> httpBasic.disable())
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+            )
+            .sessionManagement(session -> session
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(false) // 새 로그인 허용, 기존 세션 자동 만료
+                .expiredUrl("/admin/login?expired") // 만료 시 이동 경로 (선택)
             );
 
         return http.build();
     }
 
-    // ✅ BCrypt 비밀번호 인코더 Bean 등록 (로그인 검증에 필요)
+    // ✅ 비밀번호 암호화
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    // ✅ 세션 만료 감지를 위한 필수 Bean
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
     }
 }

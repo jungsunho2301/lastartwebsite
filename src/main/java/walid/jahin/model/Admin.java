@@ -2,6 +2,7 @@ package walid.jahin.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 
 @Entity
 public class Admin {
@@ -9,6 +10,7 @@ public class Admin {
     @Id
     private String username;
 
+    @Column(length = 100)  // 최대 100자까지 저장 가능하도록 설정
     private String password; // ✅ BCrypt 해시로 저장됨
 
     public Admin() {}

@@ -9,7 +9,10 @@ public class Subscriber {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 50)  // ✅ 이름 길이 제한
     private String name;
+
+    @Column(unique = true, length = 100)  // ✅ 이메일 중복 방지 + 길이 제한
     private String email;
 
     public Subscriber() {}

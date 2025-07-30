@@ -10,14 +10,16 @@ public class News {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 100)  // ✅ 제목 최대 100자
     private String title;
+
+    @Column(length = 2000) // ✅ 내용 최대 2000자
     private String content;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public News() {}
 
-    // ✅ 추가: Getter & Setter
     public String getTitle() {
         return title;
     }

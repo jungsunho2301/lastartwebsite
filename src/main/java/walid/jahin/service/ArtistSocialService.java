@@ -1,6 +1,5 @@
 package walid.jahin.service;
 
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import walid.jahin.model.ArtistSocial;
@@ -10,11 +9,9 @@ import walid.jahin.repository.ArtistSocialRepository;
 public class ArtistSocialService {
 
     private final ArtistSocialRepository repository;
-    private final EntityManager entityManager;
 
-    public ArtistSocialService(ArtistSocialRepository repository, EntityManager entityManager) {
+    public ArtistSocialService(ArtistSocialRepository repository) {
         this.repository = repository;
-        this.entityManager = entityManager;
     }
 
     @Transactional

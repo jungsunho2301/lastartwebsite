@@ -1,6 +1,7 @@
 package walid.jahin.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import walid.jahin.repository.ArtworkRepository;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,30 +24,31 @@ public class ArtworkService {
 
     private final ArtworkRepository artworkRepository;
 
-    // ✅ 운영 서버용 업로드 디렉토리 (JAR 파일 기준 외부 경로)
-    private final String uploadDir = System.getProperty("user.dir") + "/uploads/artwork/";
+    // ✅ application.yml에서 경로 주입
+    @Value("${app.upload.artwork-dir}")
+    private String relativeUploadDir;
+
+    private String getUploadDir() {
+        return System.getProperty("user.dir") + File.separator + relativeUploadDir;
+    }
 
     public Artwork saveArtwork(MultipartFile image) throws IOException {
-        // 1. 경로 준비
-        File uploadPath = new File(uploadDir);
+        File uploadPath = new File(getUploadDir());
         if (!uploadPath.exists()) {
             boolean created = uploadPath.mkdirs();
             System.out.println("📁 디렉토리 생성됨: " + created);
         }
 
-        // 2. 파일명 검증
         String originalFilename = image.getOriginalFilename();
         if (originalFilename == null || originalFilename.isBlank()) {
             throw new IOException("파일명이 유효하지 않습니다.");
         }
         System.out.println("🧾 원본 파일명: " + originalFilename);
 
-        // 3. 저장 경로 설정
         String filename = UUID.randomUUID() + "_" + originalFilename;
-        File dest = new File(uploadPath, filename);  // 안전한 경로 결합
+        File dest = new File(uploadPath, filename);
         System.out.println("📁 저장 경로: " + dest.getAbsolutePath());
 
-        // 4. 파일 저장
         try {
             image.transferTo(dest);
         } catch (IOException e) {
@@ -53,9 +56,8 @@ public class ArtworkService {
             throw e;
         }
 
-        // 5. DB 저장
         Artwork artwork = Artwork.builder()
-                .imagePath("/uploads/artwork/" + filename)  // 정적 리소스 접근 경로
+                .imagePath("/" + relativeUploadDir + filename)  // 앞에 / 추가해서 접근 경로 형식 통일
                 .build();
 
         return artworkRepository.save(artwork);
@@ -65,41 +67,39 @@ public class ArtworkService {
         Artwork artwork = artworkRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID의 작품이 없습니다."));
 
-        // ✅ 경로 준비
-        File uploadPath = new File(uploadDir);
+        File uploadPath = new File(getUploadDir());
         if (!uploadPath.exists()) {
             boolean created = uploadPath.mkdirs();
-            System.out.println("디렉토리 생성 여부: " + created);
+            System.out.println("📁 디렉토리 생성됨: " + created);
         }
 
-        //  ✅ 파일명 검증
         String originalFilename = newImage.getOriginalFilename();
         if (originalFilename == null || originalFilename.isBlank()) {
             throw new IOException("파일명이 유효하지 않습니다.");
         }
 
-        // ✅ 새 파일명 생성 및 저장
         String filename = UUID.randomUUID() + "_" + originalFilename;
         File dest = new File(uploadPath, filename);
         newImage.transferTo(dest);
 
-        // ✅ 기존 파일 삭제
+        // 기존 파일 삭제
         String oldImagePath = artwork.getImagePath();
-        if (oldImagePath != null && oldImagePath.startsWith("/uploads/artwork/")) {
-            String fullOldPath = uploadDir + oldImagePath.replace("/uploads/artwork/", "");
-            File oldFile = new File(fullOldPath);
-            System.out.println("삭제 시도 경로: " + oldFile.getAbsolutePath());
+        if (oldImagePath != null && oldImagePath.startsWith("/" + relativeUploadDir)) {
+            String filenameOnly = Paths.get(oldImagePath).getFileName().toString();
+            File oldFile = Paths.get(getUploadDir(), filenameOnly).toFile();
+
+            System.out.println("🧾 삭제 대상 파일 경로: " + oldFile.getAbsolutePath());
             if (oldFile.exists()) {
                 boolean deleted = oldFile.delete();
-                System.out.println("삭제 성공 여부: " + deleted);
+                System.out.println("🗑 삭제 성공 여부: " + deleted);
             } else {
-                System.out.println("삭제할 파일 없음");
+                System.out.println("❌ 삭제 대상 파일이 존재하지 않음");
             }
         }
 
-        // ✅ DB 갱신
-        artwork.setImagePath("/uploads/artwork/" + filename);
-        System.out.println("업데이트된 imagePath: " + artwork.getImagePath());
+        artwork.setImagePath("/" + relativeUploadDir + filename);
+        System.out.println("✅ 업데이트된 imagePath: " + artwork.getImagePath());
+
         return artworkRepository.save(artwork);
     }
 
@@ -113,17 +113,15 @@ public class ArtworkService {
 
     public Page<Artwork> getPagedArtworkItems(String sort, int page) {
         System.out.println("🔍 정렬 기준: " + sort + ", 페이지 번호: " + page);
-        
+
         Sort sortOption = switch (sort) {
             case "latest" -> Sort.by(Sort.Direction.DESC, "id");
-            default -> throw new IllegalArgumentException("에러");
+            default -> throw new IllegalArgumentException("정렬 기준이 올바르지 않습니다.");
         };
 
-        // 페이지당 20개 고정
         Pageable pageable = PageRequest.of(page, 3, sortOption);
         System.out.println("📦 Pageable 객체: " + pageable);
 
         return artworkRepository.findAll(pageable);
     }
-
 }
