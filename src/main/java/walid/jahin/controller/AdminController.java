@@ -26,39 +26,35 @@ public class AdminController {
         this.loginLogRepository = loginLogRepository;
     }
 
+    // ✅ 관리자 로그인 처리
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest, HttpServletRequest request) {
         HttpSession session = request.getSession(true);
         String clientIp = request.getRemoteAddr();
 
-        // 로그인 실패 관련 세션 정보
         Integer failCount = (Integer) session.getAttribute("loginFailCount");
         Long lastFailTime = (Long) session.getAttribute("lastFailTime");
         if (failCount == null) failCount = 0;
 
-        // 실패 후 10분 경과 시 초기화
         if (lastFailTime != null && System.currentTimeMillis() - lastFailTime > 10 * 60 * 1000) {
             failCount = 0;
             session.removeAttribute("loginFailCount");
             session.removeAttribute("lastFailTime");
         }
 
-        // 로그인 차단 (5회 초과)
         if (failCount >= 5) {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
                     .body("로그인 5회 이상 실패. 10분 후 다시 시도해주세요.");
         }
 
-        // 로그인 성공
         if (adminService.login(loginRequest.getUsername(), loginRequest.getPassword())) {
-            session.invalidate(); // 기존 세션 무효화
+            session.invalidate();
             HttpSession newSession = request.getSession(true);
-            request.changeSessionId(); // 세션 고정 공격 방지
+            request.changeSessionId();
 
             newSession.setAttribute(SessionConst.LOGIN_ADMIN, loginRequest.getUsername());
             newSession.setMaxInactiveInterval(1800); // 30분
 
-            // ✅ 로그인 성공 로그 기록
             loginLogRepository.save(new LoginLog(
                     loginRequest.getUsername(), clientIp, true, LocalDateTime.now()
             ));
@@ -66,16 +62,32 @@ public class AdminController {
             return ResponseEntity.ok("관리자 로그인 성공");
         }
 
-        // 로그인 실패 처리
         session.setAttribute("loginFailCount", failCount + 1);
         session.setAttribute("lastFailTime", System.currentTimeMillis());
 
-        // ✅ 로그인 실패 로그 기록
         loginLogRepository.save(new LoginLog(
                 loginRequest.getUsername(), clientIp, false, LocalDateTime.now()
         ));
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body("로그인 실패 (" + (failCount + 1) + "회)");
+    }
+
+    // ✅ 관리자 세션 확인 API
+    @GetMapping("/check-session")
+    public ResponseEntity<?> checkSession(HttpSession session) {
+        String admin = (String) session.getAttribute(SessionConst.LOGIN_ADMIN);
+        if (admin != null) {
+            return ResponseEntity.ok("authenticated");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthenticated");
+        }
+    }
+
+    // ✅ 로그아웃 처리 API
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        session.invalidate();
+        return ResponseEntity.ok("로그아웃 완료");
     }
 }
