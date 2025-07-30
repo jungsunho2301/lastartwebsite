@@ -1,82 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Artist - Walid Jahin</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
-
-    body {
-      margin: 0;
-      font-family: 'Noto Sans KR', sans-serif;
-      background-color: #fff;
-      color: #111;
+    body { margin: 0; font-family: 'Noto Sans KR', sans-serif; background-color: #fff; color: #111; }
+    header { background-color: #f9f9f9; padding: 32px 40px; border-bottom: 1px solid #e5e5e5; position: relative; }
+    .header-inner { display: flex; justify-content: center; align-items: center; }
+    .nav-wrapper { display: flex; flex-direction: column; align-items: center; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 800; letter-spacing: -1px; }
+    .nav-links { display: flex; gap: 16px; margin-top: 12px; }
+    .nav-links a { text-decoration: none; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 500; color: #111; border: 1px solid #ccc; transition: background-color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { background-color: #f0f0f0; }
+    .lang { position: absolute; right: 40px; top: 32px; font-size: 14px; color: #111; white-space: nowrap; display: flex; align-items: center; gap: 12px; }
+    footer { background-color: #191A1B; color: #fff; padding: 60px 20px 40px; text-align: center; }
+    footer nav a { color: #ccc; margin: 0 12px; font-size: 14px; text-decoration: none; }
+    footer nav a:hover { color: #fff; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; margin-top: 30px; }
+    .footer-bottom { font-size: 12px; color: #888; margin-top: 20px; }
+    .sns-icon svg {
+      margin-top: 20px;
+      transition: fill 0.3s;
     }
-
-    header {
-      background-color: #f9f9f9;
-      padding: 32px 40px;
-      border-bottom: 1px solid #e5e5e5;
-      position: relative;
+    .sns-icon svg:hover {
+      fill: #fff;
     }
-
-    .header-inner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .nav-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 36px;
-      font-weight: 800;
-      letter-spacing: -1px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 16px;
-      margin-top: 12px;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #111;
-      border: 1px solid #ccc;
-      transition: background-color 0.3s;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      background-color: #f0f0f0;
-    }
-
-    .lang {
-      position: absolute;
-      right: 40px;
-      top: 32px;
-      font-size: 14px;
-      color: #111;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-
-    .artwork-intro {
+    .sns-icon a:first-child svg { fill: #000; } /* Instagram - black */
+    .sns-icon a:last-child svg { fill: #000; }  /* Facebook - black */
+        .artwork-intro {
       text-align: center;
       padding: 60px 20px 20px;
     }
@@ -106,56 +61,18 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    footer {
-      background-color: #191A1B;
-      color: #fff;
-      padding: 60px 20px 40px;
-      text-align: center;
-    }
-
-    footer nav a {
-      color: #ccc;
-      margin: 0 12px;
-      font-size: 14px;
-      text-decoration: none;
-    }
-
-    footer nav a:hover {
-      color: #fff;
-    }
-
-    .footer-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 800;
-      margin-top: 30px;
-    }
-
-    .footer-bottom {
-      font-size: 12px;
-      color: #888;
-      margin-top: 20px;
-    }
-
-    .sns-icon svg {
-      fill: #ccc;
-      margin-top: 20px;
-    }
   </style>
-  <link href="style.css" rel="stylesheet">
 </head>
 <body class="bg-white text-gray-900 font-sans">
-
-  <!-- Header -->
   <header>
     <div class="header-inner">
       <div class="nav-wrapper">
         <div class="logo">Walid Jahin</div>
         <div class="nav-links">
-          <a href="index.html">HOME</a>
-          <a href="artist.html">ARTIST</a>
-          <a href="artwork.html">ART WORK</a>
-          <a href="artshop.html">ART SHOP</a>
+          <a th:href="@{/index}" th:classappend="${#httpServletRequest.requestURI=='/index'?'active':''}">HOME</a>
+          <a th:href="@{/artist}" th:classappend="${#httpServletRequest.requestURI=='/artist'?'active':''}">ARTIST</a>
+          <a th:href="@{/artwork}" th:classappend="${#httpServletRequest.requestURI=='/artwork'?'active':''}">ART WORK</a>
+          <a th:href="@{/artshop}" th:classappend="${#httpServletRequest.requestURI=='/artshop'?'active':''}">ART SHOP</a>
         </div>
       </div>
       <div class="lang">
@@ -167,7 +84,6 @@
 
   <script>
     const adminButton = document.getElementById('adminButton');
-
     function updateAdminButton() {
       const isAdmin = localStorage.getItem('isAdmin') === 'true';
       adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
@@ -176,15 +92,14 @@
           localStorage.removeItem('isAdmin');
           location.reload();
         } else {
-          location.href = 'admin/login.html';
+          location.href = '/admin/login';
         }
       };
     }
-
     document.addEventListener('DOMContentLoaded', updateAdminButton);
   </script>
 
-  <!-- Bio Section -->
+ <!-- Bio Section -->
   <section class="w-full py-16 text-center">
     <h2 class="text-4xl font-serif font-semibold mb-2">Walid Jahin</h2>
     <p class="text-gray-600">Born in 1974</p>
@@ -276,35 +191,30 @@
     </div>
   </section>
 
-  <!-- Footer -->
+
   <footer>
     <nav>
-      <a href="index.html">HOME</a>
-      <a href="privacy.html">PRIVACY POLICY</a>
-      <a href="terms.html">TERMS OF USE</a>
-      <a href="contact.html">CONTACT</a>
+      <a th:href="@{/index}">HOME</a>
+      <a th:href="@{/privacy}">PRIVACY POLICY</a>
+      <a th:href="@{/terms}">TERMS OF USE</a>
+      <a th:href="@{/contact}">CONTACT</a>
     </nav>
-
     <div class="sns-icon flex justify-center gap-4 mt-4">
-      <!-- Instagram -->
       <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ccc" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
         </svg>
       </a>
-      <!-- Facebook -->
       <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ccc" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
         </svg>
       </a>
     </div>
-
     <div class="footer-logo">Walid Jahin Art Studio</div>
     <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
   </footer>
 
-  <!-- GTranslate Scripts -->
   <script>
     window.gtranslateSettings = {
       "default_language": "en",
@@ -316,9 +226,6 @@
     };
   </script>
   <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
-
-  <!-- 페이지 맨 아래 <body> 닫히기 직전에 추가 -->
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
 </body>
 </html>

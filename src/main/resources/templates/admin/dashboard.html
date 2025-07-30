@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Walid Jahin Art Studio</title>
-  <meta name="_csrf" content="{{csrf_token}}" />
+
+  <meta name="_csrf" th:content="${_csrf.token}" />
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="../css/style.css" />
-  <script defer src="dashboard.js"></script>
+  <!-- Static CSS/JS -->
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <script defer th:src="@{/admin/dashboard.js}"></script>
 
+  <!-- GTranslate -->
   <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
   <script>
     window.gtranslateSettings = {
@@ -21,7 +26,6 @@
       "switcher_horizontal_position": "inline"
     };
   </script>
-</head>
 
 <style>
   body {
@@ -89,9 +93,83 @@
   button {
     font-size: 14px;
     padding: 8px 16px;
+    background-color: #111;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #333;
+  }
+
+  .dashboard {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .upload-section,
+  .artwork-manage,
+  .shop-manage {
+    background: #f9f9f9;
+    padding: 24px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .upload-section h3,
+  .artwork-manage h2,
+  .shop-manage h2 {
+    margin-bottom: 20px;
+  }
+
+  .upload-section form,
+  .shop-box,
+  .artwork-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='url'],
+  input[type='number'],
+  textarea,
+  select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    width: 100%;
+  }
+
+  .file-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border: 1px dashed #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    background-color: #fff;
+  }
+
+  .image-preview {
+    width: 100%;
+    height: 240px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
   }
 </style>
-
+</head>
 <body>
   <!-- Header -->
   <header>
@@ -99,25 +177,22 @@
       <div class="nav-wrapper">
         <div class="logo">Walid Jahin</div>
         <div class="nav-links">
-<a href="../index.html">HOME</a>
-<a href="../artist.html">ARTIST</a>
-<a href="../artwork.html">ART WORK</a>
-<a href="../artshop.html">ART SHOP</a>
-
+          <a th:href="@{/}">HOME</a>
+          <a th:href="@{/artist}">ARTIST</a>
+          <a th:href="@{/artwork}">ART WORK</a>
+          <a th:href="@{/artshop}">ART SHOP</a>
         </div>
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
         <button id="adminButton" style="margin-left: 20px; background: black; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">LOGIN</button>
-      <!-- lang 영역 안에 추가 -->
-<button id="logoutButton" style="margin-left: 10px; background: #111; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">LOGOUT</button>
-
+        <button id="logoutButton" style="margin-left: 10px; background: #111; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">LOGOUT</button>
       </div>
     </div>
   </header>
 
+  <!-- Main (기존 코드 복원됨) -->
   <main class="dashboard">
-    <!-- Update Email -->
     <section class="upload-section">
       <h3>Update Artist Email</h3>
       <form id="emailForm">
@@ -127,7 +202,6 @@
       </form>
     </section>
 
-    <!-- Instagram Connection -->
     <section class="upload-section">
       <h3>Instagram Connection</h3>
       <form id="instagramForm">
@@ -137,7 +211,6 @@
       </form>
     </section>
 
-    <!-- Facebook Connection -->
     <section class="upload-section">
       <h3>Facebook Connection</h3>
       <form id="facebookForm">
@@ -147,7 +220,6 @@
       </form>
     </section>
 
-    <!-- Send Newsletter -->
     <section class="upload-section">
       <h3>Send Newsletter</h3>
       <form id="newsletterForm">
@@ -159,7 +231,6 @@
       </form>
     </section>
 
-    <!-- Artist Section Update Form -->
     <section class="upload-section">
       <h3>Edit Artist Section Content</h3>
       <form id="artistSectionForm">
@@ -183,20 +254,17 @@
         </div>
       </form>
     </section>
-  
-<!-- Artist 텍스트 수정/삭제 -->
-<section class="upload-section">
-  <h3>Artist Text Editor</h3>
-  <form id="artistTextForm">
-    <input type="text" id="artistTextId" placeholder="Text ID" required />
-    <textarea id="artistTextContent" placeholder="Enter new text" rows="4" required></textarea>
-    <button type="submit">Update Text</button>
-  </form>
-  <button id="deleteArtistTextBtn">Delete Text</button>
-</section>
 
+    <section class="upload-section">
+      <h3>Artist Text Editor</h3>
+      <form id="artistTextForm">
+        <input type="text" id="artistTextId" placeholder="Text ID" required />
+        <textarea id="artistTextContent" placeholder="Enter new text" rows="4" required></textarea>
+        <button type="submit">Update Text</button>
+      </form>
+      <button id="deleteArtistTextBtn">Delete Text</button>
+    </section>
 
-    <!-- Artwork Management -->
     <section class="artwork-manage">
       <h2>Artwork Management (Edit / Delete)</h2>
       <div class="artwork-box">
@@ -204,19 +272,16 @@
           <img id="artworkPreviewImage" src="" alt="Preview Image" style="display:none; width:100%; height:100%; object-fit:contain;" />
           <span id="artworkPlaceholderText">Image</span>
         </div>
-
         <div class="file-input-wrapper">
           <label for="artworkFile">Attach File</label>
           <input type="file" id="artworkFile" accept="image/*" hidden />
         </div>
-
         <div class="id-search-group">
           <input type="text" id="artworkId" placeholder="Artwork ID" />
           <button id="btnApply">Apply</button>
           <button id="btnDelete">Delete</button>
           <button id="btnCancel">Cancel</button>
         </div>
-
         <p class="guide-text">
           Enter the artwork ID you want to edit/delete. The image will be displayed and editable.
         </p>
@@ -225,7 +290,6 @@
 
     <hr style="margin: 40px 0; border-top: 2px solid #eee;" />
 
-    <!-- Artshop Management -->
     <section class="shop-manage">
       <h2>Artshop Management (Register / Edit / Delete)</h2>
       <div class="shop-box">
@@ -259,7 +323,8 @@
       </div>
     </section>
   </main>
-  <script>
+
+   <script>
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
 
     async function getSection() {
@@ -700,9 +765,7 @@ document.getElementById('deleteArtistTextBtn')?.addEventListener('click', async 
 
   </script>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
-
+  <!-- DOMPurify -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
 </body>
 </html>
