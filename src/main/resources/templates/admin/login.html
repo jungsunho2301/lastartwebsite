@@ -79,21 +79,15 @@
           body: JSON.stringify({ username, password })
         });
 
-        if (res.ok) {
+        const text = await res.text();
+
+        if (res.ok && text.includes("관리자 로그인 성공")) {
           window.location.href = '/admin/dashboard';
         } else {
-          const data = await res.json();
-          errorMsg.innerHTML = DOMPurify.sanitize(data.message || 'Login failed. Please try again.');
+          errorMsg.innerHTML = DOMPurify.sanitize(text || 'Login failed. Please try again.');
         }
       } catch (error) {
         errorMsg.innerHTML = DOMPurify.sanitize('Server error. Please try again later.');
-      }
-    });
-
-    document.addEventListener("DOMContentLoaded", async () => {
-      const res = await fetch("/api/admin/check-session", { credentials: "include" });
-      if (res.ok) {
-        window.location.href = "/admin/dashboard";
       }
     });
   </script>

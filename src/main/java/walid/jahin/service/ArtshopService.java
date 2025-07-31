@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.util.HtmlUtils;
-
+import java.util.Optional;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -32,7 +32,8 @@ public class ArtshopService {
         return System.getProperty("user.dir") + File.separator + relativeUploadDir;
     }
 
-    public Artshop saveArtshop(String title, String description, Integer price, MultipartFile image) throws IOException {
+    public Artshop saveArtshop(String title, String description, Integer price, MultipartFile image)
+            throws IOException {
         File uploadPath = new File(getUploadDir());
         if (!uploadPath.exists()) {
             boolean created = uploadPath.mkdirs();
@@ -70,7 +71,8 @@ public class ArtshopService {
         return artshopRepository.save(artshop);
     }
 
-    public Artshop updateArtshop(Long id, String title, String description, Integer price, MultipartFile image) throws IOException {
+    public Artshop updateArtshop(Long id, String title, String description, Integer price, MultipartFile image)
+            throws IOException {
         Artshop artshop = artshopRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 작품입니다."));
 
@@ -88,7 +90,8 @@ public class ArtshopService {
 
         if (image != null && !image.isEmpty()) {
             File uploadPath = new File(getUploadDir());
-            if (!uploadPath.exists()) uploadPath.mkdirs();
+            if (!uploadPath.exists())
+                uploadPath.mkdirs();
 
             String originalFilename = image.getOriginalFilename();
             if (originalFilename == null || originalFilename.isBlank()) {
@@ -143,5 +146,9 @@ public class ArtshopService {
         System.out.println("📦 Pageable 객체: " + pageable);
 
         return artshopRepository.findAll(pageable);
+    }
+
+    public Optional<Artshop> findById(Long id) {
+        return artshopRepository.findById(id);
     }
 }

@@ -314,7 +314,7 @@
           <div class="btn-group">
             <button id="btnRegister">Register</button>
             <button id="btnUpdate">Update</button>
-            <button id="btnDelete">Delete</button>
+            <button id="btnDeleteShop">Delete</button>
             <button id="btnClear">Clear</button>
           </div>
         </div>
@@ -332,26 +332,9 @@
       document.getElementById('sectionContent').value = data.content || '';
     }
 
-    document.getElementById('artistSectionForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const key = document.getElementById('sectionKey').value;
-      const content = document.getElementById('sectionContent').value;
-      await fetch(`/admin/api/artist/section/${key}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken
-        },
-        body: JSON.stringify({ content })
-      });
-      alert('Section updated!');
-    });
-
-
   </script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
    <script>
-    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
 
     async function loadInstagramUrl() {
       try {
@@ -380,7 +363,7 @@
     document.addEventListener("DOMContentLoaded", async () => {
       // ✅ 세션 인증 확인
       try {
-        const res = await fetch("/api/admin/check", {
+        const res = await fetch("/api/admin/check-session", {
           credentials: "include"
         });
         if (!res.ok) {
@@ -401,7 +384,7 @@
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken
+                "X-XSRF-TOKEN": csrfToken
               },
               body: JSON.stringify({ email }),
               credentials: "include"
@@ -415,7 +398,7 @@
             console.error("Error updating email:", err);
             alert("An error occurred. Please try again.");
           }
-        });
+        }, { once: true });
       }
 
       // ✅ SNS 초기값 불러오기
@@ -431,9 +414,9 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken
+          'X-XSRF-TOKEN': csrfToken
         },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ instagram: url }),
         credentials: 'include'
       });
       alert('Instagram connected!');
@@ -446,9 +429,9 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken
+          'X-XSRF-TOKEN': csrfToken
         },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ facebook: url }),
         credentials: 'include'
       });
       alert('Facebook connected!');
@@ -464,7 +447,7 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken
+          'X-XSRF-TOKEN': csrfToken
         },
         body: JSON.stringify({ title, content }),
         credentials: 'include'
@@ -485,10 +468,10 @@
       const key = document.getElementById('sectionKey').value;
       const content = document.getElementById('sectionContent').value;
       await fetch(`/admin/api/artist/section/${key}`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken
+          'X-XSRF-TOKEN': csrfToken
         },
         body: JSON.stringify({ content })
       });
@@ -613,9 +596,16 @@ document.getElementById('btnSearch')?.addEventListener('click', async () => {
       document.getElementById('titleInput').value = data.title || '';
       document.getElementById('descInput').value = data.description || '';
       document.getElementById('priceInput').value = data.price || '';
-      document.getElementById('shopPreviewImage').src = data.image_url || '';
+    if (data.imagePath) {
+      const imageFileName = data.imagePath.split('/').pop();
+      document.getElementById('shopPreviewImage').src = `/uploads/artshop/${imageFileName}`;
       document.getElementById('shopPreviewImage').style.display = 'block';
       document.getElementById('shopPlaceholderText').style.display = 'none';
+    } else {
+      document.getElementById('shopPreviewImage').style.display = 'none';
+      document.getElementById('shopPlaceholderText').style.display = 'block';
+    }
+
     } else {
       alert('해당 아트샵 데이터를 찾을 수 없습니다.');
     }
@@ -637,15 +627,18 @@ document.getElementById('btnRegister')?.addEventListener('click', async () => {
   }
 
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append('image', file);
   formData.append('title', title);
   formData.append('description', description);
   formData.append('price', price);
 
-  const res = await fetch('/admin/api/artshop', {
+  const res = await fetch('/admin/api/artshop/upload', {
     method: 'POST',
     body: formData,
-    credentials: 'include'
+    credentials: 'include',
+    headers: {
+      'X-XSRF-TOKEN': csrfToken 
+    }
   });
 
   res.ok ? alert('등록 완료!') : alert('등록 실패');
@@ -657,21 +650,25 @@ document.getElementById('btnUpdate')?.addEventListener('click', async () => {
   const title = document.getElementById('titleInput').value;
   const description = document.getElementById('descInput').value;
   const price = document.getElementById('priceInput').value;
+  const image = document.getElementById('shopImage').files[0];
 
   if (!id || !title || !price) {
     alert('ID, 제목, 가격을 입력하세요.');
     return;
   }
 
-  const body = { title, description, price };
+  const formData = new FormData();
+  formData.append('title', title);
+  formData.append('description', description);
+  formData.append('price', price);
+  if (image) formData.append('image', image);
 
   const res = await fetch(`/admin/api/artshop/${id}`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
-      'X-CSRF-TOKEN': csrfToken
+      'X-XSRF-TOKEN': csrfToken
     },
-    body: JSON.stringify(body),
+    body: formData,
     credentials: 'include'
   });
 
@@ -679,13 +676,16 @@ document.getElementById('btnUpdate')?.addEventListener('click', async () => {
 });
 
 // ✅ 아트샵 삭제
-document.getElementById('btnDelete')?.addEventListener('click', async () => {
+document.getElementById('btnDeleteShop')?.addEventListener('click', async () => {
   const id = document.getElementById('productId').value;
   if (!id || !confirm(`${id}번 아트샵 상품을 삭제할까요?`)) return;
 
   const res = await fetch(`/admin/api/artshop/${id}`, {
     method: 'DELETE',
-    credentials: 'include'
+    credentials: 'include',
+    headers: {
+      'X-XSRF-TOKEN': csrfToken
+    }
   });
 
   if (res.ok) {
@@ -710,56 +710,6 @@ function clearShopForm() {
   document.getElementById('shopPreviewImage').style.display = 'none';
   document.getElementById('shopPlaceholderText').style.display = 'block';
 }
-
-// Artist 텍스트 수정
-document.getElementById('artistTextForm')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const id = document.getElementById('artistTextId').value;
-  const content = document.getElementById('artistTextContent').value;
-
-  try {
-    const res = await fetch(`/admin/api/artist-text/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken
-      },
-      body: JSON.stringify({ content }),
-      credentials: 'include'
-    });
-
-    if (res.ok) {
-      alert('Artist text updated!');
-    } else {
-      alert('Failed to update artist text.');
-    }
-  } catch (err) {
-    console.error('Update error:', err);
-  }
-});
-
-// Artist 텍스트 삭제
-document.getElementById('deleteArtistTextBtn')?.addEventListener('click', async () => {
-  const id = document.getElementById('artistTextId').value;
-  if (!id || !confirm(`Delete artist text with ID ${id}?`)) return;
-
-  try {
-    const res = await fetch(`/admin/api/artist-text/${id}`, {
-      method: 'DELETE',
-      headers: { 'X-CSRF-TOKEN': csrfToken },
-      credentials: 'include'
-    });
-
-    if (res.ok) {
-      alert('Artist text deleted!');
-      document.getElementById('artistTextContent').value = '';
-    } else {
-      alert('Failed to delete artist text.');
-    }
-  } catch (err) {
-    console.error('Delete error:', err);
-  }
-});
 
   </script>
 

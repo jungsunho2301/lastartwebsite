@@ -25,10 +25,10 @@ public class ArtshopAdminController {
     // ✅ 작품 등록
     @PostMapping("/upload")
     public ResponseEntity<?> uploadArtshop(@RequestParam("title") String title,
-                                           @RequestParam("description") String description,
-                                           @RequestParam("price") Integer price,
-                                           @RequestParam("image") MultipartFile image,
-                                           HttpServletRequest request) {
+            @RequestParam("description") String description,
+            @RequestParam("price") Integer price,
+            @RequestParam("image") MultipartFile image,
+            HttpServletRequest request) {
 
         // ✅ 세션 확인
         HttpSession session = request.getSession(false);
@@ -68,11 +68,11 @@ public class ArtshopAdminController {
     // ✅ 작품 수정
     @PutMapping("/{id}")
     public ResponseEntity<?> updateArtshop(@PathVariable Long id,
-                                           @RequestParam(required = false) String title,
-                                           @RequestParam(required = false) String description,
-                                           @RequestParam(required = false) Integer  price,
-                                           @RequestParam(required = false) MultipartFile image,
-                                           HttpServletRequest request) {
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) Integer price,
+            @RequestParam(required = false) MultipartFile image,
+            HttpServletRequest request) {
 
         // ✅ 세션 확인
         HttpSession session = request.getSession(false);
@@ -90,5 +90,13 @@ public class ArtshopAdminController {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정 실패");
         }
+    }
+
+    // ✅ 작품 단일 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getArtshopById(@PathVariable Long id) {
+        return artshopService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

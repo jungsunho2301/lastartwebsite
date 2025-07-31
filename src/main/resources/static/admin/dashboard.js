@@ -22,52 +22,6 @@ navLinks.forEach((link) => {
   });
 });
 
-// 이메일 변경
-emailForm?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const res = await fetch("/admin/api/email", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: newEmail.value }),
-  });
-  alert(await res.text());
-});
-
-// SNS 등록
-instagramForm?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const res = await fetch("/admin/api/social/instagram", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ url: instagramUrl.value }),
-  });
-  alert(await res.text());
-});
-
-facebookForm?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const res = await fetch("/admin/api/social/facebook", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ url: facebookUrl.value }),
-  });
-  alert(await res.text());
-});
-
-// 뉴스레터 발송
-newsletterForm?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const res = await fetch("/admin/api/news/send", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      title: newsletterTitle.value,
-      content: newsletterContent.value,
-    }),
-  });
-  alert(await res.text());
-});
-
 // 아트워크 이미지 미리보기
 function setImagePreview(fileInput, imgElement, placeholder) {
   fileInput?.addEventListener("change", function (e) {
@@ -131,53 +85,9 @@ btnDelete?.addEventListener("click", async () => {
   alert(res.ok ? "삭제 완료" : "삭제 실패");
 });
 
-// 아트샵 기능
-btnSearch?.addEventListener("click", async () => {
-  const id = productId.value;
-  const res = await fetch(`/admin/api/artshop/${id}`);
-  const data = await res.json();
-  titleInput.value = data.title;
-  descInput.value = data.description;
-  priceInput.value = data.price;
-  shopPreviewImage.src = data.image_url;
-  shopPreviewImage.style.display = "block";
-  shopPlaceholderText.style.display = "none";
-});
 
-btnRegister?.addEventListener("click", async () => {
-  const formData = new FormData();
-  formData.append("image", shopImage.files[0]);
-  formData.append("title", titleInput.value);
-  formData.append("description", descInput.value);
-  formData.append("price", priceInput.value);
 
-  await fetch("/admin/api/artshop/upload", {
-    method: "POST",
-    body: formData,
-  });
-  alert("등록 완료");
-});
 
-btnUpdate?.addEventListener("click", async () => {
-  const formData = new FormData();
-  formData.append("image", shopImage.files[0]);
-  formData.append("title", titleInput.value);
-  formData.append("description", descInput.value);
-  formData.append("price", priceInput.value);
-
-  await fetch(`/admin/api/artshop/${productId.value}`, {
-    method: "PUT",
-    body: formData,
-  });
-  alert("수정 완료");
-});
-
-btnDelete?.addEventListener("click", async () => {
-  await fetch(`/admin/api/artshop/${productId.value}`, {
-    method: "DELETE",
-  });
-  alert("삭제 완료");
-});
 
 btnClear?.addEventListener("click", () => {
   productId.value = "";

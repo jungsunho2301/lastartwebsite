@@ -11,8 +11,15 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -26,7 +33,6 @@ public class AdminController {
         this.loginLogRepository = loginLogRepository;
     }
 
-    // ✅ 관리자 로그인 처리
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest, HttpServletRequest request) {
         HttpSession session = request.getSession(true);
@@ -34,7 +40,8 @@ public class AdminController {
 
         Integer failCount = (Integer) session.getAttribute("loginFailCount");
         Long lastFailTime = (Long) session.getAttribute("lastFailTime");
-        if (failCount == null) failCount = 0;
+        if (failCount == null)
+            failCount = 0;
 
         if (lastFailTime != null && System.currentTimeMillis() - lastFailTime > 10 * 60 * 1000) {
             failCount = 0;
@@ -48,16 +55,23 @@ public class AdminController {
         }
 
         if (adminService.login(loginRequest.getUsername(), loginRequest.getPassword())) {
-            session.invalidate();
-            HttpSession newSession = request.getSession(true);
-            request.changeSessionId();
 
-            newSession.setAttribute(SessionConst.LOGIN_ADMIN, loginRequest.getUsername());
-            newSession.setMaxInactiveInterval(1800); // 30분
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    loginRequest.getUsername(), null,
+                    List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
+
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(authentication);
+            SecurityContextHolder.setContext(context);
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
+            session.setAttribute(SessionConst.LOGIN_ADMIN, loginRequest.getUsername());
+            session.setMaxInactiveInterval(1800);
 
             loginLogRepository.save(new LoginLog(
-                    loginRequest.getUsername(), clientIp, true, LocalDateTime.now()
-            ));
+                    loginRequest.getUsername(), clientIp, true, LocalDateTime.now()));
+
+            request.changeSessionId();
 
             return ResponseEntity.ok("관리자 로그인 성공");
         }
@@ -66,28 +80,26 @@ public class AdminController {
         session.setAttribute("lastFailTime", System.currentTimeMillis());
 
         loginLogRepository.save(new LoginLog(
-                loginRequest.getUsername(), clientIp, false, LocalDateTime.now()
-        ));
+                loginRequest.getUsername(), clientIp, false, LocalDateTime.now()));
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body("로그인 실패 (" + (failCount + 1) + "회)");
     }
 
-    // ✅ 관리자 세션 확인 API
-    @GetMapping("/check-session")
-    public ResponseEntity<?> checkSession(HttpSession session) {
-        String admin = (String) session.getAttribute(SessionConst.LOGIN_ADMIN);
-        if (admin != null) {
-            return ResponseEntity.ok("authenticated");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthenticated");
-        }
-    }
-
-    // ✅ 로그아웃 처리 API
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpSession session) {
         session.invalidate();
+        SecurityContextHolder.clearContext();
         return ResponseEntity.ok("로그아웃 완료");
+    }
+
+    @GetMapping("/check-session")
+    public ResponseEntity<?> checkSession() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isLoggedIn = auth != null && auth.isAuthenticated()
+                && !(auth.getPrincipal().equals("anonymousUser"));
+        return isLoggedIn
+                ? ResponseEntity.ok("authenticated")
+                : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthenticated");
     }
 }

@@ -168,9 +168,6 @@ footer .links a:hover {
   background-color: #333;
 }
 
-/* 기본 폰트 및 전역 스타일 */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
-
 body {
   margin: 0;
   font-family: 'Noto Sans KR', sans-serif;
