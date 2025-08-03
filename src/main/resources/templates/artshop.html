@@ -107,7 +107,7 @@
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-         <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+        <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
       </div>
     </div>
   </header>
@@ -133,51 +133,11 @@
 <section class="artwork-intro">
   <h2>WALID JAHIN</h2>
   <h2>ART WORK SHOP</h2>
+  <p>
+   Lörem ipsum divis mask. Fare tärat förutom apobel och meganade. .
+Stenode pysyr kavis som terracism reaska. Hexalig epigt tehuvis. Ditrengen a gon. 
+  </p>
 </section>
-
-<!-- 작품 정렬 버튼 (회색 버튼, 흰 배경, 흰 글씨) -->
-<div class="flex justify-start gap-3 mt-10 bg-white px-6 py-4">
-  <button onclick="loadArtshop('latest')" class="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition">
-    Latest
-  </button>
-  <button onclick="loadArtshop('lowprice')" class="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition">
-    Lowest Price
-  </button>
-  <button onclick="loadArtshop('highprice')" class="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition">
-    Highest Price
-  </button>
-</div>
-
-
-   <section class="product-grid mt-12" id="artshopGrid"></section>
-
-   <script>
-  async function loadArtshop(sort = "latest") {
-    try {
-      const res = await fetch(`/api/artshop?sort=${sort}`);
-      const items = await res.json();
-      const container = document.getElementById("artshopGrid");
-      container.innerHTML = "";
-
-      items.forEach(item => {
-        const btn = document.createElement("button");
-        btn.className = "product-card";
-        btn.onclick = () => location.href = `purchase.html?id=${item.id}`;
-        btn.innerHTML = `
-          <img src="${item.imageUrl}" alt="${item.title}" />
-          <div class="product-title">${item.title}</div>
-          <div class="product-meta">${item.artist}</div>
-          <div class="product-price">₩ ${Number(item.price).toLocaleString()}</div>
-        `;
-        container.appendChild(btn);
-      });
-    } catch (err) {
-      console.error("false:", err);
-    }
-  }
-
-  window.addEventListener("DOMContentLoaded", () => loadArtshop());
-</script>
 
 <script>
   const adminButton = document.getElementById('adminButton');
@@ -198,7 +158,203 @@
   document.addEventListener('DOMContentLoaded', updateAdminButton);
 </script>
 
-  <div th:insert="~{::content}" >
+<section class="product-grid">
+  <!-- Product 1~30 -->
+  <!-- 1 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art1.jpg" alt="Artwork 1" />
+    <div class="product-title">Artwork 1</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 300,000</div>
+  </button>
+
+  <!-- 2 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art2.jpg" alt="Artwork 2" />
+    <div class="product-title">Artwork 2</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 310,000</div>
+  </button>
+
+  <!-- 3 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art3.jpg" alt="Artwork 3" />
+    <div class="product-title">Artwork 3</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 320,000</div>
+  </button>
+
+  <!-- 4 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art4.jpg" alt="Artwork 4" />
+    <div class="product-title">Artwork 4</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 330,000</div>
+  </button>
+
+  <!-- 5 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art5.jpg" alt="Artwork 5" />
+    <div class="product-title">Artwork 5</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 340,000</div>
+  </button>
+
+  <!-- 6 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art6.jpg" alt="Artwork 6" />
+    <div class="product-title">Artwork 6</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 350,000</div>
+  </button>
+
+  <!-- 7 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art7.jpg" alt="Artwork 7" />
+    <div class="product-title">Artwork 7</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 360,000</div>
+  </button>
+
+  <!-- 8 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art8.jpg" alt="Artwork 8" />
+    <div class="product-title">Artwork 8</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 370,000</div>
+  </button>
+
+    <!-- 1 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art1.jpg" alt="Artwork 1" />
+    <div class="product-title">Artwork 1</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 300,000</div>
+  </button>
+
+  <!-- 2 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art2.jpg" alt="Artwork 2" />
+    <div class="product-title">Artwork 2</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 310,000</div>
+  </button>
+
+  <!-- 3 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art3.jpg" alt="Artwork 3" />
+    <div class="product-title">Artwork 3</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 320,000</div>
+  </button>
+
+  <!-- 4 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art4.jpg" alt="Artwork 4" />
+    <div class="product-title">Artwork 4</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 330,000</div>
+  </button>
+
+  <!-- 5 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art5.jpg" alt="Artwork 5" />
+    <div class="product-title">Artwork 5</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 340,000</div>
+  </button>
+
+  <!-- 6 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art6.jpg" alt="Artwork 6" />
+    <div class="product-title">Artwork 6</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 350,000</div>
+  </button>
+
+  <!-- 7 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art7.jpg" alt="Artwork 7" />
+    <div class="product-title">Artwork 7</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 360,000</div>
+  </button>
+
+  <!-- 8 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art8.jpg" alt="Artwork 8" />
+    <div class="product-title">Artwork 8</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 370,000</div>
+  </button>
+
+    <!-- 1 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art1.jpg" alt="Artwork 1" />
+    <div class="product-title">Artwork 1</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 300,000</div>
+  </button>
+
+  <!-- 2 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art2.jpg" alt="Artwork 2" />
+    <div class="product-title">Artwork 2</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 310,000</div>
+  </button>
+
+  <!-- 3 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art3.jpg" alt="Artwork 3" />
+    <div class="product-title">Artwork 3</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 320,000</div>
+  </button>
+
+  <!-- 4 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art4.jpg" alt="Artwork 4" />
+    <div class="product-title">Artwork 4</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 330,000</div>
+  </button>
+
+  <!-- 5 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art5.jpg" alt="Artwork 5" />
+    <div class="product-title">Artwork 5</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 340,000</div>
+  </button>
+
+  <!-- 6 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art6.jpg" alt="Artwork 6" />
+    <div class="product-title">Artwork 6</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 350,000</div>
+  </button>
+
+  <!-- 7 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art7.jpg" alt="Artwork 7" />
+    <div class="product-title">Artwork 7</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 360,000</div>
+  </button>
+
+  <!-- 8 -->
+  <button class="product-card" onclick="location.href='purchase.html'">
+    <img src="assets/images/art8.jpg" alt="Artwork 8" />
+    <div class="product-title">Artwork 8</div>
+    <div class="product-meta">WALID JAHIN</div>
+    <div class="product-price">₩ 370,000</div>
+  </button>
+
+</section>
+
+  <div th:insert="~{::content}" />
 
   
   <footer>
@@ -236,7 +392,5 @@
   </script>
   <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
-
-  
 </body>
 </html>
