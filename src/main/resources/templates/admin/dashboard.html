@@ -28,63 +28,15 @@
   </script>
 
 <style>
-  body {
-    margin: 0;
-    font-family: 'Noto Sans KR', sans-serif;
-    background-color: #fff;
-    color: #111;
-  }
-
-  header {
-    background-color: #f9f9f9;
-    padding: 32px 40px;
-    border-bottom: 1px solid #e5e5e5;
-  }
-
-  .header-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .nav-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-  }
-
-  .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 20px;
-  }
-
-  .nav-links a {
-    padding: 10px 20px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    text-decoration: none;
-    color: #111;
-    font-weight: 500;
-    transition: background-color 0.2s;
-  }
-
-  .nav-links a:hover {
-    background-color: #f0f0f0;
-  }
-
-  .lang {
-    display: flex;
-    align-items: center;
-    font-size: 0.9rem;
-  }
+    body { margin: 0; font-family: 'Noto Sans KR', sans-serif; background-color: #fff; color: #111; }
+    header { background-color: #f9f9f9; padding: 32px 40px; border-bottom: 1px solid #e5e5e5; position: relative; }
+    .header-inner { display: flex; justify-content: center; align-items: center; }
+    .nav-wrapper { display: flex; flex-direction: column; align-items: center; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 800; letter-spacing: -1px; }
+    .nav-links { display: flex; gap: 16px; margin-top: 12px; }
+    .nav-links a { text-decoration: none; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 500; color: #111; border: 1px solid #ccc; transition: background-color 0.3s; }
+    .nav-links a:hover, .nav-links a.active { background-color: #f0f0f0; }
+    .lang { position: absolute; right: 40px; top: 32px; font-size: 14px; color: #111; white-space: nowrap; display: flex; align-items: center; gap: 12px; }
 
   .gtranslate_wrapper {
     margin-right: 10px;
@@ -93,8 +45,8 @@
   button {
     font-size: 14px;
     padding: 8px 16px;
-    background-color: #111;
-    color: white;
+    background-color: #f9f9f9;
+    color: black;
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -168,27 +120,36 @@
     justify-content: center;
     overflow: hidden;
   }
+      footer { background-color: #191A1B; color: #fff; padding: 60px 20px 40px; text-align: center; }
+    footer nav a { color: #ccc; margin: 0 12px; font-size: 14px; text-decoration: none; }
+    footer nav a:hover { color: #fff; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; margin-top: 30px; }
+    .footer-bottom { font-size: 12px; color: #888; margin-top: 20px; }
+    .sns-icon svg { margin-top: 20px; transition: fill 0.3s; fill: #000; }
+    .sns-icon svg:hover { fill: #fff; }
 </style>
 </head>
 <body>
   <!-- Header -->
-  <header>
-    <div class="header-inner">
-      <div class="nav-wrapper">
-        <div class="logo">Walid Jahin</div>
-        <div class="nav-links">
-          <a href="/index.html">HOME</a>
-          <a href="/artist.html">ARTIST</a>
-          <a href="/artwork.html">ART WORK</a>
-          <a href="/artshop.html">ART SHOP</a>
-        </div>
-      </div>
-      <div class="lang">
-        <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+<header>
+  <div class="header-inner">
+    <div class="nav-wrapper">
+      <div class="logo">Walid Jahin</div>
+      <div class="nav-links">
+        <a href="/index.html">HOME</a>
+        <a href="/artist.html">ARTIST</a>
+        <a href="/artwork.html">ART WORK</a>
+        <a href="/artshop.html">ART SHOP</a>
       </div>
     </div>
-  </header>
+    <div class="lang">
+      <div class="gtranslate_wrapper"></div>
+      <!-- 버튼은 하나만 유지 -->
+      <button id="authButton" class="auth-button">LOGIN</button>
+    </div>
+  </div>
+</header>
+
   <!-- Main (기존 코드 복원됨) -->
   <main class="dashboard">
     <section class="upload-section">
@@ -229,62 +190,41 @@
       </form>
     </section>
 
-    <section class="upload-section">
-      <h3>Edit Artist Section Content</h3>
-      <form id="artistSectionForm">
-        <label for="sectionKey">Section Key</label>
-        <select id="sectionKey">
-          <option value="major_solo">Major Solo</option>
-          <option value="international">International</option>
-          <option value="solo">Solo</option>
-          <option value="group">Group</option>
-          <option value="achievement">Achievement</option>
-          <option value="collections">Collections</option>
-          <option value="work_style">Work Style</option>
-        </select>
 
-        <label for="sectionContent">Content</label>
-        <textarea id="sectionContent" rows="4" required></textarea>
 
-        <div class="button-group">
-          <button type="button" onclick="getSection()">GET</button>
-          <button type="submit">POST</button>
-        </div>
-      </form>
-    </section>
-
-    <section class="upload-section">
-      <h3>Artist Text Editor</h3>
-      <form id="artistTextForm">
-        <input type="text" id="artistTextId" placeholder="Text ID" required />
-        <textarea id="artistTextContent" placeholder="Enter new text" rows="4" required></textarea>
-        <button type="submit">Update Text</button>
-      </form>
-      <button id="deleteArtistTextBtn">Delete Text</button>
-    </section>
-
-    <section class="artwork-manage">
-      <h2>Artwork Management (Edit / Delete)</h2>
-      <div class="artwork-box">
-        <div class="image-preview" id="artworkPreviewContainer">
-          <img id="artworkPreviewImage" src="" alt="Preview Image" style="display:none; width:100%; height:100%; object-fit:contain;" />
-          <span id="artworkPlaceholderText">Image</span>
-        </div>
-        <div class="file-input-wrapper">
-          <label for="artworkFile">Attach File</label>
-          <input type="file" id="artworkFile" accept="image/*" hidden />
-        </div>
-        <div class="id-search-group">
-          <input type="text" id="artworkId" placeholder="Artwork ID" />
-          <button id="btnApply">Apply</button>
-          <button id="btnDelete">Delete</button>
-          <button id="btnCancel">Cancel</button>
-        </div>
-        <p class="guide-text">
-          Enter the artwork ID you want to edit/delete. The image will be displayed and editable.
-        </p>
+<section class="artwork-manage">
+  <h2>Artwork Management (Register / Edit / Delete)</h2>
+  <div class="shop-box">
+    <div class="image-preview" id="artworkPreviewContainer">
+      <img id="artworkPreviewImage" src="" alt="Preview Image" style="display:none; width:100%; height:100%; object-fit:contain;" />
+      <span id="artworkPlaceholderText">Image</span>
+    </div>
+    <div class="file-input-wrapper">
+      <label for="artworkFile">Attach File</label>
+      <input type="file" id="artworkFile" accept="image/*" hidden />
+    </div>
+    <div class="info-inputs">
+      <label for="artworkId">Artwork ID</label>
+      <div class="id-search-group">
+        <input type="text" id="artworkId" placeholder="Artwork ID" />
+        <button id="btnApply">Search</button>
       </div>
-    </section>
+      <label for="artworkTitle">Title</label>
+      <input type="text" id="artworkTitle" placeholder="Enter title" />
+      <label for="artworkDesc">Description</label>
+      <textarea id="artworkDesc" placeholder="Enter artwork description"></textarea>
+      <label for="artworkPrice">Price</label>
+      <input type="number" id="artworkPrice" placeholder="Enter price" />
+      <div class="btn-group">
+        <button id="btnRegisterArtwork">Register</button>
+        <button id="btnUpdateArtwork">Update</button>
+        <button id="btnDeleteArtwork">Delete</button>
+        <button id="btnCancelArtwork">Clear</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <hr style="margin: 40px 0; border-top: 2px solid #eee;" />
 
@@ -314,13 +254,35 @@
           <div class="btn-group">
             <button id="btnRegister">Register</button>
             <button id="btnUpdate">Update</button>
-            <button id="btnDeleteShop">Delete</button>
+            <button id="btnDelete">Delete</button>
             <button id="btnClear">Clear</button>
           </div>
         </div>
       </div>
     </section>
   </main>
+    <footer>
+    <nav>
+      <a th:href="@{/index}">HOME</a>
+      <a th:href="@{/privacy}">PRIVACY POLICY</a>
+      <a th:href="@{/terms}">TERMS OF USE</a>
+      <a th:href="@{/contact}">CONTACT</a>
+    </nav>
+    <div class="sns-icon flex justify-center gap-4 mt-4">
+      <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
+        </svg>
+      </a>
+    </div>
+    <div class="footer-logo">Walid Jahin Art Studio</div>
+    <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+  </footer>
 
    <script>
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
@@ -477,19 +439,42 @@
       });
       alert('Section updated!');
     });
+ window.addEventListener("DOMContentLoaded", async () => {
+    const authBtn = document.getElementById("authButton");
 
-    // ✅ 로그아웃
-    const logoutBtn = document.getElementById("logoutButton");
-    if (logoutBtn) {
-      logoutBtn.addEventListener("click", async () => {
-        await fetch("/api/admin/logout", {
-          credentials: "include",
-          method: "POST"
+    try {
+      const res = await fetch("/api/admin/check-session", { credentials: "include" });
+      const result = await res.json();
+
+      if (result.loggedIn) {
+        // 로그인 상태 → LOGOUT으로 표시
+        authBtn.textContent = "LOGOUT";
+        authBtn.id = "logoutButton"; // ID 변경해서 기존 이벤트 핸들러에 맞춤
+
+        // ✅ 기존 logout 이벤트 핸들러 등록
+        authBtn.addEventListener("click", async () => {
+          await fetch("/api/admin/logout", {
+            credentials: "include",
+            method: "POST"
+          });
+          window.location.href = "login.html";
         });
-        window.location.href = "login.html";
-      });
-    }
 
+      } else {
+        // 비로그인 상태 → LOGIN
+        authBtn.textContent = "LOGIN";
+        authBtn.onclick = () => {
+          window.location.href = "/admin/login.html";
+        };
+      }
+    } catch (err) {
+      console.error("세션 확인 실패:", err);
+      authBtn.textContent = "LOGIN";
+      authBtn.onclick = () => {
+        window.location.href = "/admin/login.html";
+      };
+    }
+  });
 
 
 // ✅ 아트워크 이미지 미리보기
