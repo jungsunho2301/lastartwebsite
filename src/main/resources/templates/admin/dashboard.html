@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +9,9 @@
   <meta name="_csrf" th:content="${_csrf.token}" />
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
 
   <!-- Static CSS/JS -->
   <link rel="stylesheet" th:href="@{/css/style.css}" />
@@ -27,149 +30,271 @@
     };
   </script>
 
-<style>
-  body {
-    margin: 0;
-    font-family: 'Noto Sans KR', sans-serif;
-    background-color: #fff;
-    color: #111;
-  }
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
 
-  header {
-    background-color: #f9f9f9;
-    padding: 32px 40px;
-    border-bottom: 1px solid #e5e5e5;
-  }
+header {
+  background-color: #f9f9f9;
+  padding: 40px 40px; /* 상하 여백을 늘림 */
+  border-bottom: 1px solid #e5e5e5;
+  position: relative;
+  height: 160px; /* 명시적 높이 확보 */
+}
 
-  .header-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+    .header-inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-  .nav-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-  }
+.nav-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-  }
 
-  .nav-links {
-    display: flex;
-    gap: 20px;
-  }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 60px;
+      font-weight: 1200;
+      letter-spacing: -1px;
+    }
 
-  .nav-links a {
-    padding: 10px 20px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    text-decoration: none;
-    color: #111;
-    font-weight: 500;
-    transition: background-color 0.2s;
-  }
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
 
-  .nav-links a:hover {
-    background-color: #f0f0f0;
-  }
+    .nav-links a {
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #111;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
 
-  .lang {
-    display: flex;
-    align-items: center;
-    font-size: 0.9rem;
-  }
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #f0f0f0;
+    }
 
-  .gtranslate_wrapper {
-    margin-right: 10px;
-  }
+    .lang {
+      position: absolute;
+      right: 40px;
+      top: 32px;
+      font-size: 14px;
+      color: #111;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-  button {
-    font-size: 14px;
-    padding: 8px 16px;
-    background-color: #111;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
+    .lang button {
+      background: black;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-  button:hover {
-    background-color: #333;
-  }
+    .gtranslate_wrapper {
+      margin-right: 10px;
+    }
 
-  .dashboard {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 0 20px;
-  }
+    button {
+      font-size: 14px;
+      padding: 8px 16px;
+      background-color: #f9f9f9;
+      color: black;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
 
-  .upload-section,
-  .artwork-manage,
-  .shop-manage {
-    background: #f9f9f9;
-    padding: 24px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-  }
+    button:hover {
+      background-color: #333;
+    }
 
-  .upload-section h3,
-  .artwork-manage h2,
-  .shop-manage h2 {
-    margin-bottom: 20px;
-  }
+    .dashboard {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
 
-  .upload-section form,
-  .shop-box,
-  .artwork-box {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+    .upload-section,
+    .artwork-manage,
+    .shop-manage {
+      background: #f9f9f9;
+      padding: 24px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    }
 
-  input[type='text'],
-  input[type='email'],
-  input[type='url'],
-  input[type='number'],
-  textarea,
-  select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-    width: 100%;
-  }
+    .upload-section h3,
+    .artwork-manage h2,
+    .shop-manage h2 {
+      margin-bottom: 20px;
+    }
 
-  .file-input-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border: 1px dashed #ccc;
-    border-radius: 6px;
-    padding: 10px;
-    background-color: #fff;
-  }
+    .upload-section form,
+    .shop-box,
+    .artwork-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-  .image-preview {
-    width: 100%;
-    height: 240px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-</style>
+    input[type='text'],
+    input[type='email'],
+    input[type='url'],
+    input[type='number'],
+    textarea,
+    select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+    .file-input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border: 1px dashed #ccc;
+      border-radius: 6px;
+      padding: 10px;
+      background-color: #fff;
+    }
+
+    .image-preview {
+      width: 100%;
+      height: 240px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    footer {
+      background-color: #191A1B;
+      color: #fff;
+      padding: 60px 20px 40px;
+      text-align: center;
+    }
+
+    footer nav a {
+      color: #ccc;
+      margin: 0 12px;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    footer nav a:hover {
+      color: #fff;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 800;
+      margin-top: 30px;
+    }
+
+    .footer-bottom {
+      font-size: 12px;
+      color: #888;
+      margin-top: 20px;
+    }
+
+    .sns-icon svg {
+      margin-top: 20px;
+      transition: fill 0.3s;
+      fill: #000;
+    }
+
+    .sns-icon svg:hover {
+      fill: #fff;
+    }
+
+    .upload-section {
+  background: #f9f9f9;
+  padding: 24px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.upload-section h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.form-section {
+  margin-bottom: 24px;
+}
+
+.form-section h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.form-section label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.form-section input[type="text"],
+.form-section input[type="file"],
+.form-section textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.form-section button {
+  padding: 8px 16px;
+  background-color: rgb(0, 0, 0);
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.form-section button:hover {
+  background-color: #eee;
+}
+
+
+  </style>
 </head>
+
 <body>
   <!-- Header -->
   <header>
@@ -177,18 +302,22 @@
       <div class="nav-wrapper">
         <div class="logo">Walid Jahin</div>
         <div class="nav-links">
-          <a href="/index.html">HOME</a>
-          <a href="/artist.html">ARTIST</a>
-          <a href="/artwork.html">ART WORK</a>
-          <a href="/artshop.html">ART SHOP</a>
+          <a th:href="@{/index}">HOME</a>
+          <a th:href="@{/artist}">ARTIST</a>
+          <a th:href="@{/artwork}">ART WORK</a>
+          <a th:href="@{/artshop}">ART SHOP</a>
         </div>
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+        <!-- 로그아웃 버튼 -->
+        <button id="logoutButton" style="background: #f9f9f9; color: black; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGOUT</button>
+
       </div>
     </div>
   </header>
+
   <!-- Main (기존 코드 복원됨) -->
   <main class="dashboard">
     <section class="upload-section">
@@ -229,62 +358,81 @@
       </form>
     </section>
 
-    <section class="upload-section">
-      <h3>Edit Artist Section Content</h3>
-      <form id="artistSectionForm">
-        <label for="sectionKey">Section Key</label>
-        <select id="sectionKey">
-          <option value="major_solo">Major Solo</option>
-          <option value="international">International</option>
-          <option value="solo">Solo</option>
-          <option value="group">Group</option>
-          <option value="achievement">Achievement</option>
-          <option value="collections">Collections</option>
-          <option value="work_style">Work Style</option>
-        </select>
+    <!-- Artist Management -->
+<section class="artist-manage upload-section">
+  <h2>Artist Page Management</h2>
 
-        <label for="sectionContent">Content</label>
-        <textarea id="sectionContent" rows="4" required></textarea>
+  <!-- Bio Section -->
+  <div class="form-section">
+    <h3>Bio Section</h3>
+    <label for="artistBorn">Born Info</label>
+    <input type="text" id="artistBorn" placeholder="Born in ..." />
 
-        <div class="button-group">
-          <button type="button" onclick="getSection()">GET</button>
-          <button type="submit">POST</button>
-        </div>
-      </form>
-    </section>
+    <label for="artistBio">Bio Description</label>
+    <textarea id="artistBio" rows="4" placeholder="Bio content..."></textarea>
 
-    <section class="upload-section">
-      <h3>Artist Text Editor</h3>
-      <form id="artistTextForm">
-        <input type="text" id="artistTextId" placeholder="Text ID" required />
-        <textarea id="artistTextContent" placeholder="Enter new text" rows="4" required></textarea>
-        <button type="submit">Update Text</button>
-      </form>
-      <button id="deleteArtistTextBtn">Delete Text</button>
-    </section>
+    <button id="btnSaveBio">Save Bio</button>
+  </div>
 
-    <section class="artwork-manage">
-      <h2>Artwork Management (Edit / Delete)</h2>
-      <div class="artwork-box">
-        <div class="image-preview" id="artworkPreviewContainer">
-          <img id="artworkPreviewImage" src="" alt="Preview Image" style="display:none; width:100%; height:100%; object-fit:contain;" />
-          <span id="artworkPlaceholderText">Image</span>
-        </div>
-        <div class="file-input-wrapper">
-          <label for="artworkFile">Attach File</label>
-          <input type="file" id="artworkFile" accept="image/*" hidden />
-        </div>
-        <div class="id-search-group">
-          <input type="text" id="artworkId" placeholder="Artwork ID" />
-          <button id="btnApply">Apply</button>
-          <button id="btnDelete">Delete</button>
-          <button id="btnCancel">Cancel</button>
-        </div>
-        <p class="guide-text">
-          Enter the artwork ID you want to edit/delete. The image will be displayed and editable.
-        </p>
+  <!-- Gallery -->
+  <div class="form-section">
+    <h3>Gallery Images</h3>
+    <input type="file" id="galleryUpload" accept="image/*" />
+    <button id="btnUploadGallery">Upload Image</button>
+  </div>
+
+  <!-- Major Work -->
+  <div class="form-section">
+    <h3>Major Works</h3>
+    <input type="file" id="majorUpload" accept="image/*" />
+    <button id="btnUploadMajor">Upload Image</button>
+  </div>
+
+  <!-- Exhibitions -->
+  <div class="form-section">
+    <h3>Exhibitions</h3>
+    <input type="text" id="exhibitionTitle" placeholder="Exhibition title" />
+    <textarea id="exhibitionContent" placeholder="Exhibition description"></textarea>
+    <button id="btnAddExhibition">Add</button>
+  </div>
+</section>
+
+
+
+
+<section class="artwork-manage">
+  <h2>Artwork Management (Register / Edit / Delete)</h2>
+  <div class="shop-box">
+    <div class="image-preview" id="artworkPreviewContainer">
+      <img id="artworkPreviewImage" src="" alt="Preview Image" style="display:none; width:100%; height:100%; object-fit:contain;" />
+      <span id="artworkPlaceholderText">Image</span>
+    </div>
+    <div class="file-input-wrapper">
+      <label for="artworkFile">Attach File</label>
+      <input type="file" id="artworkFile" accept="image/*" hidden />
+    </div>
+    <div class="info-inputs">
+      <label for="artworkId">Artwork ID</label>
+      <div class="id-search-group" style="display:flex; gap:0.5rem;">
+        <input type="text" id="artworkId" placeholder="Artwork ID" />
+        <button id="btnApply">Search</button>
       </div>
-    </section>
+      <label for="artworkTitle">Title</label>
+      <input type="text" id="artworkTitle" placeholder="Enter title" />
+      <label for="artworkDesc">Description</label>
+      <textarea id="artworkDesc" placeholder="Enter artwork description"></textarea>
+      <label for="artworkPrice">Price</label>
+      <input type="number" id="artworkPrice" placeholder="Enter price" />
+      <div class="btn-group">
+        <button id="btnRegisterArtwork" type="button">Register</button>
+        <button id="btnUpdateArtwork" type="button">Update</button>
+        <button id="btnDeleteArtwork" type="button">Delete</button>
+        <button id="btnCancelArtwork" type="button">Clear</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <hr style="margin: 40px 0; border-top: 2px solid #eee;" />
 
@@ -292,7 +440,8 @@
       <h2>Artshop Management (Register / Edit / Delete)</h2>
       <div class="shop-box">
         <div class="image-preview" id="shopPreviewContainer">
-          <img id="shopPreviewImage" src="" alt="Preview Image" style="display:none; width:100%; height:100%; object-fit:contain;" />
+          <img id="shopPreviewImage" src="" alt="Preview Image"
+            style="display:none; width:100%; height:100%; object-fit:contain;" />
           <span id="shopPlaceholderText">Image</span>
         </div>
         <div class="file-input-wrapper">
@@ -314,15 +463,99 @@
           <div class="btn-group">
             <button id="btnRegister">Register</button>
             <button id="btnUpdate">Update</button>
-            <button id="btnDeleteShop">Delete</button>
+            <button id="btnDelete">Delete</button>
             <button id="btnClear">Clear</button>
           </div>
         </div>
       </div>
     </section>
   </main>
+  <footer>
+    <nav>
+      <a th:href="@{/index}">HOME</a>
+      <a th:href="@{/privacy}">PRIVACY POLICY</a>
+      <a th:href="@{/terms}">TERMS OF USE</a>
+      <a th:href="@{/contact}">CONTACT</a>
+    </nav>
+    <div class="sns-icon flex justify-center gap-4 mt-4">
+      <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
+        </svg>
+      </a>
+    </div>
+    <div class="footer-logo">Walid Jahin Art Studio</div>
+    <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+  </footer>
 
-   <script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
+
+  // 로그아웃 버튼
+const logoutBtn = document.getElementById("logoutButton");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      const res = await fetch("/api/admin/logout", {
+        method: "POST",
+        credentials: "include"
+      });
+      if (res.ok) {
+        window.location.href = "/index";
+      } else {
+        alert("로그아웃 실패");
+      }
+    } catch (err) {
+      alert("서버 연결 실패");
+    }
+  });
+}
+
+
+  // 인스타그램 URL 불러오기
+  async function loadInstagramUrl() {
+    try {
+      const res = await fetch('/admin/api/social/instagram');
+      const text = await res.text();
+      if (text) {
+        const data = JSON.parse(text);
+        document.getElementById('instagramUrl').value = data.url || '';
+      }
+    } catch (err) {
+      console.error('Instagram URL load error:', err);
+    }
+  }
+
+  // 페이스북 URL 불러오기
+  async function loadFacebookUrl() {
+    try {
+      const res = await fetch('/admin/api/social/facebook');
+      const text = await res.text();
+      if (text) {
+        const data = JSON.parse(text);
+        document.getElementById('facebookUrl').value = data.url || '';
+      }
+    } catch (err) {
+      console.error('Facebook URL load error:', err);
+    }
+  }
+
+  loadInstagramUrl();
+  loadFacebookUrl();
+});
+
+</script>
+
+
+  <script>
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
 
     async function getSection() {
@@ -334,7 +567,172 @@
 
   </script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
-   <script>
+  
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('artworkFile')?.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      const previewImage = document.getElementById('artworkPreviewImage');
+      const placeholder = document.getElementById('artworkPlaceholderText');
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          previewImage.src = event.target.result;
+          previewImage.style.display = 'block';
+          placeholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById('btnRegisterArtwork')?.addEventListener('click', async () => {
+      const title = document.getElementById('artworkTitle').value;
+      const desc = document.getElementById('artworkDesc').value;
+      const price = document.getElementById('artworkPrice').value;
+      const file = document.getElementById('artworkFile').files[0];
+
+      if (!title || !file) {
+        alert('제목과 파일을 입력해주세요.');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('description', desc);
+      formData.append('price', price);
+      formData.append('file', file);
+
+      const res = await fetch('/admin/api/artwork/upload', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+      });
+
+      alert(res.ok ? 'Artwork registered!' : 'Failed to register artwork.');
+    });
+
+    document.getElementById('btnUpdateArtwork')?.addEventListener('click', async () => {
+      const id = document.getElementById('artworkId').value;
+      const file = document.getElementById('artworkFile').files[0];
+      if (!id || !file) {
+        alert('Artwork ID와 파일을 모두 입력해주세요.');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch(`/admin/api/artwork/${id}`, {
+        method: 'PUT',
+        body: formData,
+        credentials: 'include'
+      });
+      alert(res.ok ? 'Artwork updated!' : 'Failed to update artwork.');
+    });
+
+    document.getElementById('btnDeleteArtwork')?.addEventListener('click', async () => {
+      const id = document.getElementById('artworkId').value;
+      if (!id || !confirm(`${id}번 아트워크를 삭제할까요?`)) return;
+      const res = await fetch(`/admin/api/artwork/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      if (res.ok) {
+        alert('Artwork deleted!');
+        document.getElementById('artworkFile').value = '';
+        document.getElementById('artworkPreviewImage').style.display = 'none';
+        document.getElementById('artworkPlaceholderText').style.display = 'block';
+      } else {
+        alert('Failed to delete artwork.');
+      }
+    });
+
+    document.getElementById('btnCancelArtwork')?.addEventListener('click', () => {
+      document.getElementById('artworkId').value = '';
+      document.getElementById('artworkTitle').value = '';
+      document.getElementById('artworkDesc').value = '';
+      document.getElementById('artworkPrice').value = '';
+      document.getElementById('artworkFile').value = '';
+      document.getElementById('artworkPreviewImage').style.display = 'none';
+      document.getElementById('artworkPlaceholderText').style.display = 'block';
+    });
+  });
+</script>
+
+<script>
+  document.getElementById('btnSaveBio')?.addEventListener('click', async () => {
+  const born = document.getElementById('artistBorn').value;
+  const bio = document.getElementById('artistBio').value;
+
+  await Promise.all([
+    fetch('/admin/api/artist/section/born', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': csrfToken
+      },
+      body: JSON.stringify({ content: born }),
+      credentials: 'include'
+    }),
+    fetch('/admin/api/artist/section/bio', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': csrfToken
+      },
+      body: JSON.stringify({ content: bio }),
+      credentials: 'include'
+    })
+  ]);
+  alert('Bio 저장 완료!');
+});
+
+document.getElementById('btnUploadGallery')?.addEventListener('click', async () => {
+  const file = document.getElementById('galleryUpload').files[0];
+  if (!file) return alert('이미지를 선택해주세요.');
+  const formData = new FormData();
+  formData.append('file', file);
+  const res = await fetch('/admin/api/artist/gallery', {
+    method: 'POST',
+    body: formData,
+    credentials: 'include'
+  });
+  alert(res.ok ? '갤러리 이미지 업로드 완료!' : '업로드 실패');
+});
+
+document.getElementById('btnUploadMajor')?.addEventListener('click', async () => {
+  const file = document.getElementById('majorUpload').files[0];
+  if (!file) return alert('이미지를 선택해주세요.');
+  const formData = new FormData();
+  formData.append('file', file);
+  const res = await fetch('/admin/api/artist/major', {
+    method: 'POST',
+    body: formData,
+    credentials: 'include'
+  });
+  alert(res.ok ? '주요 작품 업로드 완료!' : '업로드 실패');
+});
+
+document.getElementById('btnAddExhibition')?.addEventListener('click', async () => {
+  const title = document.getElementById('exhibitionTitle').value;
+  const content = document.getElementById('exhibitionContent').value;
+  if (!title || !content) return alert('모든 내용을 입력해주세요.');
+
+const res = await fetch('/admin/api/artist/exhibition', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-XSRF-TOKEN': csrfToken   // ← 여기에 토큰 들어가야 함
+  },
+  body: JSON.stringify({ title, content }),
+  credentials: 'include'        // ← 세션 쿠키 포함
+});
+
+
+  alert(res.ok ? '전시 등록 완료!' : '전시 등록 실패');
+});
+
+</script>
+  <script>
+    
 
     async function loadInstagramUrl() {
       try {
@@ -478,242 +876,178 @@
       alert('Section updated!');
     });
 
-    // ✅ 로그아웃
-    const logoutBtn = document.getElementById("logoutButton");
-    if (logoutBtn) {
-      logoutBtn.addEventListener("click", async () => {
-        await fetch("/api/admin/logout", {
-          credentials: "include",
-          method: "POST"
-        });
-        window.location.href = "login.html";
-      });
-    }
 
 
+// DOM 요소 캐싱
+const shopImageInput = document.getElementById('shopImage');
+const shopPreviewImage = document.getElementById('shopPreviewImage');
+const shopPlaceholderText = document.getElementById('shopPlaceholderText');
 
-// ✅ 아트워크 이미지 미리보기
-document.getElementById('artworkFile')?.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  const previewImage = document.getElementById('artworkPreviewImage');
-  const placeholder = document.getElementById('artworkPlaceholderText');
+const productIdInput = document.getElementById('productId');
+const titleInput = document.getElementById('titleInput');
+const descInput = document.getElementById('descInput');
+const priceInput = document.getElementById('priceInput');
 
+// 미리보기 처리
+shopImageInput.addEventListener('change', () => {
+  const file = shopImageInput.files[0];
   if (file) {
     const reader = new FileReader();
-    reader.onload = function (event) {
-      previewImage.src = event.target.result;
-      previewImage.style.display = 'block';
-      placeholder.style.display = 'none';
+    reader.onload = e => {
+      shopPreviewImage.src = e.target.result;
+      shopPreviewImage.style.display = 'block';
+      shopPlaceholderText.style.display = 'none';
     };
     reader.readAsDataURL(file);
-  }
-});
-
-// ✅ 아트워크 등록 (PUT)
-document.getElementById('btnApply')?.addEventListener('click', async () => {
-  const id = document.getElementById('artworkId').value;
-  const file = document.getElementById('artworkFile').files[0];
-
-  if (!id || !file) {
-    alert('Artwork ID와 파일을 모두 입력해주세요.');
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append('file', file);
-
-  const res = await fetch(`/admin/api/artwork/${id}`, {
-    method: 'PUT',
-    body: formData,
-    credentials: 'include'
-  });
-
-  if (res.ok) {
-    alert('Artwork updated!');
   } else {
-    alert('Failed to update artwork.');
+    shopPreviewImage.src = '';
+    shopPreviewImage.style.display = 'none';
+    shopPlaceholderText.style.display = 'block';
   }
 });
 
-// ✅ 아트워크 삭제 (DELETE)
-document.getElementById('btnDelete')?.addEventListener('click', async () => {
-  const id = document.getElementById('artworkId').value;
-  if (!id || !confirm(`${id}번 아트워크를 삭제할까요?`)) return;
-
-  const res = await fetch(`/admin/api/artwork/${id}`, {
-    method: 'DELETE',
-    credentials: 'include'
-  });
-
-  if (res.ok) {
-    alert('Artwork deleted!');
-    document.getElementById('artworkFile').value = '';
-    document.getElementById('artworkPreviewImage').style.display = 'none';
-    document.getElementById('artworkPlaceholderText').style.display = 'block';
-  } else {
-    alert('Failed to delete artwork.');
-  }
-});
-
-// ✅ 초기화 버튼
-document.getElementById('btnCancel')?.addEventListener('click', () => {
-  document.getElementById('artworkId').value = '';
-  document.getElementById('artworkFile').value = '';
-  document.getElementById('artworkPreviewImage').style.display = 'none';
-  document.getElementById('artworkPlaceholderText').style.display = 'block';
-});
-
-// ✅ 미리보기 처리
-document.getElementById('shopImage')?.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  const preview = document.getElementById('shopPreviewImage');
-  const placeholder = document.getElementById('shopPlaceholderText');
-
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      preview.src = event.target.result;
-      preview.style.display = 'block';
-      placeholder.style.display = 'none';
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-// ✅ 아트샵 조회
-document.getElementById('btnSearch')?.addEventListener('click', async () => {
-  const id = document.getElementById('productId').value;
-  if (!id) {
-    alert('Artwork ID를 입력하세요.');
-    return;
-  }
-
-  try {
-    const res = await fetch(`/admin/api/artshop/${id}`);
-    const data = await res.json();
-
-    if (res.ok) {
-      document.getElementById('titleInput').value = data.title || '';
-      document.getElementById('descInput').value = data.description || '';
-      document.getElementById('priceInput').value = data.price || '';
-    if (data.imagePath) {
-      const imageFileName = data.imagePath.split('/').pop();
-      document.getElementById('shopPreviewImage').src = `/uploads/artshop/${imageFileName}`;
-      document.getElementById('shopPreviewImage').style.display = 'block';
-      document.getElementById('shopPlaceholderText').style.display = 'none';
-    } else {
-      document.getElementById('shopPreviewImage').style.display = 'none';
-      document.getElementById('shopPlaceholderText').style.display = 'block';
-    }
-
-    } else {
-      alert('해당 아트샵 데이터를 찾을 수 없습니다.');
-    }
-  } catch (err) {
-    console.error('조회 실패:', err);
-  }
-});
-
-// ✅ 아트샵 등록
-document.getElementById('btnRegister')?.addEventListener('click', async () => {
-  const file = document.getElementById('shopImage').files[0];
-  const title = document.getElementById('titleInput').value;
-  const description = document.getElementById('descInput').value;
-  const price = document.getElementById('priceInput').value;
-
-  if (!file || !title || !price) {
-    alert('이미지, 제목, 가격을 모두 입력하세요.');
+// 등록
+document.getElementById('btnRegister').addEventListener('click', async () => {
+  const file = shopImageInput.files[0];
+  if (!file || !titleInput.value || !descInput.value || !priceInput.value) {
+    alert('모든 필드를 입력해주세요.');
     return;
   }
 
   const formData = new FormData();
   formData.append('image', file);
-  formData.append('title', title);
-  formData.append('description', description);
-  formData.append('price', price);
+  formData.append('title', titleInput.value);
+  formData.append('description', descInput.value);
+  formData.append('price', priceInput.value);
 
-  const res = await fetch('/admin/api/artshop/upload', {
-    method: 'POST',
-    body: formData,
-    credentials: 'include',
-    headers: {
-      'X-XSRF-TOKEN': csrfToken 
-    }
-  });
-
-  res.ok ? alert('등록 완료!') : alert('등록 실패');
+  try {
+const res = await fetch('/admin/api/artshop/upload', {
+  method: 'POST',
+  body: formData,
+  headers: {
+    'X-XSRF-TOKEN': csrfToken   // 👉 CSRF 토큰 헤더 추가
+  },
+  credentials: 'include'         // 👉 세션 쿠키 포함 (Spring 인증 시 필요)
 });
 
-// ✅ 아트샵 수정
-document.getElementById('btnUpdate')?.addEventListener('click', async () => {
-  const id = document.getElementById('productId').value;
-  const title = document.getElementById('titleInput').value;
-  const description = document.getElementById('descInput').value;
-  const price = document.getElementById('priceInput').value;
-  const image = document.getElementById('shopImage').files[0];
+    if (res.ok) {
+      alert('등록 완료');
+      clearFields();
+    } else {
+      alert('등록 실패');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('에러 발생');
+  }
+});
 
-  if (!id || !title || !price) {
-    alert('ID, 제목, 가격을 입력하세요.');
+// 조회
+document.getElementById('btnSearch').addEventListener('click', async () => {
+  const id = productIdInput.value.trim();
+  if (!id) {
+    alert('ID를 입력하세요.');
     return;
   }
 
-  const formData = new FormData();
-  formData.append('title', title);
-  formData.append('description', description);
-  formData.append('price', price);
-  if (image) formData.append('image', image);
-
-  const res = await fetch(`/admin/api/artshop/${id}`, {
-    method: 'PUT',
-    headers: {
-      'X-XSRF-TOKEN': csrfToken
-    },
-    body: formData,
-    credentials: 'include'
-  });
-
-  res.ok ? alert('수정 완료!') : alert('수정 실패');
-});
-
-// ✅ 아트샵 삭제
-document.getElementById('btnDeleteShop')?.addEventListener('click', async () => {
-  const id = document.getElementById('productId').value;
-  if (!id || !confirm(`${id}번 아트샵 상품을 삭제할까요?`)) return;
-
-  const res = await fetch(`/admin/api/artshop/${id}`, {
-    method: 'DELETE',
-    credentials: 'include',
-    headers: {
-      'X-XSRF-TOKEN': csrfToken
+  try {
+    const res = await fetch(`/api/artshop`);
+    const items = await res.json();
+    const item = items.find(i => String(i.id) === id);
+    if (!item) {
+      alert('해당 ID의 항목이 없습니다.');
+      return;
     }
-  });
 
-  if (res.ok) {
-    alert('삭제 완료!');
-    clearShopForm();
-  } else {
-    alert('삭제 실패');
+    titleInput.value = item.title;
+    descInput.value = item.description;
+    priceInput.value = item.price;
+    shopPreviewImage.src = item.imageUrl;
+    shopPreviewImage.style.display = 'block';
+    shopPlaceholderText.style.display = 'none';
+  } catch (err) {
+    console.error(err);
+    alert('조회 실패');
   }
 });
 
-// ✅ 초기화
-document.getElementById('btnClear')?.addEventListener('click', () => {
-  clearShopForm();
+// 수정
+document.getElementById('btnUpdate').addEventListener('click', async () => {
+  const id = productIdInput.value.trim();
+  if (!id) {
+    alert('ID를 입력하세요.');
+    return;
+  }
+
+  const file = shopImageInput.files[0];
+  const formData = new FormData();
+  if (file) formData.append('image', file);
+  formData.append('title', titleInput.value);
+  formData.append('description', descInput.value);
+  formData.append('price', priceInput.value);
+
+  try {
+    const res = await fetch(`/admin/api/artshop/${id}`, {
+      method: 'PUT',
+      body: formData
+    });
+    if (res.ok) {
+      alert('수정 완료');
+      clearFields();
+    } else {
+      alert('수정 실패');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('에러 발생');
+  }
 });
 
-function clearShopForm() {
-  document.getElementById('productId').value = '';
-  document.getElementById('titleInput').value = '';
-  document.getElementById('descInput').value = '';
-  document.getElementById('priceInput').value = '';
-  document.getElementById('shopImage').value = '';
-  document.getElementById('shopPreviewImage').style.display = 'none';
-  document.getElementById('shopPlaceholderText').style.display = 'block';
+// 삭제
+document.getElementById('btnDelete').addEventListener('click', async () => {
+  const id = productIdInput.value.trim();
+  if (!id) {
+    alert('ID를 입력하세요.');
+    return;
+  }
+
+  if (!confirm('정말 삭제하시겠습니까?')) return;
+
+  try {
+    const res = await fetch(`/admin/api/artshop/${id}`, {
+      method: 'DELETE'
+    });
+    if (res.ok) {
+      alert('삭제 완료');
+      clearFields();
+    } else {
+      alert('삭제 실패');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('에러 발생');
+  }
+});
+
+// 초기화
+document.getElementById('btnClear').addEventListener('click', clearFields);
+
+function clearFields() {
+  productIdInput.value = '';
+  titleInput.value = '';
+  descInput.value = '';
+  priceInput.value = '';
+  shopImageInput.value = '';
+  shopPreviewImage.src = '';
+  shopPreviewImage.style.display = 'none';
+  shopPlaceholderText.style.display = 'block';
 }
+
 
   </script>
 
   <!-- DOMPurify -->
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
 </body>
+
 </html>

@@ -4,32 +4,31 @@ import walid.jahin.dto.LoginRequest;
 import walid.jahin.model.SessionConst;
 import walid.jahin.model.LoginLog;
 import walid.jahin.repository.LoginLogRepository;
-import walid.jahin.service.AdminService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private final AdminService adminService;
+    private final AuthenticationManager authenticationManager;
     private final LoginLogRepository loginLogRepository;
 
-    public AdminController(AdminService adminService, LoginLogRepository loginLogRepository) {
-        this.adminService = adminService;
+    public AdminController(AuthenticationManager authenticationManager,
+            LoginLogRepository loginLogRepository) {
+        this.authenticationManager = authenticationManager;
         this.loginLogRepository = loginLogRepository;
     }
 
@@ -54,36 +53,41 @@ public class AdminController {
                     .body("로그인 5회 이상 실패. 10분 후 다시 시도해주세요.");
         }
 
-        if (adminService.login(loginRequest.getUsername(), loginRequest.getPassword())) {
+        try {
+            // ✅ Spring Security에서 인증 시도
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()));
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsername(), null,
-                    List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
-
+            // ✅ SecurityContext에 저장
             SecurityContext context = SecurityContextHolder.createEmptyContext();
             context.setAuthentication(authentication);
             SecurityContextHolder.setContext(context);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
+            // ✅ 세션 등록
             session.setAttribute(SessionConst.LOGIN_ADMIN, loginRequest.getUsername());
-            session.setMaxInactiveInterval(1800);
+            session.setMaxInactiveInterval(1800); // 30분 세션 유지
 
+            // ✅ 로그인 기록
             loginLogRepository.save(new LoginLog(
                     loginRequest.getUsername(), clientIp, true, LocalDateTime.now()));
 
             request.changeSessionId();
 
             return ResponseEntity.ok("관리자 로그인 성공");
+
+        } catch (Exception ex) {
+            session.setAttribute("loginFailCount", failCount + 1);
+            session.setAttribute("lastFailTime", System.currentTimeMillis());
+
+            loginLogRepository.save(new LoginLog(
+                    loginRequest.getUsername(), clientIp, false, LocalDateTime.now()));
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("로그인 실패 (" + (failCount + 1) + "회)");
         }
-
-        session.setAttribute("loginFailCount", failCount + 1);
-        session.setAttribute("lastFailTime", System.currentTimeMillis());
-
-        loginLogRepository.save(new LoginLog(
-                loginRequest.getUsername(), clientIp, false, LocalDateTime.now()));
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body("로그인 실패 (" + (failCount + 1) + "회)");
     }
 
     @PostMapping("/logout")

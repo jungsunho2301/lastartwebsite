@@ -4,360 +4,237 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Artist - Walid Jahin</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link th:href="@{/css/style.css}" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
-    body { margin: 0; font-family: 'Noto Sans KR', sans-serif; background-color: #fff; color: #111; }
-    header { background-color: #f9f9f9; padding: 32px 40px; border-bottom: 1px solid #e5e5e5; position: relative; }
-    .header-inner { display: flex; justify-content: center; align-items: center; }
-    .nav-wrapper { display: flex; flex-direction: column; align-items: center; }
-    .logo { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 800; letter-spacing: -1px; }
-    .nav-links { display: flex; gap: 16px; margin-top: 12px; }
-    .nav-links a { text-decoration: none; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 500; color: #111; border: 1px solid #ccc; transition: background-color 0.3s; }
-    .nav-links a:hover, .nav-links a.active { background-color: #f0f0f0; }
-    .lang { position: absolute; right: 40px; top: 32px; font-size: 14px; color: #111; white-space: nowrap; display: flex; align-items: center; gap: 12px; }
-    footer { background-color: #191A1B; color: #fff; padding: 60px 20px 40px; text-align: center; }
-    footer nav a { color: #ccc; margin: 0 12px; font-size: 14px; text-decoration: none; }
-    footer nav a:hover { color: #fff; }
-    .footer-logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; margin-top: 30px; }
-    .footer-bottom { font-size: 12px; color: #888; margin-top: 20px; }
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
+
+    header {
+      background-color: #f9f9f9;
+      padding: 40px 40px;
+      border-bottom: 1px solid #e5e5e5;
+      position: relative;
+      height: 160px;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .nav-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #111;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #f0f0f0;
+    }
+
+    .lang {
+      position: absolute;
+      right: 40px;
+      top: 32px;
+      font-size: 14px;
+      color: #111;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lang button {
+      background: black;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: #191A1B;
+      color: #fff;
+      padding: 60px 20px 40px;
+      text-align: center;
+    }
+
+    footer nav a {
+      color: #ccc;
+      margin: 0 12px;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    footer nav a:hover {
+      color: #fff;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 800;
+      margin-top: 30px;
+    }
+
+    .footer-bottom {
+      font-size: 12px;
+      color: #888;
+      margin-top: 20px;
+    }
+
     .sns-icon svg {
       margin-top: 20px;
       transition: fill 0.3s;
       fill: #000;
     }
+
     .sns-icon svg:hover {
       fill: #fff;
     }
-        .product-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 32px;
+
+    .artshop-container {
       max-width: 1200px;
-      margin: 80px auto;
-      padding: 0 20px;
+      margin: 0 auto;
+      padding: 60px 20px;
     }
 
-    .product-card {
-      border: 1px solid #ddd;
-      border-radius: 12px;
+    .artshop-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .artshop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .artshop-card {
+      border: 1px solid #eee;
       padding: 16px;
-      background-color: #fff;
-      transition: transform 0.2s, box-shadow 0.2s;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    }
-
-    .product-card img {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 12px;
-    }
-
-    .product-title {
-      font-weight: 600;
-      font-size: 16px;
-      margin-bottom: 4px;
-    }
-
-    .product-meta {
-      font-size: 14px;
-      color: #777;
-      margin-bottom: 4px;
-    }
-
-    .product-price {
-      font-size: 16px;
-      color: #000;
-    }
-
-        .artwork-intro {
+      background: #fff;
       text-align: center;
-      margin-top: 60px;
+      transition: box-shadow 0.3s ease;
     }
-    .artwork-intro h2 {
-      font-size: 28px;
-      font-weight: bold;
+
+    .artshop-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    .artshop-card img {
+      max-width: 100%;
+      height: 200px;
+      object-fit: cover;
       margin-bottom: 10px;
     }
-    .artwork-intro p {
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
+
+    .artshop-card .title {
+      font-weight: bold;
+      margin: 8px 0;
     }
+
+    .artshop-card .price {
+      color: #333;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+        footer { background-color: #191A1B; color: #fff; padding: 60px 20px 40px; text-align: center; }
+    footer nav a { color: #ccc; margin: 0 12px; font-size: 14px; text-decoration: none; }
+    footer nav a:hover { color: #fff; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; margin-top: 30px; }
+    .footer-bottom { font-size: 12px; color: #888; margin-top: 20px; }
+    .sns-icon svg { margin-top: 20px; transition: fill 0.3s; fill: #000000; }
+    .sns-icon svg:hover { fill: #fff; }
+    
   </style>
 </head>
+
 <body class="bg-white text-gray-900 font-sans">
   <header>
     <div class="header-inner">
       <div class="nav-wrapper">
         <div class="logo">Walid Jahin</div>
         <div class="nav-links">
-          <a href="/index.html">HOME</a>
-          <a href="/artist.html">ARTIST</a>
-          <a href="/artwork.html">ART WORK</a>
-          <a href="/artshop.html">ART SHOP</a>
+          <a th:href="@{/index}">HOME</a>
+          <a th:href="@{/artist}">ARTIST</a>
+          <a th:href="@{/artwork}">ART WORK</a>
+          <a th:href="@{/artshop}">ART SHOP</a>
         </div>
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
       </div>
     </div>
   </header>
 
-  <script>
-    const adminButton = document.getElementById('adminButton');
-    function updateAdminButton() {
-      const isAdmin = localStorage.getItem('isAdmin') === 'true';
-      adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
-      adminButton.onclick = () => {
-        if (isAdmin) {
-          localStorage.removeItem('isAdmin');
-          location.reload();
-        } else {
-          location.href = '/admin/login';
-        }
-      };
-    }
-    document.addEventListener('DOMContentLoaded', updateAdminButton);
-  </script>
+  <!-- Artwork Intro -->
+  <section class="text-center py-16">
+    <h2 class="text-4xl font-serif font-semibold mb-2">WALID JAHIN</h2>
+    <h2 class="text-3xl font-serif mb-4">ART WORK</h2>
+  </section>
 
-<!-- Artwork Introduction -->
-<section class="artwork-intro">
-  <h2>WALID JAHIN</h2>
-  <h2>ART WORK SHOP</h2>
-  <p>
-   Lörem ipsum divis mask. Fare tärat förutom apobel och meganade. .
-Stenode pysyr kavis som terracism reaska. Hexalig epigt tehuvis. Ditrengen a gon. 
-  </p>
-</section>
+  <!-- Main Content -->
+  <main class="artshop-container">
+    <section class="artshop-header">
+      <h1>ARTSHOP</h1>
+      <select id="sort-select">
+        <option value="latest">Latest</option>
+        <option value="lowprice">Lowest Price</option>
+        <option value="highprice">Highest Price</option>
+      </select>
+    </section>
 
-<script>
-  const adminButton = document.getElementById('adminButton');
+    <section id="artshop-items" class="artshop-grid">
+      <!-- JS로 상품 카드 들어오는 영역 -->
+    </section>
+  </main>
 
-  function updateAdminButton() {
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
-    adminButton.onclick = () => {
-      if (isAdmin) {
-        localStorage.removeItem('isAdmin');
-        location.reload();
-      } else {
-        location.href = '/docs/admin/login.html';
-      }
-    };
-  }
-
-  document.addEventListener('DOMContentLoaded', updateAdminButton);
-</script>
-
-<section class="product-grid">
-  <!-- Product 1~30 -->
-  <!-- 1 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art1.jpg" alt="Artwork 1" />
-    <div class="product-title">Artwork 1</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 300,000</div>
-  </button>
-
-  <!-- 2 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art2.jpg" alt="Artwork 2" />
-    <div class="product-title">Artwork 2</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 310,000</div>
-  </button>
-
-  <!-- 3 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art3.jpg" alt="Artwork 3" />
-    <div class="product-title">Artwork 3</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 320,000</div>
-  </button>
-
-  <!-- 4 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art4.jpg" alt="Artwork 4" />
-    <div class="product-title">Artwork 4</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 330,000</div>
-  </button>
-
-  <!-- 5 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art5.jpg" alt="Artwork 5" />
-    <div class="product-title">Artwork 5</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 340,000</div>
-  </button>
-
-  <!-- 6 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art6.jpg" alt="Artwork 6" />
-    <div class="product-title">Artwork 6</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 350,000</div>
-  </button>
-
-  <!-- 7 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art7.jpg" alt="Artwork 7" />
-    <div class="product-title">Artwork 7</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 360,000</div>
-  </button>
-
-  <!-- 8 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art8.jpg" alt="Artwork 8" />
-    <div class="product-title">Artwork 8</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 370,000</div>
-  </button>
-
-    <!-- 1 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art1.jpg" alt="Artwork 1" />
-    <div class="product-title">Artwork 1</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 300,000</div>
-  </button>
-
-  <!-- 2 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art2.jpg" alt="Artwork 2" />
-    <div class="product-title">Artwork 2</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 310,000</div>
-  </button>
-
-  <!-- 3 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art3.jpg" alt="Artwork 3" />
-    <div class="product-title">Artwork 3</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 320,000</div>
-  </button>
-
-  <!-- 4 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art4.jpg" alt="Artwork 4" />
-    <div class="product-title">Artwork 4</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 330,000</div>
-  </button>
-
-  <!-- 5 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art5.jpg" alt="Artwork 5" />
-    <div class="product-title">Artwork 5</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 340,000</div>
-  </button>
-
-  <!-- 6 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art6.jpg" alt="Artwork 6" />
-    <div class="product-title">Artwork 6</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 350,000</div>
-  </button>
-
-  <!-- 7 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art7.jpg" alt="Artwork 7" />
-    <div class="product-title">Artwork 7</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 360,000</div>
-  </button>
-
-  <!-- 8 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art8.jpg" alt="Artwork 8" />
-    <div class="product-title">Artwork 8</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 370,000</div>
-  </button>
-
-    <!-- 1 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art1.jpg" alt="Artwork 1" />
-    <div class="product-title">Artwork 1</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 300,000</div>
-  </button>
-
-  <!-- 2 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art2.jpg" alt="Artwork 2" />
-    <div class="product-title">Artwork 2</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 310,000</div>
-  </button>
-
-  <!-- 3 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art3.jpg" alt="Artwork 3" />
-    <div class="product-title">Artwork 3</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 320,000</div>
-  </button>
-
-  <!-- 4 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art4.jpg" alt="Artwork 4" />
-    <div class="product-title">Artwork 4</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 330,000</div>
-  </button>
-
-  <!-- 5 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art5.jpg" alt="Artwork 5" />
-    <div class="product-title">Artwork 5</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 340,000</div>
-  </button>
-
-  <!-- 6 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art6.jpg" alt="Artwork 6" />
-    <div class="product-title">Artwork 6</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 350,000</div>
-  </button>
-
-  <!-- 7 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art7.jpg" alt="Artwork 7" />
-    <div class="product-title">Artwork 7</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 360,000</div>
-  </button>
-
-  <!-- 8 -->
-  <button class="product-card" onclick="location.href='purchase.html'">
-    <img src="assets/images/art8.jpg" alt="Artwork 8" />
-    <div class="product-title">Artwork 8</div>
-    <div class="product-meta">WALID JAHIN</div>
-    <div class="product-price">₩ 370,000</div>
-  </button>
-
-</section>
-
-  <div th:insert="~{::content}" />
-
-  
-  <footer>
+    <footer>
     <nav>
       <a th:href="@{/index}">HOME</a>
       <a th:href="@{/privacy}">PRIVACY POLICY</a>
@@ -380,17 +257,93 @@ Stenode pysyr kavis som terracism reaska. Hexalig epigt tehuvis. Ditrengen a gon
     <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
   </footer>
 
+
+  <!-- Admin 버튼 처리 -->
+  <script>
+    const adminButton = document.getElementById('adminButton');
+    function updateAdminButton() {
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+      adminButton.onclick = () => {
+        if (isAdmin) {
+          localStorage.removeItem('isAdmin');
+          location.reload();
+        } else {
+          location.href = '/admin/login';
+        }
+      };
+    }
+    document.addEventListener('DOMContentLoaded', updateAdminButton);
+  </script>
+
+  <!-- Artshop Fetch Script -->
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    console.log('DOM fully loaded!');
+    loadArtshopItems();
+
+    document.getElementById('sort-select').addEventListener('change', function (e) {
+      loadArtshopItems(e.target.value);
+    });
+  });
+
+  async function loadArtshopItems(sort = 'latest') {
+    const container = document.getElementById('artshop-items');
+    if (!container) {
+      console.error('❌ artshop-items element not found!');
+      return;
+    }
+
+    container.innerHTML = 'Loading...';
+
+    try {
+      const res = await fetch(`/api/artshop?sort=${sort}`);
+      const data = await res.json();
+      console.log('✅ Fetched data:', data);
+
+      const items = data.content;
+      if (!items || items.length === 0) {
+        container.innerHTML = 'No items found.';
+        return;
+      }
+
+      container.innerHTML = '';
+
+items.forEach(item => {
+  const card = document.createElement('div');
+  card.className = 'artshop-card';
+  card.innerHTML = `
+    <a href="/purchase" style="text-decoration: none; color: inherit;">
+      <img src="/uploads/${DOMPurify.sanitize(item.imageUrl)}" alt="${DOMPurify.sanitize(item.title)}" />
+      <div class="title">${DOMPurify.sanitize(item.title)}</div>
+      <div class="price">₩${item.price.toLocaleString()}</div>
+      <div class="desc">${DOMPurify.sanitize(item.description)}</div>
+    </a>
+  `;
+  container.appendChild(card);
+});
+
+
+
+    } catch (err) {
+      console.error('❌ Fetch failed:', err);
+      container.innerHTML = 'Failed to load items.';
+    }
+  }
+</script>
+
+
+  <!-- GTranslate 설정 -->
   <script>
     window.gtranslateSettings = {
-      "default_language": "en",
-      "native_language_names": true,
-      "languages": ["en", "ar", "ko"],
-      "wrapper_selector": ".gtranslate_wrapper",
-      "flag_size": 24,
-      "switcher_horizontal_position": "inline"
+      default_language: "en",
+      native_language_names: true,
+      languages: ["en", "ar", "ko"],
+      wrapper_selector: ".gtranslate_wrapper",
+      flag_size: 24,
+      switcher_horizontal_position: "inline"
     };
   </script>
-  <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
 </body>
 </html>

@@ -8,15 +8,87 @@
   <link th:href="@{/css/style.css}" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
-    body { margin: 0; font-family: 'Noto Sans KR', sans-serif; background-color: #fff; color: #111; }
-    header { background-color: #f9f9f9; padding: 32px 40px; border-bottom: 1px solid #e5e5e5; position: relative; }
-    .header-inner { display: flex; justify-content: center; align-items: center; }
-    .nav-wrapper { display: flex; flex-direction: column; align-items: center; }
-    .logo { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 800; letter-spacing: -1px; }
-    .nav-links { display: flex; gap: 16px; margin-top: 12px; }
-    .nav-links a { text-decoration: none; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 500; color: #111; border: 1px solid #ccc; transition: background-color 0.3s; }
-    .nav-links a:hover, .nav-links a.active { background-color: #f0f0f0; }
-    .lang { position: absolute; right: 40px; top: 32px; font-size: 14px; color: #111; white-space: nowrap; display: flex; align-items: center; gap: 12px; }
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #fff;
+      color: #111;
+    }
+
+header {
+  background-color: #f9f9f9;
+  padding: 40px 40px; /* 상하 여백을 늘림 */
+  border-bottom: 1px solid #e5e5e5;
+  position: relative;
+  height: 160px; /* 명시적 높이 확보 */
+}
+
+    .header-inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+.nav-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #111;
+      border: 1px solid #ccc;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background-color: #f0f0f0;
+    }
+
+    .lang {
+      position: absolute;
+      right: 40px;
+      top: 32px;
+      font-size: 14px;
+      color: #111;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lang button {
+      background: black;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
     footer { background-color: #191A1B; color: #fff; padding: 60px 20px 40px; text-align: center; }
     footer nav a { color: #ccc; margin: 0 12px; font-size: 14px; text-decoration: none; }
     footer nav a:hover { color: #fff; }
@@ -69,15 +141,15 @@
       <div class="nav-wrapper">
         <div class="logo">Walid Jahin</div>
         <div class="nav-links">
-          <a href="/index.html">HOME</a>
-          <a href="/artist.html">ARTIST</a>
-          <a href="/artwork.html">ART WORK</a>
-          <a href="/artshop.html">ART SHOP</a>
+          <a th:href="@{/index}">HOME</a>
+          <a th:href="@{/artist}">ARTIST</a>
+          <a th:href="@{/artwork}">ART WORK</a>
+          <a th:href="@{/artshop}">ART SHOP</a>
         </div>
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="background: black; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
       </div>
     </div>
   </header>
@@ -99,97 +171,81 @@
     document.addEventListener('DOMContentLoaded', updateAdminButton);
   </script>
 
- <!-- Bio Section -->
+<body>
+  <!-- Bio Section -->
   <section class="w-full py-16 text-center">
-    <h2 class="text-4xl font-serif font-semibold mb-2">Walid Jahin</h2>
-    <p class="text-gray-600">Born in 1974</p>
-    <p class="text-gray-600 mt-2 text-sm px-4 max-w-3xl mx-auto">
-      He lives in Alexandria and works as a professor at the Faculty of Fine Arts, Alexandria University, Department of Painting. <br />
-      He received his Master's Degree in Coptic Icons in 2005, and a Doctorate in Painting Techniques in 2010.
-    </p>
+    <h2 class="text-4xl font-serif font-semibold mb-2">WALID JAHIN</h2>
+    <p id="artist-born" class="text-gray-600"></p>
+    <p id="artist-bio" class="text-gray-600 mt-2 text-sm px-4 max-w-3xl mx-auto"></p>
   </section>
 
   <!-- Gallery Row -->
   <section class="w-full py-10">
-    <div class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-6 gap-4">
-      <img src="assets/images/photo1.png" alt="Photo 1" class="rounded shadow" />
-      <img src="assets/images/photo2.png" alt="Photo 2" class="rounded shadow" />
-      <img src="assets/images/photo3.png" alt="Photo 3" class="rounded shadow" />
-      <img src="assets/images/photo4.png" alt="Photo 4" class="rounded shadow" />
-      <img src="assets/images/photo5.png" alt="Photo 5" class="rounded shadow" />
-      <img src="assets/images/photo6.png" alt="Photo 6" class="rounded shadow" />
+    <div id="artist-gallery" class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-6 gap-4">
+      <!-- JS로 이미지 삽입 -->
     </div>
   </section>
 
   <!-- Major Work Slider -->
   <section class="text-center py-12">
     <h3 class="text-3xl font-serif mb-6">Major Work</h3>
-    <div class="max-w-4xl mx-auto grid grid-cols-4 gap-4">
-      <img src="assets/images/major1.png" alt="Major Work 1" class="rounded" />
-      <img src="assets/images/major2.png" alt="Major Work 2" class="rounded" />
-      <img src="assets/images/major3.png" alt="Major Work 3" class="rounded" />
-      <img src="assets/images/major4.png" alt="Major Work 4" class="rounded" />
+    <div id="major-work" class="max-w-4xl mx-auto grid grid-cols-4 gap-4">
+      <!-- JS로 이미지 삽입 -->
     </div>
   </section>
 
   <!-- Exhibition Sections -->
-  <section class="max-w-4xl mx-auto px-4 py-12 space-y-10">
-    <div>
-      <h4 class="font-serif text-xl mb-2">Major Solo Shows In Cairo</h4>
-      <p class="text-sm text-gray-600">
-        "Eve" — Cairo Opera House, 2020<br />
-        "The Ego" — Omm Contemporary Art Gallery, 2021<br />
-        "Into The Scene" — Zamalek Art Gallery, 2022
-      </p>
-    </div>
-
-    <div>
-      <h4 class="font-serif text-xl mb-2">International Solo Exhibitions</h4>
-      <p class="text-sm text-gray-600">
-        "An Egyptian Voice In Diaspora" — Alliance Francais Centre, Dhaka, Bangladesh, 2014<br />
-        "Time" — Bongsan Art Center, Daegu, South Korea, 2018
-      </p>
-    </div>
-
-    <div class="grid grid-cols-2 gap-8">
-      <div>
-        <h4 class="font-serif text-xl mb-2">Solo Exhibitions</h4>
-        <p class="text-sm text-gray-600">19 Solo Exhibitions In Painting Since 2000, Egypt And Abroad.</p>
-      </div>
-      <div>
-        <h4 class="font-serif text-xl mb-2">Group Exhibitions</h4>
-        <p class="text-sm text-gray-600">Active Participant In Group Exhibitions And Cultural Events In Egypt Since 1995.</p>
-      </div>
-    </div>
-
-    <div>
-      <h4 class="font-serif text-xl mb-2">Achievement</h4>
-      <p class="text-sm text-gray-600">
-        First Prize, 7th International Biennial Of Tashkent, 2013<br />
-        Grand Prize, International Exhibition For Contemporary Art, South Korea, 2016<br />
-        Best Artwork Award, LA International Invitational Exhibition, Loyola Marymount University, USA, 2022
-      </p>
-    </div>
-
-    <div>
-      <h4 class="font-serif text-xl mb-2">Collections</h4>
-      <p class="text-sm text-gray-600">
-        Walid Jahin’s artworks are held in private cultural institutions in Egypt and across many Arab and international countries:<br />
-        Germany, Spain, France, Italy, Poland, Montenegro, Turkey, Dubai, Saudi Arabia, South Korea, Tunisia, Bangladesh.
-      </p>
-    </div>
-
-    <div>
-      <h4 class="font-serif text-xl mb-2">Work Style</h4>
-      <p class="text-sm text-gray-600">
-        Blends Contemporary Aesthetics With Symbolic Depth.<br />
-        Randomly Employs Abstract Forms And Vibrant Colors.<br />
-        Explores Diverse Subjects, Including Nature, Humanity, And Urban Landscapes.<br />
-        Widely Acknowledged By Collectors And Recognized In The Contemporary Art Scene.<br />
-        Holds A Distinguished Position In The Global Art Community.
-      </p>
-    </div>
+  <section id="exhibition-section" class="max-w-4xl mx-auto px-4 py-12 space-y-10">
+    <!-- JS로 데이터 삽입 -->
   </section>
+
+   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+  <script>
+    async function loadArtistContent() {
+      try {
+        const bio = await fetch('/api/artist/section/bio').then(r => r.json());
+        const born = await fetch('/api/artist/section/born').then(r => r.json());
+        document.getElementById('artist-born').innerText = DOMPurify.sanitize(born.content || '');
+        document.getElementById('artist-bio').innerText = DOMPurify.sanitize(bio.content || '');
+
+        const gallery = await fetch('/api/artist/gallery').then(r => r.json());
+        const galleryContainer = document.getElementById('artist-gallery');
+        galleryContainer.innerHTML = '';
+        gallery.forEach(img => {
+          const el = document.createElement('img');
+          el.src = '/uploads/' + DOMPurify.sanitize(img);
+          el.className = 'rounded shadow';
+          galleryContainer.appendChild(el);
+        });
+
+        const major = await fetch('/api/artist/major').then(r => r.json());
+        const majorContainer = document.getElementById('major-work');
+        majorContainer.innerHTML = '';
+        major.forEach(img => {
+          const el = document.createElement('img');
+          el.src = '/uploads/' + DOMPurify.sanitize(img);
+          el.className = 'rounded';
+          majorContainer.appendChild(el);
+        });
+
+        const exhibitions = await fetch('/api/artist/exhibition').then(r => r.json());
+        const section = document.getElementById('exhibition-section');
+        section.innerHTML = '';
+        exhibitions.forEach(ex => {
+          const div = document.createElement('div');
+          div.innerHTML = `
+            <h4 class="font-serif text-xl mb-2">${DOMPurify.sanitize(ex.title)}</h4>
+            <p class="text-sm text-gray-600">${DOMPurify.sanitize(ex.content)}</p>
+          `;
+          section.appendChild(div);
+        });
+      } catch (e) {
+        console.error('❌ Artist Load Error:', e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadArtistContent);
+  </script>
 
 
   <footer>
