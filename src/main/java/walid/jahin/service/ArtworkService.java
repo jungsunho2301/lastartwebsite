@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -36,28 +37,28 @@ public class ArtworkService {
         File uploadPath = new File(getUploadDir());
         if (!uploadPath.exists()) {
             boolean created = uploadPath.mkdirs();
-            System.out.println("📁 디렉토리 생성됨: " + created);
+            System.out.println("📁 Directory OK: " + created);
         }
 
         String originalFilename = image.getOriginalFilename();
         if (originalFilename == null || originalFilename.isBlank()) {
-            throw new IOException("파일명이 유효하지 않습니다.");
+            throw new IOException("File Name Not OK.");
         }
-        System.out.println("🧾 원본 파일명: " + originalFilename);
+        System.out.println("🧾 Raw File Name: " + originalFilename);
 
         String filename = UUID.randomUUID() + "_" + originalFilename;
         File dest = new File(uploadPath, filename);
-        System.out.println("📁 저장 경로: " + dest.getAbsolutePath());
+        System.out.println("📁 Save Way: " + dest.getAbsolutePath());
 
         try {
             image.transferTo(dest);
         } catch (IOException e) {
-            System.out.println("🧨 파일 저장 실패: " + e.getMessage());
+            System.out.println("🧨 File Save Failed: " + e.getMessage());
             throw e;
         }
 
         Artwork artwork = Artwork.builder()
-                .imagePath("/" + relativeUploadDir + filename)  // 앞에 / 추가해서 접근 경로 형식 통일
+                .imagePath("/" + relativeUploadDir + filename) // 앞에 / 추가해서 접근 경로 형식 통일
                 .build();
 
         return artworkRepository.save(artwork);
@@ -123,5 +124,9 @@ public class ArtworkService {
         System.out.println("📦 Pageable 객체: " + pageable);
 
         return artworkRepository.findAll(pageable);
+    }
+
+    public Optional<Artwork> findById(Long id) {
+        return artworkRepository.findById(id);
     }
 }

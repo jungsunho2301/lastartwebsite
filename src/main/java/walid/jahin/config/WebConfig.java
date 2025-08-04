@@ -6,19 +6,17 @@ import org.springframework.web.servlet.config.annotation.*;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Override
+        @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+                // ✅ 업로드 경로 (artwork, artshop 포함)
                 registry.addResourceHandler("/uploads/**")
-                        .addResourceLocations("file:" + System.getProperty("user.dir") + "/uploads/");
+                                .addResourceLocations("file:" + System.getProperty("user.dir") + "/uploads/");
 
-        // 정적 리소스: css, js, images 만
-        registry.addResourceHandler("/css/**")
-                .addResourceLocations("classpath:/static/css/");
-        registry.addResourceHandler("/js/**")
-                .addResourceLocations("classpath:/static/js/");
-        registry.addResourceHandler("/images/**")
-                .addResourceLocations("classpath:/static/images/");
-    }
-
+                // ✅ 정적 리소스
+                registry.addResourceHandler("/css/**")
+                                .addResourceLocations("classpath:/static/css/");
+                registry.addResourceHandler("/js/**")
+                                .addResourceLocations("classpath:/static/js/");
+        }
 }
-  

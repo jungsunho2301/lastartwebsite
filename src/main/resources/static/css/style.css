@@ -27,7 +27,7 @@ header {
 
 header .logo {
   font-family: 'Playfair Display', serif;
-  font-size: 28px;
+  font-size: 40px;
   font-weight: 800;
   color: #111;
 }
@@ -211,8 +211,9 @@ header {
   text-decoration: none;
   padding: 10px 20px;
   border-radius: 30px;
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: bold;
   color: #111;
   border: 1px solid #ccc;
   transition: background-color 0.3s;
@@ -368,3 +369,42 @@ textarea {
   text-align: center;
 }
 
+.preview-box {
+  position: fixed;
+  top: 20%;
+  left: 60%;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  z-index: 1000;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  max-width: 600px;
+}
+
+.preview-box.hidden {
+  display: none;
+}
+
+.preview-box img {
+  width: 200px;
+  height: auto;
+  object-fit: contain;
+}
+
+.preview-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+.preview-info p {
+  margin: 4px 0;
+}
+
+.artshop-card img {
+  display: block;       /* inline 요소인 img를 block으로 바꿈 */
+  margin: 0 auto;       /* 좌우 margin 자동 */
+  max-width: 100%;      /* 혹시 너무 커질 경우 대비 */
+  height: auto;
+}

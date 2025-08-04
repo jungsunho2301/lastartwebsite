@@ -4,6 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="_csrf" th:content="${_csrf.token}" />
+  <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+  
   <title>Walid Jahin Art Studio</title>
 
   <meta name="_csrf" th:content="${_csrf.token}" />
@@ -15,7 +19,7 @@
 
   <!-- Static CSS/JS -->
   <link rel="stylesheet" th:href="@{/css/style.css}" />
-  <script defer th:src="@{/admin/dashboard.js}"></script>
+
 
   <!-- GTranslate -->
   <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
@@ -310,7 +314,6 @@ header {
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
         <!-- 로그아웃 버튼 -->
         <button id="logoutButton" style="background: #f9f9f9; color: black; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGOUT</button>
 
@@ -359,43 +362,31 @@ header {
     </section>
 
     <!-- Artist Management -->
-<section class="artist-manage upload-section">
-  <h2>Artist Page Management</h2>
+    <section class="artist-manage upload-section">
+      <h2>Artist Section Content Editor</h2>
 
-  <!-- Bio Section -->
-  <div class="form-section">
-    <h3>Bio Section</h3>
-    <label for="artistBorn">Born Info</label>
-    <input type="text" id="artistBorn" placeholder="Born in ..." />
+      <div class="form-section">
+        <label for="sectionKey">Section:</label>
+        <select id="sectionKey">
+          <option value="major_solo">Major Solo Shows In Cairo</option>
+          <option value="international">International Solo Exhibitions</option>
+          <option value="solo">Solo Exhibitions</option>
+          <option value="group">Group Exhibitions</option>
+          <option value="achievement">Achievement</option>
+          <option value="collections">Collections</option>
+          <option value="work_style">Work Style</option>
+        </select>
+      </div>
 
-    <label for="artistBio">Bio Description</label>
-    <textarea id="artistBio" rows="4" placeholder="Bio content..."></textarea>
+      <div class="form-section">
+        <label for="sectionContent">Section Content:</label>
+        <textarea id="sectionContent" rows="3" placeholder="Enter the Section Content"></textarea>
+      </div>
 
-    <button id="btnSaveBio">Save Bio</button>
-  </div>
+      <button id="btnLoadSection">Load</button>
+      <button id="btnUpdateSection">Save</button>
+    </section>
 
-  <!-- Gallery -->
-  <div class="form-section">
-    <h3>Gallery Images</h3>
-    <input type="file" id="galleryUpload" accept="image/*" />
-    <button id="btnUploadGallery">Upload Image</button>
-  </div>
-
-  <!-- Major Work -->
-  <div class="form-section">
-    <h3>Major Works</h3>
-    <input type="file" id="majorUpload" accept="image/*" />
-    <button id="btnUploadMajor">Upload Image</button>
-  </div>
-
-  <!-- Exhibitions -->
-  <div class="form-section">
-    <h3>Exhibitions</h3>
-    <input type="text" id="exhibitionTitle" placeholder="Exhibition title" />
-    <textarea id="exhibitionContent" placeholder="Exhibition description"></textarea>
-    <button id="btnAddExhibition">Add</button>
-  </div>
-</section>
 
 
 
@@ -417,12 +408,6 @@ header {
         <input type="text" id="artworkId" placeholder="Artwork ID" />
         <button id="btnApply">Search</button>
       </div>
-      <label for="artworkTitle">Title</label>
-      <input type="text" id="artworkTitle" placeholder="Enter title" />
-      <label for="artworkDesc">Description</label>
-      <textarea id="artworkDesc" placeholder="Enter artwork description"></textarea>
-      <label for="artworkPrice">Price</label>
-      <input type="number" id="artworkPrice" placeholder="Enter price" />
       <div class="btn-group">
         <button id="btnRegisterArtwork" type="button">Register</button>
         <button id="btnUpdateArtwork" type="button">Update</button>
@@ -501,23 +486,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 로그아웃 버튼
 const logoutBtn = document.getElementById("logoutButton");
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", async () => {
-    try {
-      const res = await fetch("/api/admin/logout", {
-        method: "POST",
-        credentials: "include"
-      });
-      if (res.ok) {
-        window.location.href = "/index";
-      } else {
-        alert("로그아웃 실패");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      try {
+
+        const res = await fetch("/api/admin/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include" // ✅ 세션 쿠키 포함
+        });
+
+        if (res.ok) {
+          alert("Logout Completed");
+          window.location.href = "/index";
+        } else {
+          const text = await res.text();
+          alert("Logout Failed: " + text);
+        }
+      } catch (err) {
+        console.error("Request failed", err);
+        alert("Failed to connect to the server");
       }
-    } catch (err) {
-      alert("서버 연결 실패");
-    }
-  });
-}
+    });
+  }
+
 
 
   // 인스타그램 URL 불러오기
@@ -568,6 +562,8 @@ if (logoutBtn) {
   </script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
   
+
+  
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('artworkFile')?.addEventListener('change', (e) => {
@@ -585,152 +581,200 @@ if (logoutBtn) {
       }
     });
 
+    // 아트워크 조회
+    document.getElementById('btnApply').addEventListener('click', async () => {
+      const id = document.getElementById('artworkId').value.trim();
+      if (!id) {
+        alert('Enter the ID.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`/admin/api/artwork/${id}`, {
+          credentials: 'include' // 세션 인증 포함
+        });
+
+        if (!res.ok) {
+          alert('No artwork found with the given ID.');
+          return;
+        }
+
+        const item = await res.json();
+
+        const imageUrl = `/uploads/artwork/${item.imagePath?.split('/').pop()}`;
+        document.getElementById('artworkPreviewImage').src = imageUrl;
+        document.getElementById('artworkPreviewImage').style.display = 'block';
+        document.getElementById('artworkPlaceholderText').style.display = 'none';
+      } catch (err) {
+        console.error('Retrieval error:', err);
+        alert('Failed to retrieve');
+      }
+    });
+
+
+    // 아트워크 등록
     document.getElementById('btnRegisterArtwork')?.addEventListener('click', async () => {
-      const title = document.getElementById('artworkTitle').value;
-      const desc = document.getElementById('artworkDesc').value;
-      const price = document.getElementById('artworkPrice').value;
       const file = document.getElementById('artworkFile').files[0];
 
-      if (!title || !file) {
-        alert('제목과 파일을 입력해주세요.');
+      if (!file) {
+        alert('Please attach a file.');
         return;
       }
 
       const formData = new FormData();
-      formData.append('title', title);
-      formData.append('description', desc);
-      formData.append('price', price);
-      formData.append('file', file);
+      formData.append('image', file);
 
       const res = await fetch('/admin/api/artwork/upload', {
         method: 'POST',
         body: formData,
+        headers: {
+          'X-XSRF-TOKEN': csrfToken   // 👉 CSRF 토큰 헤더 추가
+        },
         credentials: 'include'
       });
 
       alert(res.ok ? 'Artwork registered!' : 'Failed to register artwork.');
     });
 
+
+    // 아트워크 수정
     document.getElementById('btnUpdateArtwork')?.addEventListener('click', async () => {
       const id = document.getElementById('artworkId').value;
       const file = document.getElementById('artworkFile').files[0];
       if (!id || !file) {
-        alert('Artwork ID와 파일을 모두 입력해주세요.');
+        alert('Please attach a file.');
         return;
       }
-      const formData = new FormData();
-      formData.append('file', file);
-      const res = await fetch(`/admin/api/artwork/${id}`, {
-        method: 'PUT',
-        body: formData,
-        credentials: 'include'
-      });
-      alert(res.ok ? 'Artwork updated!' : 'Failed to update artwork.');
-    });
 
-    document.getElementById('btnDeleteArtwork')?.addEventListener('click', async () => {
-      const id = document.getElementById('artworkId').value;
-      if (!id || !confirm(`${id}번 아트워크를 삭제할까요?`)) return;
-      const res = await fetch(`/admin/api/artwork/${id}`, {
-        method: 'DELETE',
-        credentials: 'include'
-      });
-      if (res.ok) {
-        alert('Artwork deleted!');
-        document.getElementById('artworkFile').value = '';
-        document.getElementById('artworkPreviewImage').style.display = 'none';
-        document.getElementById('artworkPlaceholderText').style.display = 'block';
-      } else {
-        alert('Failed to delete artwork.');
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+      const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+      try {
+        const res = await fetch(`/admin/api/artwork/${id}`, {
+          method: 'PUT',
+          credentials: 'include',
+          headers: {
+            [csrfHeader]: csrfToken
+          },
+          body: formData
+        });
+
+        alert(res.ok ? 'Artwork updated!' : 'Failed to update artwork.');
+      } catch (err) {
+        console.error(err);
+        alert('Error');
       }
     });
 
-    document.getElementById('btnCancelArtwork')?.addEventListener('click', () => {
+
+    // 아트워크 삭제
+    document.getElementById('btnDeleteArtwork')?.addEventListener('click', async () => {
+      const id = document.getElementById('artworkId').value;
+      if (!id || !confirm(`Are you sure you want to delete?`)) return;
+
+      // ✅ CSRF 토큰 읽기
+      const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+      const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+      try {
+        const res = await fetch(`/admin/api/artwork/${id}`, {
+          method: 'DELETE',
+          credentials: 'include',
+          headers: {
+            [csrfHeader]: csrfToken
+          }
+        });
+
+        if (res.ok) {
+          alert('Artwork deleted!');
+          document.getElementById('artworkFile').value = '';
+          document.getElementById('artworkPreviewImage').style.display = 'none';
+          document.getElementById('artworkPlaceholderText').style.display = 'block';
+        } else {
+          alert('Failed to delete artwork.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error');
+      }
+    });
+
+
+    // 아트워크 폼 초기화
+    document.getElementById('btnCancelArtwork')?.addEventListener('click', clearArtworkFields);
+
+    function clearArtworkFields() {
       document.getElementById('artworkId').value = '';
-      document.getElementById('artworkTitle').value = '';
-      document.getElementById('artworkDesc').value = '';
-      document.getElementById('artworkPrice').value = '';
       document.getElementById('artworkFile').value = '';
+      document.getElementById('artworkPreviewImage').src = '';
       document.getElementById('artworkPreviewImage').style.display = 'none';
       document.getElementById('artworkPlaceholderText').style.display = 'block';
-    });
+    }
+
+
+
   });
 </script>
+
+
 
 <script>
-  document.getElementById('btnSaveBio')?.addEventListener('click', async () => {
-  const born = document.getElementById('artistBorn').value;
-  const bio = document.getElementById('artistBio').value;
+// 아티스트 텍스트 수정
 
-  await Promise.all([
-    fetch('/admin/api/artist/section/born', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-XSRF-TOKEN': csrfToken
-      },
-      body: JSON.stringify({ content: born }),
+// 조회 버튼 클릭 시 콘텐츠 로드
+document.getElementById('btnLoadSection').addEventListener('click', async () => {
+  const sectionKey = document.getElementById('sectionKey').value;
+
+  try {
+    const res = await fetch(`/admin/api/artist/section/${sectionKey}`, {
+      method: 'GET',
       credentials: 'include'
-    }),
-    fetch('/admin/api/artist/section/bio', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-XSRF-TOKEN': csrfToken
-      },
-      body: JSON.stringify({ content: bio }),
-      credentials: 'include'
-    })
-  ]);
-  alert('Bio 저장 완료!');
-});
+    });
 
-document.getElementById('btnUploadGallery')?.addEventListener('click', async () => {
-  const file = document.getElementById('galleryUpload').files[0];
-  if (!file) return alert('이미지를 선택해주세요.');
-  const formData = new FormData();
-  formData.append('file', file);
-  const res = await fetch('/admin/api/artist/gallery', {
-    method: 'POST',
-    body: formData,
-    credentials: 'include'
-  });
-  alert(res.ok ? '갤러리 이미지 업로드 완료!' : '업로드 실패');
-});
-
-document.getElementById('btnUploadMajor')?.addEventListener('click', async () => {
-  const file = document.getElementById('majorUpload').files[0];
-  if (!file) return alert('이미지를 선택해주세요.');
-  const formData = new FormData();
-  formData.append('file', file);
-  const res = await fetch('/admin/api/artist/major', {
-    method: 'POST',
-    body: formData,
-    credentials: 'include'
-  });
-  alert(res.ok ? '주요 작품 업로드 완료!' : '업로드 실패');
-});
-
-document.getElementById('btnAddExhibition')?.addEventListener('click', async () => {
-  const title = document.getElementById('exhibitionTitle').value;
-  const content = document.getElementById('exhibitionContent').value;
-  if (!title || !content) return alert('모든 내용을 입력해주세요.');
-
-const res = await fetch('/admin/api/artist/exhibition', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-XSRF-TOKEN': csrfToken   // ← 여기에 토큰 들어가야 함
-  },
-  body: JSON.stringify({ title, content }),
-  credentials: 'include'        // ← 세션 쿠키 포함
+    if (res.ok) {
+      const data = await res.json();
+      document.getElementById('sectionContent').value = data.content || '';
+    } else {
+      alert('Failed to load content');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Error');
+  }
 });
 
 
-  alert(res.ok ? '전시 등록 완료!' : '전시 등록 실패');
-});
+// 저장 버튼 클릭 시 수정 요청
+    document.getElementById('btnUpdateSection')?.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const key = document.getElementById('sectionKey').value;
+      const content = document.getElementById('sectionContent').value;
+      await fetch(`/admin/api/artist/section/${key}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-XSRF-TOKEN': csrfToken
+        },
+        credentials: 'include',
+        body: JSON.stringify({ content })
+      });
+      alert('Section updated!');
+    });
+
+// ✅ 쿠키에서 XSRF-TOKEN 읽기 함수
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 
 </script>
+
+
   <script>
     
 
@@ -906,11 +950,11 @@ shopImageInput.addEventListener('change', () => {
   }
 });
 
-// 등록
+// 아트샵 등록
 document.getElementById('btnRegister').addEventListener('click', async () => {
   const file = shopImageInput.files[0];
   if (!file || !titleInput.value || !descInput.value || !priceInput.value) {
-    alert('모든 필드를 입력해주세요.');
+    alert('Please fill in all fields.');
     return;
   }
 
@@ -931,51 +975,54 @@ const res = await fetch('/admin/api/artshop/upload', {
 });
 
     if (res.ok) {
-      alert('등록 완료');
+      alert('Successfully Registered');
       clearFields();
     } else {
-      alert('등록 실패');
+      alert('Successfully Updated');
     }
   } catch (err) {
     console.error(err);
-    alert('에러 발생');
+    alert('Error');
   }
 });
 
-// 조회
+// 아트샵 조회
 document.getElementById('btnSearch').addEventListener('click', async () => {
   const id = productIdInput.value.trim();
   if (!id) {
-    alert('ID를 입력하세요.');
+    alert('Enter the ID.');
     return;
   }
 
   try {
-    const res = await fetch(`/api/artshop`);
-    const items = await res.json();
-    const item = items.find(i => String(i.id) === id);
-    if (!item) {
-      alert('해당 ID의 항목이 없습니다.');
+    const res = await fetch(`/admin/api/artshop/${id}`);
+    if (!res.ok) {
+      alert('No artwork found with the given ID.');
       return;
     }
 
+    const item = await res.json();
     titleInput.value = item.title;
     descInput.value = item.description;
     priceInput.value = item.price;
-    shopPreviewImage.src = item.imageUrl;
+
+    // ✅ 이미지 경로 생성 방식에 따라 수정 필요
+    const fileName = item.imagePath?.split('/').pop(); // imagePath 기준
+    shopPreviewImage.src = `/uploads/artshop/${fileName}`;
     shopPreviewImage.style.display = 'block';
     shopPlaceholderText.style.display = 'none';
   } catch (err) {
     console.error(err);
-    alert('조회 실패');
+    alert('Failed to retrieve');
   }
 });
 
-// 수정
+// 아트샵 수정
 document.getElementById('btnUpdate').addEventListener('click', async () => {
-  const id = productIdInput.value.trim();
+  const id = productIdInput.value.trim(); // ✅ 먼저 id 정의해야 함
+
   if (!id) {
-    alert('ID를 입력하세요.');
+    alert('Enter the ID.');
     return;
   }
 
@@ -986,50 +1033,68 @@ document.getElementById('btnUpdate').addEventListener('click', async () => {
   formData.append('description', descInput.value);
   formData.append('price', priceInput.value);
 
+  const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+  const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
   try {
     const res = await fetch(`/admin/api/artshop/${id}`, {
       method: 'PUT',
+      headers: {
+        [csrfHeader]: csrfToken
+      },
       body: formData
     });
+
     if (res.ok) {
-      alert('수정 완료');
+      alert('Successfully updated');
       clearFields();
     } else {
-      alert('수정 실패');
+      alert('Failed to update');
     }
   } catch (err) {
     console.error(err);
-    alert('에러 발생');
+    alert('Error');
   }
 });
 
-// 삭제
+
+
+
+// 아트샵 삭제
 document.getElementById('btnDelete').addEventListener('click', async () => {
   const id = productIdInput.value.trim();
   if (!id) {
-    alert('ID를 입력하세요.');
+    alert('Enter the ID.');
     return;
   }
 
-  if (!confirm('정말 삭제하시겠습니까?')) return;
+  if (!confirm('Are you sure you want to delete?')) return;
+
+  // ✅ CSRF 토큰 정보 가져오기
+  const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+  const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
   try {
     const res = await fetch(`/admin/api/artshop/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        [csrfHeader]: csrfToken  // ✅ CSRF 헤더 추가
+      }
     });
     if (res.ok) {
-      alert('삭제 완료');
+      alert('Successfully deleted');
       clearFields();
     } else {
-      alert('삭제 실패');
+      alert('Failed to delete');
     }
   } catch (err) {
     console.error(err);
-    alert('에러 발생');
+    alert('Error');
   }
 });
 
-// 초기화
+
+// 아트샵 폼 초기화
 document.getElementById('btnClear').addEventListener('click', clearFields);
 
 function clearFields() {

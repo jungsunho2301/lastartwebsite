@@ -32,10 +32,14 @@ public class AdminArtistSectionController {
     // 특정 항목 수정
     @PutMapping("/{key}")
     public ResponseEntity<String> updateSection(
-        @PathVariable String key,
-        @RequestBody Map<String, String> body
-    ) {
+            @PathVariable String key,
+            @RequestBody Map<String, String> body) {
         sectionService.updateSectionContent(key, body.get("content"));
         return ResponseEntity.ok("Section updated");
+    }
+
+    @GetMapping("/init")
+    public ResponseEntity<Void> initCsrf() {
+        return ResponseEntity.ok().build();
     }
 }

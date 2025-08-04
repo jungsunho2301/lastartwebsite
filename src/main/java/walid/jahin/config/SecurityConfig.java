@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+import jakarta.servlet.http.HttpServletResponse;
 import walid.jahin.security.AdminDetailsService;
 
 @Configuration
@@ -33,7 +34,14 @@ public class SecurityConfig {
                                                                 "/api/buy",
                                                                 "/api/inquiry",
                                                                 "/api/subscribe",
-                                                                "/api/admin/login"))
+                                                                "/api/admin/login",
+                                                                "/api/admin/logout"))
+                                .exceptionHandling(eh -> eh
+                                                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                                                        System.out.println(
+                                                                        "접근 거부: " + accessDeniedException.getMessage());
+                                                        response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                                                }))
                                 .formLogin(form -> form.disable())
                                 .httpBasic(httpBasic -> httpBasic.disable())
                                 .sessionManagement(session -> session

@@ -42,12 +42,7 @@
       align-items: center;
     }
 
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 36px;
-      font-weight: 800;
-      letter-spacing: -1px;
-    }
+
 
     .nav-links {
       display: flex;
@@ -55,16 +50,7 @@
       margin-top: 12px;
     }
 
-    .nav-links a {
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #111;
-      border: 1px solid #ccc;
-      transition: background-color 0.3s;
-    }
+
 
     .nav-links a:hover,
     .nav-links a.active {
@@ -212,16 +198,34 @@
     </div>
   </header>
 
+  <!-- Artshop Banner -->
+  <section class="full-width-banner">
+    <img src="/image/banner.png" alt="Art Banner" />
+  </section>
+
+  <style>
+    .full-width-banner {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .full-width-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover; /* 이미지 잘림 최소화 */
+    }
+  </style>
+
   <!-- Artwork Intro -->
   <section class="text-center py-16">
     <h2 class="text-4xl font-serif font-semibold mb-2">WALID JAHIN</h2>
-    <h2 class="text-3xl font-serif mb-4">ART WORK</h2>
+    <h2 class="text-3xl font-serif mb-4">ART SHOP</h2>
   </section>
 
   <!-- Main Content -->
   <main class="artshop-container">
     <section class="artshop-header">
-      <h1>ARTSHOP</h1>
       <select id="sort-select">
         <option value="latest">Latest</option>
         <option value="lowprice">Lowest Price</option>
@@ -232,6 +236,21 @@
     <section id="artshop-items" class="artshop-grid">
       <!-- JS로 상품 카드 들어오는 영역 -->
     </section>
+
+    <!-- 미리보기 박스 -->
+    <div id="previewBox" class="preview-box hidden">
+      <img id="previewImage" src="" alt="">
+      <div class="preview-info">
+        <div class="preview-header" style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 id="previewTitle" style="margin: 0;"></h3>
+          <span id="previewId" style="font-size: 0.9rem; color: #666;"></span>
+        </div>
+        <p id="previewPrice"></p>
+        <p id="previewDesc"></p>
+      </div>
+    </div>
+
+
   </main>
 
     <footer>
@@ -315,12 +334,25 @@ items.forEach(item => {
   card.className = 'artshop-card';
   card.innerHTML = `
     <a href="/purchase" style="text-decoration: none; color: inherit;">
-      <img src="/uploads/${DOMPurify.sanitize(item.imageUrl)}" alt="${DOMPurify.sanitize(item.title)}" />
-      <div class="title">${DOMPurify.sanitize(item.title)}</div>
-      <div class="price">₩${item.price.toLocaleString()}</div>
-      <div class="desc">${DOMPurify.sanitize(item.description)}</div>
+      <img src="${DOMPurify.sanitize(item.imagePath)}" alt="${DOMPurify.sanitize(item.title)}" />
+      <div class="title" style="text-align: left; font-weight: bold; font-size: 1.15rem;">${DOMPurify.sanitize(item.title)}</div>
+      <div class="price-id-wrapper" style="position: relative; margin-top: 4px;">
+        <div class="price" style="text-align: left; font-weight: bold; font-size: 1rem;">$ ${item.price.toLocaleString()}</div>
+        <div class="id" style="position: absolute; right: 0; top: 0; font-size: 0.85rem; color: #888;">#${item.id}</div>
+      </div>
     </a>
   `;
+    card.addEventListener('mouseover', () => {
+    document.getElementById('previewImage').src = item.imagePath;
+    document.getElementById('previewTitle').textContent = item.title;
+    document.getElementById('previewId').textContent = `#${item.id}`;
+    document.getElementById('previewPrice').textContent = `$ ${item.price.toLocaleString()}`;
+    document.getElementById('previewDesc').textContent = item.description;
+    document.getElementById('previewBox').classList.remove('hidden');
+  });
+  card.addEventListener('mouseout', () => {
+    document.getElementById('previewBox').classList.add('hidden');
+  });
   container.appendChild(card);
 });
 

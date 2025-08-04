@@ -33,4 +33,11 @@ public class ArtshopController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getArtshopById(@PathVariable Long id) {
+        return artshopService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
