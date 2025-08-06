@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Art Work - Walid Jahin</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link th:href="@{/css/style.css}" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
@@ -159,100 +160,281 @@ header {
   <!-- Hero Section -->
   <section class="w-full py-24 bg-white text-center">
     <div class="max-w-3xl mx-auto px-4">
-     <h2 class="text-6xl font-serif font-semibold mb-2">WALID JAHIN</h2>
+     <h2 class="text-6xl font-serif font-semibold mb-2">WALID JAHIN<br />Art Studio</h2>
       </h2>
-      <p class="text-1xl font-serif font-semibold mb-2">
-        art Studio<br />
+      <p class="hero-description">
+        <br />
+        <br />
         Connecting With The World Through Art,<br />
-        I strive to add meaning to everyday moments.<br />
-        Join me on this artistic journey at Walid Jahin Art Studio.
+        I Strive To Add Meaning To Everyday Moments.<br />
+        Join Me On This Artistic Journey At Walid Jahin Art Studio.
       </p>
     </div>
   </section>
 
 
 
+<!-- 메인 이미지 슬라이드 -->
+<section class="Main-section">
+  <div class="Main-wrapper">
+    <div class="Main-track-wrapper">
+      <div class="Main-track" id="MainTrack">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
   <!-- ARTIST Section -->
-  <section class="w-full py-20 bg-white">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-center">
-      <div class="w-full md:w-1/2">
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4201-1.png" alt="Artist Banner" class="w-full h-auto rounded-xl shadow-md" />
+<section class="w-full py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-end">
+    <!-- 왼쪽 메인 이미지 -->
+    <div class="w-full md:w-1/2">
+      <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4201-1.png"
+           alt="Artist Banner"
+           class="w-full h-auto rounded-xl shadow-md" />
+    </div>
+
+    <!-- 오른쪽 썸네일 3개 -->
+    <div class="w-full md:w-1/2 flex flex-col space-y-6">
+      <div class="flex justify-between items-center">
+        <h3 class="card-title">ARTIST</h3>
+        <a th:href="@{/artist}" class="border border-gray-400 rounded-full px-4 py-1 text-sm hover:bg-gray-100 transition">VIEW MORE</a>
       </div>
-      <div class="w-full md:w-1/2 space-y-6">
-        <div class="flex justify-between items-center">
-          <h3 class="card-title">ARTIST</h3>
-          <a th:href="@{/artist}">VIEW MORE</a>
-        </div>
-        <div class="grid grid-cols-3 gap-4">
-          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233-1@2x.png" alt="Artist Work 1" class="card-image" />
-          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234-1@2x.png" alt="Artist Work 2" class="card-image" />
-          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235-1@2x.png" alt="Artist Work 3" class="card-image" />
-        </div>
+
+      <div class="flex items-end gap-4">
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233-1@2x.png"
+             class="rounded-xl object-cover w-40 h-40" />
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234-1@2x.png"
+             class="rounded-xl object-cover w-40 h-40" />
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235-1@2x.png"
+             class="rounded-xl object-cover w-40 h-40" />
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ART WORK Section -->
-  <section class="w-full py-20 bg-white">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-center">
-      <div class="w-full md:w-1/2 space-y-6">
-        <div class="flex justify-between items-center">
-          <h3 class="card-title">Art Work</h3>
-          <a th:href="@{/artwork}">VIEW MORE</a>
-        </div>
-        <div class="grid grid-cols-3 gap-4">
-          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233-2@2x.png" alt="Work 1" class="card-image" />
-          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234-2@2x.png" alt="Work 2" class="card-image" />
-          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235-2@2x.png" alt="Work 3" class="card-image" />
-        </div>
+
+<!-- ART WORK Section -->
+<section class="w-full py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-end">
+    
+    <!-- 왼쪽 썸네일 3개 -->
+    <div class="w-full md:w-1/2 flex flex-col space-y-6">
+      <div class="flex justify-between items-center">
+        <h3 class="card-title">ART WORK</h3>
+        <a th:href="@{/artwork}" class="border border-gray-400 rounded-full px-4 py-1 text-sm hover:bg-gray-100 transition">VIEW MORE</a>
       </div>
-      <div class="w-full md:w-1/2">
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4200.png" alt="Art Work Banner" class="w-full h-auto rounded-xl shadow-md" />
+
+      <div class="flex items-end gap-4">
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233-2@2x.png"
+             alt="Work 1"
+             class="rounded-xl object-cover w-40 h-40" />
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234-2@2x.png"
+             alt="Work 2"
+             class="rounded-xl object-cover w-40 h-40" />
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235-2@2x.png"
+             alt="Work 3"
+             class="rounded-xl object-cover w-40 h-40" />
       </div>
     </div>
-  </section>
 
-  <!-- ART SHOP Section -->
-  <section class="w-full py-20 bg-white">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-center">
-      <div class="w-full md:w-1/2">
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4201.png" alt="Art Shop Banner" class="w-full h-auto rounded-xl shadow-md" />
+    <!-- 오른쪽 메인 배너 이미지 -->
+    <div class="w-full md:w-1/2">
+      <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4200.png"
+           alt="Art Work Banner"
+           class="w-full h-auto rounded-xl shadow-md" />
+    </div>
+  </div>
+</section>
+
+
+<!-- ART SHOP Section -->
+<section class="w-full py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-end">
+    
+    <!-- 왼쪽 메인 배너 이미지 -->
+    <div class="w-full md:w-1/2">
+      <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4201.png"
+           alt="Art Shop Banner"
+           class="w-full h-auto rounded-xl shadow-md" />
+    </div>
+
+    <!-- 오른쪽 썸네일 이미지들 -->
+    <div class="w-full md:w-1/2 flex flex-col space-y-6">
+      <div class="flex justify-between items-center">
+        <h3 class="card-title">ART SHOP</h3>
+        <a th:href="@{/artshop}" class="border border-gray-400 rounded-full px-4 py-1 text-sm hover:bg-gray-100 transition">VIEW MORE</a>
       </div>
-      <div class="w-full md:w-1/2 space-y-6">
-        <div class="flex justify-between items-center">
-          <h3 class="card-title">Art Shop</h3>
-          <a th:href="@{/artshop}">VIEW MORE</a>
-        </div>
-        <div class="grid grid-cols-3 gap-4">
-          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233@2x.png" alt="Art 1" class="card-image" />
-          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234@2x.png" alt="Art 2" class="card-image" />
-          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235@2x.png" alt="Art 3" class="card-image" />
-        </div>
+
+      <div class="flex items-end gap-4">
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233@2x.png"
+             alt="Art 1"
+             class="rounded-xl object-cover w-40 h-40" />
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234@2x.png"
+             alt="Art 2"
+             class="rounded-xl object-cover w-40 h-40" />
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235@2x.png"
+             alt="Art 3"
+             class="rounded-xl object-cover w-40 h-40" />
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-<!-- 2. NEWSLETTER 섹션 수정 -->
+
+<!-- 2. NEWSLETTER 섹션 -->
 <section class="w-full py-20 bg-white text-center">
-  <h3 class="text-3xl md:text-4xl font-serif text-gray-900 mb-10">
+  <h3 class="text-3xl md:text-4xl font-serif font-semibold text-gray-900 mb-10">
     SUBSCRIBE TO <br />WALID JAHIN NEWSLETTER
   </h3>
+
   <form id="newsletterForm" class="max-w-3xl mx-auto space-y-6">
-    <div class="flex flex-col md:flex-row gap-6 justify-center">
-      <input type="text" placeholder="Name" class="subscribe-input md:w-1/2" />
-      <input type="email" placeholder="Email" class="subscribe-input md:w-1/2" />
+    <div class="flex flex-col gap-6 justify-center items-center">
+      <input type="text" id="subscriberName" placeholder="Name" class="subscribe-input md:w-1/2" />
+      <input type="email" id="subscriberEmail" placeholder="Email" class="subscribe-input md:w-1/2" />
     </div>
+
     <div class="flex items-center justify-center gap-3 text-sm text-gray-600">
       <input type="checkbox" id="agree" class="w-5 h-5 border-gray-400" />
       <label for="agree">I AGREE TO RECEIVE EMAILS FROM YOUR COMPANY</label>
     </div>
-    <div class="flex justify-center">
-      <div class="g-recaptcha" data-sitekey="6Lc4XJQrAAAAAKgFydsKuyqsb7Iulz5DAO66i_HV"></div>
 
+    <div class="flex justify-center">
+      <!-- reCAPTCHA -->
+      <div class="g-recaptcha" data-sitekey="6Lc4XJQrAAAAAKgFydsKuyqsb7Iulz5DAO66i_HV"></div>
     </div>
+
     <button type="button" class="subscribe-button" onclick="handleSubscribe()">SUBSCRIBE</button>
   </form>
 </section>
+
+<!-- reCAPTCHA API 스크립트 -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<!-- 뉴스레터 구독 스크립트 -->
+<script>
+async function handleSubscribe() {
+  const name = document.querySelector('input[placeholder="Name"]').value;
+  const email = document.querySelector('input[placeholder="Email"]').value;
+  const agree = document.getElementById("agree").checked;
+
+  if (!agree) {
+    alert("약관에 동의해야 구독할 수 있습니다.");
+    return;
+  }
+
+  const recaptchaToken = grecaptcha.getResponse(); // ✅ reCAPTCHA 토큰 가져오기
+  if (!recaptchaToken) {
+    alert("reCAPTCHA를 완료해주세요.");
+    return;
+  }
+
+  const payload = {
+    name,
+    email
+  };
+
+  try {
+    const response = await fetch(`/api/subscribe?g-recaptcha-response=${recaptchaToken}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.text();
+
+    if (response.ok) {
+      alert("구독이 완료되었습니다.");
+    } else {
+      alert(`❌ 구독 실패: ${result}`);
+    }
+  } catch (err) {
+    alert("❌ 요청 중 오류 발생");
+    console.error(err);
+  }
+}
+
+</script>
+
+
+
+<script>
+  // 메인 이미지 슬라이드
+  const imagePaths = [
+    "/image/main7.jpg", "/image/main8.jpg", "/image/main9.jpg", "/image/main10.jpg", "/image/main11.jpg", "/image/main12.jpg"
+   /* "/image/main9.jpg", "/image/main10.jpg", "/image/main11.jpg", "/image/main12.jpg",
+    "/image/main13.jpg", "/image/main14.jpg", "/image/main15.jpg", "/image/main16.jpg",
+    "/image/main17.jpg", "/image/main18.jpg", "/image/main19.jpg", "/image/main20.jpg",
+    "/image/main21.jpg", "/image/main22.jpg", "/image/main23.jpg", "/image/main24.jpg",
+    "/image/main25.jpg", "/image/main26.jpg", "/image/main27.jpg", "/image/main28.jpg",
+    "/image/main29.jpg", "/image/main30.jpg", "/image/main31.jpg", "/image/main32.jpg",
+    "/image/main33.jpg", "/image/main34.jpg", "/image/main35.jpg", "/image/main36.jpg",
+    "/image/main37.jpg", "/image/main38.jpg", "/image/main39.jpg", "/image/main40.jpg",
+    "/image/main41.jpg", "/image/main42.jpg", "/image/main43.jpg", "/image/main44.jpg",
+    "/image/main45.jpg", "/image/main46.jpg", "/image/main47.jpg", "/image/main48.jpg",
+    "/image/main49.jpg", "/image/main50.jpg", "/image/main51.jpg", "/image/main52.jpg",
+    "/image/main53.jpg", "/image/main54.jpg", "/image/main55.jpg", "/image/main56.jpg",
+    "/image/main57.jpg", "/image/main58.jpg", "/image/main59.jpg", "/image/main60.jpg",
+    "/image/main61.jpg", "/image/main62.jpg", "/image/main63.jpg", "/image/main64.jpg",
+    "/image/main65.jpg", "/image/main66.jpg", "/image/main67.jpg", "/image/main68.jpg",
+    "/image/main69.jpg", "/image/main70.jpg", "/image/main71.jpg", "/image/main72.jpg",
+    "/image/main73.jpg", "/image/main74.jpg" */
+  ];
+
+
+  const track = document.getElementById("MainTrack");
+  const visibleCount = 3;
+  const total = imagePaths.length;
+
+  const extendedPaths = [
+    ...imagePaths.slice(-visibleCount),
+    ...imagePaths,
+    ...imagePaths.slice(0, visibleCount)
+  ];
+
+  extendedPaths.forEach(path => {
+    const item = document.createElement("div");
+    item.classList.add("Main-item");
+    const img = document.createElement("img");
+    img.src = path;
+    item.appendChild(img);
+    track.appendChild(item);
+  });
+
+  const itemWidth = 440;
+  let currentIndex = visibleCount;
+
+  // 공통 함수: 트랜지션 적용 여부 선택 가능
+  function updateSlide(applyTransition = true) {
+    track.style.transition = applyTransition ? 'transform 0.6s ease-in-out' : 'none';
+    track.style.transform = `translateX(-${itemWidth * currentIndex}px)`;
+  }
+
+  // 초기 위치 설정
+  updateSlide(false);
+
+  function handleNext() {
+    currentIndex++;
+    updateSlide(true);
+
+    // 마지막에 도달하면 복제 → 원본 위치로 자연스럽게 리셋
+    if (currentIndex === extendedPaths.length - visibleCount) {
+      setTimeout(() => {
+        currentIndex = visibleCount;
+        updateSlide(false); // 트랜지션 없이 위치 점프
+      }, 610);
+    }
+  }
+
+  setInterval(handleNext, 4000);
+</script>
+
+
+
 
 
   <footer>

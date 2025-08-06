@@ -120,7 +120,7 @@ public class ArtworkService {
             default -> throw new IllegalArgumentException("정렬 기준이 올바르지 않습니다.");
         };
 
-        Pageable pageable = PageRequest.of(page, 3, sortOption);
+        Pageable pageable = PageRequest.of(page, 20, sortOption);
         System.out.println("📦 Pageable 객체: " + pageable);
 
         return artworkRepository.findAll(pageable);

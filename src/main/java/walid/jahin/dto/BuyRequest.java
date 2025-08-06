@@ -22,9 +22,45 @@ public class BuyRequest {
     @Size(max = 500, message = "메시지는 최대 500자까지 입력 가능합니다.")
     private String message;
 
-    public String getName() { return name; }
-    public String getEmail() { return email; }
-    public String getAddress() { return address; }
-    public String getPhone() { return phone; }
-    public String getMessage() { return message; }
+    // ✅ Getter
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    // ✅ Setter 추가
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

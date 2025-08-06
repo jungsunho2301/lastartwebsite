@@ -142,17 +142,43 @@ header {
     document.addEventListener('DOMContentLoaded', updateAdminButton);
   </script>
 
-  <section class="contact-section">
-    <h2>Contact</h2>
-    <p>Please inquire about the work you are interested in.</p>
-    <form class="contact-form">
-      <input type="text" placeholder="Name" required />
-      <input type="email" placeholder="Email address" required />
-      <input type="text" placeholder="Title of work or inquiry title" required />
-      <textarea placeholder="Please enter your inquiry details." required></textarea>
-      <button type="submit">Send</button>
-    </form>
-  </section>
+<section class="contact-section">
+  <h2>Contact</h2>
+  <p>Please inquire about the work you are interested in.</p>
+
+  <form id="inquiryForm" class="contact-form">
+    <input type="text" name="name" placeholder="Name" required />
+    <input type="email" name="email" placeholder="Email address" required />
+    <input type="text" name="artnum" placeholder="Work ID" required />
+    <input type="text" name="phone" placeholder="Phone (Ex: 010-1234-5678)" required />
+    <textarea name="message" placeholder="Please enter your inquiry details." required></textarea>
+    <button type="submit">Send</button>
+  </form>
+</section>
+
+<script>
+  document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const json = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await fetch('/api/inquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(json)
+      });
+
+      const msg = await res.text();
+      alert(msg);
+    } catch (err) {
+      alert(' Failed to send inquiry: ' + err.message);
+    }
+  });
+</script>
 
   <footer>
     <nav>
