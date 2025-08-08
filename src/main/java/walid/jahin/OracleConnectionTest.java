@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class OracleConnectionTest {
     public static void main(String[] args) throws Exception {
-        String url = "jdbc:oracle:thin:@myprojectdb_medium?TNS_ADMIN=C:/Users/User/Documents/김지형/대학교/SE-LAB/이집트화가개인홈페이지/oracle_db/Wallet_myprojectdb";
+        String url = "jdbc:oracle:thin:@myprojectdb_medium?TNS_ADMIN=C:/Users/thdtm/Downloads/Wallet_myprojectdb";
 
         Properties props = new Properties();
         props.put("user", "YOUR_DB_USER"); // ✅ 예: ADMIN

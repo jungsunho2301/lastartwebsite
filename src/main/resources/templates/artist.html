@@ -17,13 +17,13 @@
       color: #111;
     }
 
-    footer { background-color: #191A1B; color: #fff; padding: 60px 20px 40px; text-align: center; }
-    footer nav a { color: #ccc; margin: 0 12px; font-size: 14px; text-decoration: none; }
+    footer { background-color: #191A1B; color: #fff; padding: 3.75rem 1.25rem 2.5rem; text-align: center; }
+    footer nav a { color: #ccc; margin: 0 .75rem; font-size: .875rem; text-decoration: none; }
     footer nav a:hover { color: #fff; }
-    .footer-logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; margin-top: 30px; }
-    .footer-bottom { font-size: 12px; color: #888; margin-top: 20px; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; margin-top: 1.875rem; }
+    .footer-bottom { font-size: .75rem; color: #888; margin-top: 1.25rem; }
     .sns-icon svg {
-      margin-top: 20px;
+      margin-top: 1.25rem;
       transition: fill 0.3s;
     }
     .sns-icon svg:hover {
@@ -33,34 +33,58 @@
     .sns-icon a:last-child svg { fill: #000; }  /* Facebook - black */
         .artwork-intro {
       text-align: center;
-      padding: 60px 20px 20px;
+      padding: 3.75rem 1.25rem 1.25rem;
     }
 
     .artwork-intro h2 {
       font-family: 'Playfair Display', serif;
-      font-size: 28px;
+      font-size: 1.75rem;
       font-weight: 700;
     }
 
     .artwork-intro p {
-      margin-top: 10px;
-      font-size: 16px;
+      margin-top: .625rem;
+      font-size: 1rem;
       color: #555;
     }
 
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      padding: 20px 40px 60px;
+      grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+      gap: 1.25rem;
+      padding: 1.25rem 2.5rem 3.75rem;
     }
 
     .art-img {
       width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: .5rem;
+      box-shadow: 0 .25rem .375rem rgba(0, 0, 0, 0.1);
     }
 
+    .hero-section {
+  width: 100%;
+  padding: 6rem 0; /* 96px top & bottom */
+  background-color: white;
+  text-align: center;
+}
+
+.hero-container {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.hero-title {
+  font-size: 5rem; /* 약 80px */
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.hero-description {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: #4b5563;
+}
   </style>
 </head>
 
@@ -81,7 +105,7 @@
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
       </div>
     </div>
   </header>
@@ -106,13 +130,17 @@
 <body>
 
   <!-- Artist Page -->
-  <section class="artist-intro text-center">
-    <h2>Walid Jahin</h2>
-    <p>
+  <section class="hero-section">
+    <div class="hero-container">
+      <h2 class="hero-title">
+        WALID JAHIN
+      </h2>
+      <p class="hero-description">
       Born in 1974.<br />
       He lives in Alexandria and works as a professor at the Faculty of Fine Arts, Alexandria University, Department of Painting.<br />
       He received his Master's Degree in Coptic Icons in 2005, and a Doctorate in Painting Techniques in 2010.
-    </p>
+      </p>
+    </div>
   </section>
 
   <section class="artist-gallery">
@@ -234,7 +262,7 @@
   });
 
   let currentIndex = visibleCount;
-  const itemWidth = 290; // 280 + 10px margin
+  const itemWidth = 290; // 280 + .625rem margin
 
   track.style.transform = `translateX(-${itemWidth * currentIndex}px)`;
 
