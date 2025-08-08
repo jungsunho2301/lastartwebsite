@@ -3,16 +3,18 @@ package walid.jahin.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "subscriber")
 public class Subscriber {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subscriber_seq")
+    @SequenceGenerator(name = "subscriber_seq", sequenceName = "subscriber_seq", allocationSize = 1)
     private Long id;
 
-    @Column(length = 50)  // ✅ 이름 길이 제한
+    @Column(length = 50, nullable = false)
     private String name;
 
-    @Column(unique = true, length = 100)  // ✅ 이메일 중복 방지 + 길이 제한
+    @Column(unique = true, length = 100, nullable = false)
     private String email;
 
     public Subscriber() {}
@@ -28,5 +30,13 @@ public class Subscriber {
 
     public String getName() {
         return name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

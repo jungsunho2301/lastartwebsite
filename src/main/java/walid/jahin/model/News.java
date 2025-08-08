@@ -4,43 +4,38 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "news")
 public class News {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "news_seq")
+    @SequenceGenerator(name = "news_seq", sequenceName = "news_seq", allocationSize = 1)
     private Long id;
 
-    @Column(length = 100)  // ✅ 제목 최대 100자
+    @Column(length = 100, nullable = false)
     private String title;
 
-    @Column(length = 2000) // ✅ 내용 최대 2000자
+    @Column(length = 2000, nullable = false)
     private String content;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     public News() {}
 
-    public String getTitle() {
-        return title;
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    // Getters & Setters
 
-    public String getContent() {
-        return content;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

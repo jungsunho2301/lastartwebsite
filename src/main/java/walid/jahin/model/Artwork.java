@@ -9,10 +9,13 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
+@Table(name = "artwork")
 public class Artwork {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artwork_seq")
+    @SequenceGenerator(name = "artwork_seq", sequenceName = "artwork_seq", allocationSize = 1)
     private Long id;
-    private String imagePath;       // 이미지 경로 (/uploads/artwork/xxx.jpg)
+
+    private String imagePath; // 이미지 경로 (/uploads/artwork/xxx.jpg)
 }
