@@ -136,6 +136,7 @@ public class ArtshopService {
         System.out.println("🔍 정렬 기준: " + sort + ", 페이지 번호: " + page);
 
         Sort sortOption = switch (sort) {
+
             case "latest" -> Sort.by(Sort.Direction.DESC, "id");
             case "lowprice" -> Sort.by(Sort.Direction.ASC, "price");
             case "highprice" -> Sort.by(Sort.Direction.DESC, "price");

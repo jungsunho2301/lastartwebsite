@@ -5,70 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Art Work - Walid Jahin</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link th:href="@{/css/style.css}" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
     body {
       margin: 0;
-      font-family: 'Noto Sans KR', sans-serif;
+      font-family: 'Noto Sans KR', serif;
       background-color: #fff;
       color: #111;
     }
-    header {
-      background-color: #f9f9f9;
-      padding: 40px 40px;
-      border-bottom: 1px solid #e5e5e5;
-      position: relative;
-      height: 160px;
-    }
-    .header-inner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .nav-wrapper {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 36px;
-      font-weight: bold;
-      letter-spacing: -1px;
-    }
-    .nav-links {
-      display: flex;
-      gap: 16px;
-      margin-top: 12px;
-    }
-    .nav-links a:hover,
-    .nav-links a.active {
-      background-color: #f0f0f0;
-    }
-    .lang {
-      position: absolute;
-      right: 40px;
-      top: 32px;
-      font-size: 14px;
-      color: #111;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .lang button {
-      background: black;
-      color: white;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+
     footer {
       background-color: #191A1B;
       color: #fff;
@@ -219,14 +166,15 @@
   </style>
 </head>
 <body>
-  <header>
+
+    <header>
     <div class="header-inner">
       <div class="nav-wrapper">
         <div class="logo">Walid Jahin</div>
         <div class="nav-links">
           <a th:href="@{/index}">HOME</a>
           <a th:href="@{/artist}">ARTIST</a>
-          <a th:href="@{/artwork}" class="active">ART WORK</a>
+          <a th:href="@{/artwork}">ART WORK</a>
           <a th:href="@{/artshop}">ART SHOP</a>
         </div>
       </div>
