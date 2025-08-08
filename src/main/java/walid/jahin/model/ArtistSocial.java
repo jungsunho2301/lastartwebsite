@@ -7,13 +7,14 @@ import jakarta.persistence.*;
 public class ArtistSocial {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artist_social_seq")
+    @SequenceGenerator(name = "artist_social_seq", sequenceName = "artist_social_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "facebook_url", nullable = true)
+    @Column(name = "facebook_url", length = 255, nullable = true)
     private String facebookUrl;
 
-    @Column(name = "instagram_url", nullable = true)
+    @Column(name = "instagram_url", length = 255, nullable = true)
     private String instagramUrl;
 
     public ArtistSocial() {}

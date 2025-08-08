@@ -7,30 +7,21 @@ import jakarta.persistence.*;
 public class ArtistInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artist_info_seq")
+    @SequenceGenerator(name = "artist_info_seq", sequenceName = "artist_info_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)
     private String email;
 
-    // 기본 생성자
     public ArtistInfo() {}
 
-    // email을 받는 생성자
     public ArtistInfo(String email) {
         this.email = email;
     }
 
-    // getter, setter
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 }
