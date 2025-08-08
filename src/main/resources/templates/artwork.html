@@ -130,6 +130,33 @@
     .hidden {
       display: none;
     }
+
+ .hero-section {
+  width: 100%;
+  padding: 6rem 0; /* 6rem top & bottom */
+  background-color: white;
+  text-align: center;
+  font-family: 'Roboto Serif', serif;
+  font-size: 3.75rem; /* 사용자 요청 */
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: -0.0625rem;
+  color: #111;
+}
+
+.hero-container {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.hero-title {
+  font-size: 5rem; /* 약 5rem */
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+
   </style>
 </head>
 <body>
@@ -152,9 +179,13 @@
     </div>
   </header>
 
-  <section class="text-center py-16">
-    <h2 class="text-4xl font-serif font-semibold mb-2">WALID JAHIN</h2>
-    <h2 class="text-3xl font-serif mb-4">ART WORK</h2>
+  <section class="hero-section">
+    <div class="hero-container">
+      <h2 class="hero-title">
+        WALID JAHIN<br>
+        ART WORK
+      </h2>
+    </div>
   </section>
 
   <section id="artwork-grid" class="artwork-container"></section>
