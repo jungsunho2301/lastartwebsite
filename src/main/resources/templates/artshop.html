@@ -19,102 +19,63 @@
       color: #111;
     }
 
-    footer {
-      background-color: #191A1B;
-      color: #fff;
-      padding: 60px 20px 40px;
-      text-align: center;
-    }
 
-    footer nav a {
-      color: #ccc;
-      margin: 0 12px;
-      font-size: 14px;
-      text-decoration: none;
-    }
-
-    footer nav a:hover {
-      color: #fff;
-    }
-
-    .footer-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 800;
-      margin-top: 30px;
-    }
-
-    .footer-bottom {
-      font-size: 12px;
-      color: #888;
-      margin-top: 20px;
-    }
-
-    .sns-icon svg {
-      margin-top: 20px;
-      transition: fill 0.3s;
-      fill: #000;
-    }
-
-    .sns-icon svg:hover {
-      fill: #fff;
-    }
 
     .artshop-container {
-      max-width: 1200px;
+      max-width: 75rem;
       margin: 0 auto;
-      padding: 60px 20px;
+      padding: 3.75rem 1.25rem;
     }
 
     .artshop-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 40px;
+      margin-bottom: 2.5rem;
     }
 
     .artshop-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
+      gap: 1.875rem;
     }
 
     .artshop-card {
-      border: 1px solid #eee;
-      padding: 16px;
+      border: .0625rem solid #eee;
+      padding: 1rem;
       background: #fff;
       text-align: center;
       transition: box-shadow 0.3s ease;
     }
 
     .artshop-card:hover {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      box-shadow: 0 .25rem 1rem rgba(0,0,0,0.1);
     }
 
     .artshop-card img {
       max-width: 100%;
-      height: 200px;
+      height: 12.5rem;
       object-fit: cover;
-      margin-bottom: 10px;
+      margin-bottom: .625rem;
     }
 
     .artshop-card .title {
       font-weight: bold;
-      margin: 8px 0;
+      margin: .5rem 0;
     }
 
     .artshop-card .price {
       color: #333;
-      font-size: 18px;
-      margin-bottom: 8px;
+      font-size: 1.125rem;
+      margin-bottom: .5rem;
     }
 
-        footer { background-color: #191A1B; color: #fff; padding: 60px 20px 40px; text-align: center; }
-    footer nav a { color: #ccc; margin: 0 12px; font-size: 14px; text-decoration: none; }
+        footer { background-color: #191A1B; color: #fff; padding: 3.75rem 1.25rem 2.5rem; text-align: center; }
+    footer nav a { color: #ccc; margin: 0 .75rem; font-size: .875rem; text-decoration: none; }
     footer nav a:hover { color: #fff; }
-    .footer-logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; margin-top: 30px; }
-    .footer-bottom { font-size: 12px; color: #888; margin-top: 20px; }
-    .sns-icon svg { margin-top: 20px; transition: fill 0.3s; fill: #000000; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; margin-top: 1.875rem; }
+    .footer-bottom { font-size: .75rem; color: #888; margin-top: 1.25rem; }
+    .sns-icon svg { margin-top: 1.25rem; transition: fill 0.3s; fill: #000000; }
     .sns-icon svg:hover { fill: #fff; }
     
   </style>
@@ -135,7 +96,7 @@
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">LOGIN</button>
+        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
       </div>
     </div>
   </header>
@@ -269,7 +230,7 @@ items.forEach(item => {
     <a href="/purchase" style="text-decoration: none; color: inherit;">
       <img src="${DOMPurify.sanitize(item.imagePath)}" alt="${DOMPurify.sanitize(item.title)}" />
       <div class="title" style="text-align: left; font-weight: bold; font-size: 1.15rem;">${DOMPurify.sanitize(item.title)}</div>
-      <div class="price-id-wrapper" style="position: relative; margin-top: 4px;">
+      <div class="price-id-wrapper" style="position: relative; margin-top: .25rem;">
         <div class="price" style="text-align: left; font-weight: bold; font-size: 1rem;">$ ${item.price.toLocaleString()}</div>
         <div class="id" style="position: absolute; right: 0; top: 0; font-size: 0.85rem; color: #888;">#${item.id}</div>
       </div>

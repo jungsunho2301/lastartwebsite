@@ -1,3 +1,8 @@
+html {
+  font-size: clamp(.875rem, calc(100vw / 120), 1.25rem);
+}
+
+
 /* Google Fonts Import */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
@@ -108,7 +113,15 @@ header {
   cursor: pointer;
 }
 
+/* 푸터 */
 
+    footer { background-color: #191A1B; color: #fff; padding: 3.75rem 1.25rem 2.5rem; text-align: center; }
+    footer nav a { color: #ccc; margin: 0 .75rem; font-size: .875rem; text-decoration: none; }
+    footer nav a:hover { color: #fff; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; margin-top: 1.25rem; }
+    .footer-bottom { font-size: .75rem; color: #888; margin-top: 1.25rem; }
+    .sns-icon svg { margin-top: 1.25rem; transition: fill 0.3s; fill: #000; }
+    .sns-icon svg:hover { fill: #fff; }
 
 
 /* Artwork Section */
