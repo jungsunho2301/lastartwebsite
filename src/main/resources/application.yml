@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@myprojectdb_medium?TNS_ADMIN=C:/Users/82106/arthomepage/lastartwebsite/Wallet_myprojectdb
+    username: ADMIN
+    password: riFUz5Fz+2N$eFY
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+  
+server:
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        same-site: lax
+        secure: false  # HTTPS면 true로
+
+# 필요 없으면 통째로 제거
+app:
+   upload:
+     artshop-dir: uploads/artshop/
+     artwork-dir: uploads/artwork/
+
+# 메일/리캡차를 지금 안 쓰면 제거하거나 별도 파일로 분리
