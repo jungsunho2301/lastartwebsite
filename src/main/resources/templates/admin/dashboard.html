@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="_csrf" th:content="${_csrf.token}" />
   <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
 
   
   <title>Walid Jahin Art Studio</title>
@@ -35,87 +38,7 @@
   </script>
 
   <style>
-    body {
-      margin: 0;
-      font-family: 'Noto Sans KR', sans-serif;
-      background-color: #fff;
-      color: #111;
-    }
 
-header {
-  background-color: #f9f9f9;
-  padding: 2.5rem 2.5rem; /* 상하 여백을 늘림 */
-  border-bottom: .0625rem solid #e5e5e5;
-  position: relative;
-  height: 10rem; /* 명시적 높이 확보 */
-}
-
-    .header-inner {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-.nav-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 3.75rem;
-      font-weight: 1200;
-      letter-spacing: -0.0625rem;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 1rem;
-      margin-top: .75rem;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      padding: .625rem 1.25rem;
-      border-radius: 1.875rem;
-      font-size: .875rem;
-      font-weight: 500;
-      color: #111;
-      border: .0625rem solid #ccc;
-      transition: background-color 0.3s;
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      background-color: #f0f0f0;
-    }
-
-    .lang {
-      position: absolute;
-      right: 2.5rem;
-      top: 2rem;
-      font-size: .875rem;
-      color: #111;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-    }
-
-    .lang button {
-      background: black;
-      color: white;
-      border: none;
-      padding: .375rem .875rem;
-      border-radius: .25rem;
-      cursor: pointer;
-    }
 
     .gtranslate_wrapper {
       margin-right: .625rem;
@@ -200,46 +123,15 @@ header {
       overflow: hidden;
     }
 
-    footer {
-      background-color: #191A1B;
-      color: #fff;
-      padding: 3.75rem 1.25rem 2.5rem;
-      text-align: center;
-    }
-
-    footer nav a {
-      color: #ccc;
-      margin: 0 .75rem;
-      font-size: .875rem;
-      text-decoration: none;
-    }
-
-    footer nav a:hover {
-      color: #fff;
-    }
-
-    .footer-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 800;
-      margin-top: 1.875rem;
-    }
-
-    .footer-bottom {
-      font-size: .75rem;
-      color: #888;
-      margin-top: 1.25rem;
-    }
-
-    .sns-icon svg {
-      margin-top: 1.25rem;
-      transition: fill 0.3s;
-      fill: #000;
-    }
-
-    .sns-icon svg:hover {
-      fill: #fff;
-    }
+    footer { background-color: #191A1B; color: #fff; padding: 3.75rem 1.25rem 2.5rem; text-align: center; }
+    footer nav a { color: #ccc; margin: 0 .75rem; font-size: .875rem; text-decoration: none; }
+    footer nav a:hover { color: #fff; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; margin-top: 1.25rem; }
+    .footer-bottom { font-size: .75rem; color: #888; margin-top: 1.25rem; }
+.footer-sns { display:flex; gap:.875rem; justify-content:center; margin:.625rem 0 1.125rem; }
+.footer-sns a { display:inline-flex; line-height:0; color:#fff; } /* SVG가 currentColor 사용 */
+.footer-sns svg { margin-top: 1.25rem; transition: fill 0.3s; fill: #888; }
+.footer-sns svg:hover { fill: #fff; }
 
     .upload-section {
   background: #f9f9f9;
@@ -300,7 +192,6 @@ header {
 </head>
 
 <body>
-  <!-- Header -->
   <header>
     <div class="header-inner">
       <div class="nav-wrapper">
@@ -314,8 +205,12 @@ header {
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <!-- 로그아웃 버튼 -->
-        <button id="logoutButton" style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGOUT</button>
+        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
+                <!-- 로그아웃 버튼 -->
+        <button id="logoutButton" type="button"
+  style="background:#f9f9f9;color:black;border:none;padding:.375rem .875rem;border-radius:.25rem;cursor:pointer;">
+  LOGOUT
+</button>
 
       </div>
     </div>
@@ -455,6 +350,75 @@ header {
       </div>
     </section>
   </main>
+<!-- 로그아웃 -->
+  <script>
+(function () {
+  var btn = document.getElementById('logoutButton');
+  if (!btn) return;
+
+  btn.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    var tokenEl = document.querySelector('meta[name="_csrf"]');
+    var headerEl = document.querySelector('meta[name="_csrf_header"]');
+    var token  = tokenEl ? tokenEl.content : '';
+    var header = headerEl ? headerEl.content : 'X-CSRF-TOKEN';
+
+    var headers = { 'Content-Type': 'application/json' };
+    if (token) headers[header] = token;
+
+    fetch('/api/admin/logout', {
+      method: 'POST',
+      headers: headers,
+      credentials: 'include'
+    })
+    .then(function (res) {
+      if (res.ok) {
+        alert('Logout Completed');
+        window.location.replace('/index');
+      } else {
+        return res.text().then(function (t) { throw new Error(t || res.status); });
+      }
+    })
+    .catch(function (err) {
+      console.error('Logout error:', err);
+      alert('Logout Failed: ' + err.message);
+    });
+  });
+})();
+</script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const igEl = document.getElementById('footerInstagram');
+  const fbEl = document.getElementById('footerFacebook');
+
+  try {
+    const [igRes, fbRes] = await Promise.all([
+      fetch('/api/social/instagram'),
+      fetch('/api/social/facebook'),
+    ]);
+
+    const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
+    const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
+
+    if (igEl) {
+      if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
+      else igEl.style.display = 'none';
+    }
+    if (fbEl) {
+      if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
+      else fbEl.style.display = 'none';
+    }
+  } catch (e) {
+    console.error('SNS 링크 로드 실패:', e);
+    if (igEl) igEl.style.display = 'none';
+    if (fbEl) fbEl.style.display = 'none';
+  }
+});
+</script>
+
+
   <footer>
     <nav>
       <a th:href="@{/index}">HOME</a>
@@ -462,20 +426,22 @@ header {
       <a th:href="@{/terms}">TERMS OF USE</a>
       <a th:href="@{/contact}">CONTACT</a>
     </nav>
-    <div class="sns-icon flex justify-center gap-4 mt-4">
-      <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path
-            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
+<div class="footer-sns">
+    <!-- 인스타 -->
+    <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
         </svg>
-      </a>
-      <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path
-            d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
+    </a>
+
+    <!-- 페이스북 -->
+    <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
         </svg>
-      </a>
-    </div>
+  </div>
+</a>
+
     <div class="footer-logo">Walid Jahin Art Studio</div>
     <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
   </footer>
@@ -484,40 +450,14 @@ header {
 document.addEventListener("DOMContentLoaded", () => {
   const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
 
-  // 로그아웃 버튼
-const logoutBtn = document.getElementById("logoutButton");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", async () => {
-      try {
 
-        const res = await fetch("/api/admin/logout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          credentials: "include" // ✅ 세션 쿠키 포함
-        });
-
-        if (res.ok) {
-          alert("Logout Completed");
-          window.location.href = "/index";
-        } else {
-          const text = await res.text();
-          alert("Logout Failed: " + text);
-        }
-      } catch (err) {
-        console.error("Request failed", err);
-        alert("Failed to connect to the server");
-      }
-    });
-  }
 
 
 
   // 인스타그램 URL 불러오기
   async function loadInstagramUrl() {
     try {
-      const res = await fetch('/admin/api/social/instagram');
+      const res = await fetch('/api/social/instagram');
       const text = await res.text();
       if (text) {
         const data = JSON.parse(text);
@@ -531,7 +471,7 @@ const logoutBtn = document.getElementById("logoutButton");
   // 페이스북 URL 불러오기
   async function loadFacebookUrl() {
     try {
-      const res = await fetch('/admin/api/social/facebook');
+      const res = await fetch('/api/social/facebook');
       const text = await res.text();
       if (text) {
         const data = JSON.parse(text);
@@ -540,11 +480,26 @@ const logoutBtn = document.getElementById("logoutButton");
     } catch (err) {
       console.error('Facebook URL load error:', err);
     }
-  }
+}
 
   loadInstagramUrl();
   loadFacebookUrl();
 });
+
+// 인스타 저장
+await fetch('/admin/api/social/instagram', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ instagram: instagramInput.value.trim() })
+});
+
+// 페북 저장
+await fetch('/admin/api/social/facebook', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ facebook: facebookInput.value.trim() })
+});
+
 
 </script>
 
@@ -1007,8 +962,8 @@ document.getElementById('btnSearch').addEventListener('click', async () => {
     priceInput.value = item.price;
 
     // ✅ 이미지 경로 생성 방식에 따라 수정 필요
-    const fileName = item.imagePath?.split('/').pop(); // imagePath 기준
-    shopPreviewImage.src = `/uploads/artshop/${fileName}`;
+    const imageUrl = item.imagePath;
+    shopPreviewImage.src = imageUrl;
     shopPreviewImage.style.display = 'block';
     shopPlaceholderText.style.display = 'none';
   } catch (err) {
@@ -1016,6 +971,7 @@ document.getElementById('btnSearch').addEventListener('click', async () => {
     alert('Failed to retrieve');
   }
 });
+
 
 // 아트샵 수정
 document.getElementById('btnUpdate').addEventListener('click', async () => {

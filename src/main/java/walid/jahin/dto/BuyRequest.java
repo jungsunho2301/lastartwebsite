@@ -14,7 +14,7 @@ public class BuyRequest {
     private String email;
 
     @NotBlank
-    private String address;
+    private String id;
 
     @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$", message = "전화번호는 10~11자리 숫자여야 합니다.")
     private String phone;
@@ -31,8 +31,8 @@ public class BuyRequest {
         return email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getId() {
+        return id;
     }
 
     public String getPhone() {
@@ -52,8 +52,8 @@ public class BuyRequest {
         this.email = email;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setPhone(String phone) {

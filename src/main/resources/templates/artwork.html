@@ -204,6 +204,25 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <script>
     window.gtranslateSettings = {
       default_language: "en",
@@ -237,68 +256,176 @@ document.addEventListener("DOMContentLoaded", async () => {
   const modalIdLabel = document.getElementById("modal-id-label");
   const closeModal = document.getElementById("close-modal");
 
-  try {
-    const res = await fetch("/api/artwork");
-    const data = await res.json();
-    const artworks = data.content ?? data;
+  // 인피니트 스크롤 상태값
+  let page = 0;
+  const size = 20;                 // 페이지당 개수
+  let loading = false;
+  let hasNext = true;
 
-    artworks.forEach(item => {
+  // sentinel 없으면 만들어 붙이기
+  let sentinel = document.getElementById("sentinel");
+  if (!sentinel) {
+    sentinel = document.createElement("div");
+    sentinel.id = "sentinel";
+    sentinel.style.height = "1px";
+    grid.after(sentinel);
+  }
+
+  // 모달 공통 이벤트
+  closeModal.addEventListener("click", () => (modal.style.display = "none"));
+  modal.addEventListener("click", (e) => {
+    if (!document.querySelector(".modal-content").contains(e.target)) {
+      modal.style.display = "none";
+    }
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") modal.style.display = "none";
+  });
+
+  // 페이지 호출 (백엔드 shape 호환: {items,hasNext} 또는 Page 객체)
+  async function fetchPage(p, s) {
+    const url = `/api/artwork?sort=latest&page=${p}&size=${s}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("fetch failed");
+    const data = await res.json();
+
+    // 1) 우리가 제안한 형태: { items, hasNext, page }
+    if (Array.isArray(data.items)) {
+      return {
+        items: data.items,
+        hasNext: !!data.hasNext
+      };
+    }
+
+    // 2) 기존 Spring Page 형태: { content, last, number, ... }
+    const items = data.content ?? [];
+    const last = typeof data.last === "boolean" ? data.last : (items.length < s);
+    return {
+      items,
+      hasNext: !last
+    };
+  }
+
+  function appendItems(items) {
+    const frag = document.createDocumentFragment();
+
+    items.forEach((item) => {
+      const safeSrc = DOMPurify.sanitize(item.imagePath ?? "");
+      const safeId  = DOMPurify.sanitize(String(item.id ?? ""));
+
       const card = document.createElement("div");
       card.className = "artwork-card";
       card.innerHTML = `
-        <img src="${DOMPurify.sanitize(item.imagePath)}" alt="Artwork ${DOMPurify.sanitize(item.id)}" />
+        <img src="${safeSrc}" alt="Artwork ${safeId}" loading="lazy" />
       `;
 
+      // 모달 열기
       card.addEventListener("click", () => {
-        const imgPath = DOMPurify.sanitize(item.imagePath);
-        const artworkId = DOMPurify.sanitize(item.id);
-
-        if (imgPath) {
-          modalImg.src = imgPath;
-          modal.style.display = "flex";
-
-          // 이미지 로드 완료 후 ID 표시 + 위치 계산
-          modalImg.onload = () => {
-            modalIdLabel.textContent = `ID: ${artworkId}`;
-
-            const imgRect = modalImg.getBoundingClientRect();
-            const wrapperRect = modalImg.parentElement.getBoundingClientRect();
-
-            const offsetX = 12; // 바깥으로 오른쪽 이동
-            const offsetY = 0;  // 위쪽은 정확히 맞춰서 0rem
-
-            // 이미지 우상단 바깥에 정확히 붙이기
-            modalIdLabel.style.position = "absolute";
-            modalIdLabel.style.top = `${imgRect.top - wrapperRect.top + offsetY}px`;
-            modalIdLabel.style.left = `${imgRect.right - wrapperRect.left + offsetX}px`;
-          };
-        }
+        if (!safeSrc) return;
+        modalImg.src = safeSrc;
+        modal.style.display = "flex";
+        // 이미지 로드 후 ID 라벨 위치 계산
+        modalImg.onload = () => {
+          modalIdLabel.textContent = `ID: ${safeId}`;
+          const imgRect = modalImg.getBoundingClientRect();
+          const wrapperRect = modalImg.parentElement.getBoundingClientRect();
+          const offsetX = 12, offsetY = 0;
+          modalIdLabel.style.position = "absolute";
+          modalIdLabel.style.top  = `${imgRect.top - wrapperRect.top + offsetY}px`;
+          modalIdLabel.style.left = `${imgRect.right - wrapperRect.left + offsetX}px`;
+        };
       });
 
-      grid.appendChild(card);
+      frag.appendChild(card);
     });
 
-    closeModal.addEventListener("click", () => {
-      modal.style.display = "none";
-    });
+    grid.appendChild(frag);
+  }
 
-    modal.addEventListener("click", (e) => {
-      if (!document.querySelector(".modal-content").contains(e.target)) {
-        modal.style.display = "none";
-      }
-    });
+  async function loadNext() {
+    if (loading || !hasNext) return;
+    loading = true;
+    try {
+      const { items, hasNext: nextFlag } = await fetchPage(page, size);
+      appendItems(items);
+      page += 1;
+      hasNext = nextFlag;
+      if (!hasNext) observer.unobserve(sentinel);
+    } catch (e) {
+      console.error("🎯 작품 로딩 실패:", e);
+    } finally {
+      loading = false;
+    }
+  }
 
-  } catch (err) {
-    console.error("🎯 작품 로딩 실패:", err);
+  // 진입 시 2페이지(0,1) 미리 로드
+  await loadNext();
+  await loadNext();
+
+  // 스크롤 바닥 근처에서 다음 페이지 로드
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((e) => e.isIntersecting)) loadNext();
+    },
+    { rootMargin: "200px" } // 바닥 200px 전에 미리 로드
+  );
+  observer.observe(sentinel);
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const igEl = document.getElementById('footerInstagram');
+  const fbEl = document.getElementById('footerFacebook');
+
+  try {
+    const [igRes, fbRes] = await Promise.all([
+      fetch('/api/social/instagram'),
+      fetch('/api/social/facebook'),
+    ]);
+
+    const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
+    const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
+
+    if (igEl) {
+      if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
+      else igEl.style.display = 'none';
+    }
+    if (fbEl) {
+      if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
+      else fbEl.style.display = 'none';
+    }
+  } catch (e) {
+    console.error('SNS 링크 로드 실패:', e);
+    if (igEl) igEl.style.display = 'none';
+    if (fbEl) fbEl.style.display = 'none';
   }
 });
-
-
-
-
-  </script>
-
-
+</script>
 
 
   <footer>
@@ -308,18 +435,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       <a th:href="@{/terms}">TERMS OF USE</a>
       <a th:href="@{/contact}">CONTACT</a>
     </nav>
-    <div class="sns-icon flex justify-center gap-4 mt-4">
-      <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+<div class="footer-sns">
+    <!-- 인스타 -->
+    <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
         </svg>
-      </a>
-      <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    </a>
+
+    <!-- 페이스북 -->
+    <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
         </svg>
-      </a>
-    </div>
+  </div>
+</a>
+
     <div class="footer-logo">Walid Jahin Art Studio</div>
     <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
   </footer>

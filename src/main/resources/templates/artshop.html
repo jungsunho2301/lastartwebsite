@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Artist - Walid Jahin</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-  <link th:href="@{/css/style.css}" rel="stylesheet" />
+  <link th:href="@{/css/style.css}" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
   <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
   <style>
@@ -34,49 +34,195 @@
       margin-bottom: 2.5rem;
     }
 
-    .artshop-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
-      gap: 1.875rem;
-    }
 
-    .artshop-card {
-      border: .0625rem solid #eee;
-      padding: 1rem;
-      background: #fff;
-      text-align: center;
-      transition: box-shadow 0.3s ease;
-    }
+    /* ========== Grid ========== */
+.artshop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13.75rem, 1fr));
+  gap: 1.125rem;
+}
 
-    .artshop-card:hover {
-      box-shadow: 0 .25rem 1rem rgba(0,0,0,0.1);
-    }
+/* ========== Card ========== */
+/* 카드 전체: 위쪽 이미지 / 아래쪽 정보 */
+.artshop-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: .75rem;
+  box-shadow: 0 .125rem .625rem rgba(0,0,0,.06);
+  background: #fff;
 
-    .artshop-card img {
-      max-width: 100%;
-      height: 12.5rem;
-      object-fit: cover;
-      margin-bottom: .625rem;
-    }
+  height: 21.25rem;              /* 카드 전체 높이 */
+  display: flex;
+  flex-direction: column;
+}
 
-    .artshop-card .title {
-      font-weight: bold;
-      margin: .5rem 0;
-    }
+/* 이미지 영역 */
+.artshop-card .img-wrap {
+  flex: 1 1 auto;             /* 남는 공간 전부 이미지 영역 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;        /* 여백 배경색 */
+  overflow: hidden;
+}
 
-    .artshop-card .price {
-      color: #333;
-      font-size: 1.125rem;
-      margin-bottom: .5rem;
-    }
+/* 이미지: 원본 비율 유지 + 잘리지 않음 */
+.artshop-card .img-wrap > img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;        /* 원본 전체 표시, 여백 허용 */
+  display: block;
+}
 
-        footer { background-color: #191A1B; color: #fff; padding: 3.75rem 1.25rem 2.5rem; text-align: center; }
-    footer nav a { color: #ccc; margin: 0 .75rem; font-size: .875rem; text-decoration: none; }
-    footer nav a:hover { color: #fff; }
-    .footer-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; margin-top: 1.875rem; }
-    .footer-bottom { font-size: .75rem; color: #888; margin-top: 1.25rem; }
-    .sns-icon svg { margin-top: 1.25rem; transition: fill 0.3s; fill: #000000; }
-    .sns-icon svg:hover { fill: #fff; }
+/* 하단 정보 영역: 고정 높이 */
+.artshop-card .info-area {
+  flex: 0 0 5.75rem;              /* 고정 높이 */
+  border-top: .0625rem solid #eee;
+  background: #fff;
+}
+
+.artshop-card .title,
+.artshop-card .price-id-wrapper {
+  padding: 0.5rem 0.75rem;
+}
+
+.artshop-card .price-id-wrapper {
+  position: relative;
+  padding: .25rem .5rem .75rem;
+}
+
+.artshop-card .price {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.artshop-card .id {
+  position: absolute;
+  right: .5rem;
+  top: .25rem;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+
+/* ========== Hover Overlay & Buttons ========== */
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+.artshop-card:hover .card-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlay-actions {
+  display: flex;
+  flex-direction: column;
+  gap: .625rem;
+  width: 70%;
+  max-width: 17.5rem;
+}
+.overlay-btn {
+  padding: .75rem 1rem;
+  border: 0;
+  border-radius: .625rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+  color: #111;
+}
+.overlay-btn.secondary {
+  background: #111;
+  color: #fff;
+}
+
+/* ========== Modal Backdrop ========== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1000;
+}
+
+/* ========== Preview Modal (고정 크기) ========== */
+
+/* 모달 크기(예시): 필요 시 값만 조절 */
+.preview-box{
+  position:fixed; z-index:1001; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:72rem;      /* 전체 너비 고정 */
+  height:42rem;     /* 전체 높이 고정 */
+  max-width:95vw; max-height:92vh;
+  background:#fff; border-radius:1rem;
+  box-shadow:0 .625rem 1.875rem rgba(0,0,0,.25);
+  padding:1.5rem; overflow:hidden;
+}
+
+/* 좌측(이미지) + 우측(정보) 두 칼럼 */
+.preview-body{
+  display:flex; flex-direction:row; gap:1rem; height:100%;
+}
+
+/* ===== 왼쪽 이미지 칸: 항상 같은 크기 ===== */
+.preview-image-wrap{
+  flex:0 0 44rem;   /* ← 고정 폭 (필요 시 조절) */
+  height:100%;      /* 모달 높이 꽉 채움 */
+  border-radius:.75rem; background:#f7f7f7;
+  overflow:hidden; display:flex; align-items:center; justify-content:center;
+  box-sizing:border-box;
+}
+
+/* 이미지: 원본 유지, 잘리지 않음(contain), 없으면 감춤 */
+.preview-image-wrap img{
+  max-width:100%; max-height:100%;
+  width:auto; height:auto; object-fit:contain; display:block;
+}
+.preview-image-wrap img[src=""], 
+.preview-image-wrap img:not([src]){
+  display:none;
+}
+/* 이미지가 없을 때 빈 칸만 표시 + 플레이스홀더 문구(선택) */
+.preview-image-wrap.empty::before{
+  content:"No image";
+  color:#aaa; font-size:.9rem;
+}
+
+/* ===== 우측 정보: 측면 고정, 이미지 변동 무시 ===== */
+.preview-info{
+  flex:0 0 18.75rem;     /* 고정 폭 */
+  height:100%;        /* 모달 높이와 동일 */
+  display:flex; flex-direction:column;
+  overflow:auto; border-left:.0625rem solid #eee; padding-left:.75rem;
+  box-sizing:border-box;
+}
+
+.preview-header{display:flex; justify-content:space-between; align-items:center;}
+.preview-id{font-size:.9rem; color:#666;}
+.preview-price{font-weight:700; margin-top:.5rem;}
+
+/* 닫기 버튼 */
+.modal-close{
+  position:absolute; top:.625rem; right:.75rem; width:2.25rem; height:2.25rem;
+  border:0; border-radius:50%; cursor:pointer; background:#f2f2f2;
+  font-size:1.375rem; line-height:2.25rem;
+}
+
+
+
+/* Utils */
+.hidden { display: none !important; }
+
+
+
     
   </style>
 </head>
@@ -127,45 +273,99 @@
       </select>
     </section>
 
-    <section id="artshop-items" class="artshop-grid">
-      <!-- JS로 상품 카드 들어오는 영역 -->
-    </section>
+<!-- Artshop Grid -->
+<section id="artshop-items" class="artshop-grid">
+  <!-- JS로 카드가 동적으로 렌더링됩니다 -->
+</section>
 
-    <!-- 미리보기 박스 -->
-    <div id="previewBox" class="preview-box hidden">
+<!-- 모달 백드롭 -->
+<div id="modalBackdrop" class="modal-backdrop hidden" aria-hidden="true"></div>
+
+<!-- 미리보기 모달(고정 크기) -->
+<div id="previewBox" class="preview-box hidden" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+  <button id="previewClose" class="modal-close" aria-label="Close">×</button>
+
+  <div class="preview-body">
+    <!-- 고정 크기 이미지 칸 -->
+    <div class="preview-image-wrap" id="previewImageWrap">
       <img id="previewImage" src="" alt="">
-      <div class="preview-info">
-        <div class="preview-header" style="display: flex; justify-content: space-between; align-items: center;">
-          <h3 id="previewTitle" style="margin: 0;"></h3>
-          <span id="previewId" style="font-size: 0.9rem; color: #666;"></span>
-        </div>
-        <p id="previewPrice"></p>
-        <p id="previewDesc"></p>
-      </div>
     </div>
+
+    <!-- 측면 고정 정보 -->
+    <aside class="preview-info">
+      <div class="preview-header">
+        <h3 id="previewTitle"></h3>
+        <span id="previewId" class="preview-id"></span>
+      </div>
+      <p id="previewPrice" class="preview-price"></p>
+      <p id="previewDesc" class="preview-desc"></p>
+    </aside>
+  </div>
+</div>
+
+<!-- DOMPurify (XSS 방지) -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<!-- 앱 스크립트 -->
+<script src="/js/artshop.js"></script>
+
 
 
   </main>
 
-    <footer>
+  <script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const igEl = document.getElementById('footerInstagram');
+  const fbEl = document.getElementById('footerFacebook');
+
+  try {
+    const [igRes, fbRes] = await Promise.all([
+      fetch('/api/social/instagram'),
+      fetch('/api/social/facebook'),
+    ]);
+
+    const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
+    const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
+
+    if (igEl) {
+      if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
+      else igEl.style.display = 'none';
+    }
+    if (fbEl) {
+      if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
+      else fbEl.style.display = 'none';
+    }
+  } catch (e) {
+    console.error('SNS 링크 로드 실패:', e);
+    if (igEl) igEl.style.display = 'none';
+    if (fbEl) fbEl.style.display = 'none';
+  }
+});
+</script>
+
+
+  <footer>
     <nav>
       <a th:href="@{/index}">HOME</a>
       <a th:href="@{/privacy}">PRIVACY POLICY</a>
       <a th:href="@{/terms}">TERMS OF USE</a>
       <a th:href="@{/contact}">CONTACT</a>
     </nav>
-    <div class="sns-icon flex justify-center gap-4 mt-4">
-      <a href="https://www.instagram.com/YOUR_INSTAGRAM_ID" target="_blank" aria-label="Instagram">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+<div class="footer-sns">
+    <!-- 인스타 -->
+    <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
         </svg>
-      </a>
-      <a href="https://www.facebook.com/YOUR_FACEBOOK_ID" target="_blank" aria-label="Facebook">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    </a>
+
+    <!-- 페이스북 -->
+    <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
         </svg>
-      </a>
-    </div>
+  </div>
+</a>
+
     <div class="footer-logo">Walid Jahin Art Studio</div>
     <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
   </footer>
@@ -189,75 +389,193 @@
     document.addEventListener('DOMContentLoaded', updateAdminButton);
   </script>
 
-  <!-- Artshop Fetch Script -->
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log('DOM fully loaded!');
+  updateAdminButton?.();
 
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    console.log('DOM fully loaded!');
-    loadArtshopItems();
+  const container   = document.getElementById('artshop-items');
+  const sortSelect  = document.getElementById('sort-select');
+  const backdrop    = document.getElementById('modalBackdrop');
+  const closeBtn    = document.getElementById('previewClose');
 
-    document.getElementById('sort-select').addEventListener('change', function (e) {
-      loadArtshopItems(e.target.value);
+  // ===== 인피니트 스크롤 상태 =====
+  let sort = 'latest';
+  let page = 0;
+  const size = 20;         // 한번에 로드할 개수 (프론트 전략)
+  let loading = false;
+  let hasNext = true;
+
+  // sentinel 준비 (컨테이너 바로 뒤에 붙임)
+  let sentinel = document.getElementById('sentinel');
+  if (!sentinel) {
+    sentinel = document.createElement('div');
+    sentinel.id = 'sentinel';
+    sentinel.style.height = '1px';
+    container.after(sentinel);
+  }
+
+  // 정렬 변경 시 초기화 후 처음 2페이지 로드
+  if (sortSelect) {
+    sortSelect.addEventListener('change', async (e) => {
+      sort = e.target.value || 'latest';
+      resetAndLoad();
     });
-  });
+  }
 
-  async function loadArtshopItems(sort = 'latest') {
-    const container = document.getElementById('artshop-items');
-    if (!container) {
-      console.error('❌ artshop-items element not found!');
-      return;
+  // 모달 닫기
+  backdrop.addEventListener('click', closePreview);
+  closeBtn.addEventListener('click', closePreview);
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePreview(); });
+
+  // ===== 데이터 페치 (Controller 응답 2종 모두 지원) =====
+  async function fetchPage(p, s, sortKey) {
+    const res = await fetch(`/api/artshop?sort=${encodeURIComponent(sortKey)}&page=${p}&size=${s}`);
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+
+    // 1) 우리가 권장한 형태: { items, hasNext, page }
+    if (Array.isArray(data.items)) {
+      return { items: data.items, hasNext: !!data.hasNext };
     }
+    // 2) Spring Page 형태: { content, last, ... }
+    const items = data.content ?? [];
+    const last = typeof data.last === 'boolean' ? data.last : (items.length < s);
+    return { items, hasNext: !last };
+  }
 
-    container.innerHTML = 'Loading...';
+  // ===== 카드 렌더 =====
+  function appendItems(items) {
+    const frag = document.createDocumentFragment();
+
+    items.forEach((item) => {
+      const card = document.createElement('article');
+      card.className = 'artshop-card';
+
+      const title = DOMPurify.sanitize(item.title ?? '');
+      const imagePath = DOMPurify.sanitize(item.imagePath ?? '');
+      const desc = DOMPurify.sanitize(item.description ?? '');
+      const id = Number(item.id);
+      const price = Number(item.price);
+
+      card.innerHTML = `
+        <div class="img-wrap">
+          <img src="${imagePath}" alt="${title}">
+          <div class="card-overlay">
+            <div class="overlay-actions">
+              <button class="overlay-btn btn-preview">Preview</button>
+              <button class="overlay-btn secondary btn-purchase">Purchase</button>
+            </div>
+          </div>
+        </div>
+        <div class="info-area">
+          <div class="title">${title}</div>
+          <div class="price-id-wrapper">
+            <div class="price">$ ${isFinite(price) ? price.toLocaleString() : ''}</div>
+            <div class="id">#${isFinite(id) ? id : ''}</div>
+          </div>
+        </div>
+      `;
+
+      // 버튼 이벤트
+      card.querySelector('.btn-preview').addEventListener('click', () => {
+        openPreview({
+          id,
+          title,
+          imagePath,
+          description: desc,
+          price
+        });
+      });
+      card.querySelector('.btn-purchase').addEventListener('click', () => {
+        window.location.href = `/purchase?id=${encodeURIComponent(id)}`;
+      });
+
+      frag.appendChild(card);
+    });
+
+    container.appendChild(frag);
+  }
+
+  // ===== 다음 페이지 로드 =====
+  async function loadNext() {
+    if (loading || !hasNext) return;
+    loading = true;
+
+    // 최초 로드시 로딩 메시지 표시 (비어있을 때만)
+    if (page === 0 && container.children.length === 0) {
+      container.textContent = 'Loading...';
+    }
 
     try {
-      const res = await fetch(`/api/artshop?sort=${sort}`);
-      const data = await res.json();
-      console.log('✅ Fetched data:', data);
-
-      const items = data.content;
-      if (!items || items.length === 0) {
-        container.innerHTML = 'No items found.';
-        return;
-      }
-
-      container.innerHTML = '';
-
-items.forEach(item => {
-  const card = document.createElement('div');
-  card.className = 'artshop-card';
-  card.innerHTML = `
-    <a href="/purchase" style="text-decoration: none; color: inherit;">
-      <img src="${DOMPurify.sanitize(item.imagePath)}" alt="${DOMPurify.sanitize(item.title)}" />
-      <div class="title" style="text-align: left; font-weight: bold; font-size: 1.15rem;">${DOMPurify.sanitize(item.title)}</div>
-      <div class="price-id-wrapper" style="position: relative; margin-top: .25rem;">
-        <div class="price" style="text-align: left; font-weight: bold; font-size: 1rem;">$ ${item.price.toLocaleString()}</div>
-        <div class="id" style="position: absolute; right: 0; top: 0; font-size: 0.85rem; color: #888;">#${item.id}</div>
-      </div>
-    </a>
-  `;
-    card.addEventListener('mouseover', () => {
-    document.getElementById('previewImage').src = item.imagePath;
-    document.getElementById('previewTitle').textContent = item.title;
-    document.getElementById('previewId').textContent = `#${item.id}`;
-    document.getElementById('previewPrice').textContent = `$ ${item.price.toLocaleString()}`;
-    document.getElementById('previewDesc').textContent = item.description;
-    document.getElementById('previewBox').classList.remove('hidden');
-  });
-  card.addEventListener('mouseout', () => {
-    document.getElementById('previewBox').classList.add('hidden');
-  });
-  container.appendChild(card);
-});
-
-
-
+      const { items, hasNext: next } = await fetchPage(page, size, sort);
+      if (page === 0) container.textContent = ''; // 첫 로드 때 "Loading..." 제거
+      appendItems(items);
+      page += 1;
+      hasNext = next;
+      if (!hasNext) observer.unobserve(sentinel);
     } catch (err) {
       console.error('❌ Fetch failed:', err);
-      container.innerHTML = 'Failed to load items.';
+      container.textContent = 'Failed to load items.';
+    } finally {
+      loading = false;
     }
   }
+
+  // ===== 초기화 후 2페이지 로드 =====
+  async function resetAndLoad() {
+    page = 0;
+    hasNext = true;
+    loading = false;
+    container.innerHTML = '';
+    observer.observe(sentinel); // 재관찰
+    await loadNext();
+    await loadNext(); // 초기 2페이지
+  }
+
+  // ===== IntersectionObserver로 인피니트 스크롤 =====
+  const observer = new IntersectionObserver((entries) => {
+    if (entries.some(e => e.isIntersecting)) loadNext();
+  }, { rootMargin: '200px' });
+
+  observer.observe(sentinel);
+
+  // 첫 진입: 초기 2페이지 로드
+  await loadNext();
+  await loadNext();
+});
+
+/* ========== Preview Modal (기존 함수 재사용) ========== */
+function openPreview(item){
+  const wrap = document.getElementById('previewImageWrap');
+  const img  = document.getElementById('previewImage');
+
+  if (item.imagePath) {
+    wrap.classList.remove('empty');
+    img.src = item.imagePath;
+  } else {
+    img.removeAttribute('src');
+    wrap.classList.add('empty');
+  }
+
+  document.getElementById('previewTitle').textContent = item.title || '';
+  document.getElementById('previewId').textContent    = `#${item.id ?? ''}`;
+  document.getElementById('previewPrice').textContent = isFinite(item.price) ? `$ ${Number(item.price).toLocaleString()}` : '';
+  document.getElementById('previewDesc').textContent  = item.description || '';
+
+  document.getElementById('modalBackdrop').classList.remove('hidden');
+  document.getElementById('previewBox').classList.remove('hidden');
+
+  // 접근성: 닫기 버튼 포커스
+  document.getElementById('previewClose').focus();
+}
+
+function closePreview() {
+  document.getElementById('modalBackdrop').classList.add('hidden');
+  document.getElementById('previewBox').classList.add('hidden');
+}
 </script>
+
 
 
   <!-- GTranslate 설정 -->

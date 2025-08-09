@@ -120,8 +120,10 @@ header {
     footer nav a:hover { color: #fff; }
     .footer-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; margin-top: 1.25rem; }
     .footer-bottom { font-size: .75rem; color: #888; margin-top: 1.25rem; }
-    .sns-icon svg { margin-top: 1.25rem; transition: fill 0.3s; fill: #000; }
-    .sns-icon svg:hover { fill: #fff; }
+.footer-sns { display:flex; gap:.875rem; justify-content:center; margin:.625rem 0 1.125rem; }
+.footer-sns a { display:inline-flex; line-height:0; color:#fff; } /* SVG가 currentColor 사용 */
+.footer-sns svg { margin-top: 1.25rem; transition: fill 0.3s; fill: #888; }
+.footer-sns svg:hover { fill: #fff; }
 
 
 /* Artwork Section */

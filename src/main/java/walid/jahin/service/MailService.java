@@ -26,7 +26,8 @@ public class MailService {
 
     public void sendBuyInquiryMail(BuyRequest request) {
         String artistEmail = getArtistEmail();
-        if (artistEmail == null) return; // 이메일 없으면 전송 X
+        if (artistEmail == null)
+            return; // 이메일 없으면 전송 X
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
@@ -38,7 +39,8 @@ public class MailService {
 
     public void sendInquiryMail(InquiryRequest request) {
         String artistEmail = getArtistEmail();
-        if (artistEmail == null) return; // 이메일 없으면 전송 X
+        if (artistEmail == null)
+            return; // 이메일 없으면 전송 X
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
@@ -56,15 +58,13 @@ public class MailService {
 
     private String buildBuyContent(BuyRequest r) {
         return String.format(
-            "Name: %s\nEmail: %s\nAddress: %s\nPhone: %s\nMessage:\n%s",
-            r.getName(), r.getEmail(), r.getAddress(), r.getPhone(), r.getMessage()
-        );
+                "Name: %s\nEmail: %s\nArt ID: %s\nPhone: %s\nMessage:\n%s",
+                r.getName(), r.getEmail(), r.getId(), r.getPhone(), r.getMessage());
     }
 
     private String buildInquiryContent(InquiryRequest r) {
         return String.format(
-            "Name: %s\nEmail: %s\nArt number: %s\nPhone: %s\nMessage:\n%s",
-            r.getName(), r.getEmail(), r.getArtnum(), r.getPhone(), r.getMessage()
-        );
+                "Name: %s\nEmail: %s\nArt ID: %s\nPhone: %s\nMessage:\n%s",
+                r.getName(), r.getEmail(), r.getArtnum(), r.getPhone(), r.getMessage());
     }
 }

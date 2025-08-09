@@ -7,7 +7,6 @@ import walid.jahin.service.ArtistSocialService;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/api/social")
 public class ArtistSocialController {
 
     private final ArtistSocialService service;
@@ -16,27 +15,27 @@ public class ArtistSocialController {
         this.service = service;
     }
 
-    @PostMapping("/facebook")
+    @PostMapping("/admin/api/social/facebook")
     public ResponseEntity<String> updateFacebook(@RequestBody Map<String, String> body) {
         String facebook = body.get("facebook");
         service.updateFacebook(facebook);
         return ResponseEntity.ok("Facebook 링크 저장됨");
     }
 
-    @PostMapping("/instagram")
+    @PostMapping("/admin/api/social/instagram")
     public ResponseEntity<String> updateInstagram(@RequestBody Map<String, String> body) {
         String instagram = body.get("instagram");
         service.updateInstagram(instagram);
         return ResponseEntity.ok("Instagram 링크 저장됨");
     }
 
-    @GetMapping("/facebook")
+    @GetMapping("/api/social/facebook")
     public ResponseEntity<String> getFacebook() {
         var current = service.getCurrent();
         return ResponseEntity.ok(current != null && current.getFacebookUrl() != null ? current.getFacebookUrl() : "");
     }
 
-    @GetMapping("/instagram")
+    @GetMapping("/api/social/instagram")
     public ResponseEntity<String> getInstagram() {
         var current = service.getCurrent();
         return ResponseEntity.ok(current != null && current.getInstagramUrl() != null ? current.getInstagramUrl() : "");
