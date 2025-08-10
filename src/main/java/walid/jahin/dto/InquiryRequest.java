@@ -17,7 +17,7 @@ public class InquiryRequest {
     @NotBlank
     private String artnum;
 
-    @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$", message = "전화번호는 10~11자리 숫자여야 합니다.")
+    @Pattern(regexp = "^[0-9-]+$", message = "전화번호는 10~11자리 숫자여야 합니다.")
     private String phone;
 
     @Size(max = 500, message = "메시지는 최대 500자까지 입력할 수 있습니다.")

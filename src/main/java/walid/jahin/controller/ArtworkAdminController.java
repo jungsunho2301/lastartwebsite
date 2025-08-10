@@ -47,6 +47,13 @@ public class ArtworkAdminController {
 
             Artwork saved = artworkService.saveArtwork(image);
             return ResponseEntity.ok(saved);
+
+        } catch (javax.net.ssl.SSLHandshakeException e) {
+            // ✅ TLS Handshake 실패 구분
+            e.printStackTrace(); // 콘솔에 전체 스택
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                    .body("UPLOAD_ERROR: SSLHandshakeException - " + e.getMessage());
+
         } catch (IOException | ServletException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Upload Failed");
         }

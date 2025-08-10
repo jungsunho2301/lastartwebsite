@@ -247,19 +247,21 @@
     </div>
   </header>
 
+
   <!-- Artshop Banner -->
-  <section class="full-width-banner">
-    <img src="/image/banner.png" alt="Art Banner" />
-    <div class="banner-text">
-      <h1>WALID JAHIN ART SHOP</h1>
-      <p>Please note</p>
-      <p class="copyright-text">
-        All artworks and images in this ART SHOP are protected by copyright law.<br />
-        Any reproduction, distribution, or commercial use without prior written permission from<br />
-        Walid Jahin is strictly prohibited
-      </p>
-    </div>
-  </section>
+<section class="full-width-banner">
+  <img src="/image/banner.png" alt="Art Banner" />
+  <div class="banner-text">
+    <h1>WALID JAHIN ART SHOP</h1>
+    <p>Please note</p>
+    <p class="copyright-text">
+      All artworks and images in this ART SHOP are protected by copyright law. 
+      Any reproduction, distribution, or commercial use without prior written permission from 
+      Walid Jahin is strictly prohibited
+    </p>
+  </div>
+</section>
+
 
 
 
@@ -477,6 +479,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
       `;
 
+
       // 버튼 이벤트
       card.querySelector('.btn-preview').addEventListener('click', () => {
         openPreview({
@@ -496,6 +499,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     container.appendChild(frag);
   }
+
 
   // ===== 다음 페이지 로드 =====
   async function loadNext() {
@@ -575,6 +579,99 @@ function closePreview() {
   document.getElementById('previewBox').classList.add('hidden');
 }
 </script>
+
+
+  <!-- sdfslkhldsfkashfdajdslfskd -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('artshop-items');
+  if (!container) return;
+
+  const isTouch = window.matchMedia('(hover: none)').matches;
+
+  // 공통 함수: 현재 카드만 show, 나머지 hide
+  const showOnly = (card) => {
+    document.querySelectorAll('.artshop-card.show-actions')
+      .forEach(el => { if (el !== card) el.classList.remove('show-actions'); });
+    card.classList.add('show-actions');
+  };
+
+  // === 터치 1탭 = 보이기 (capture, passive:false) ===
+  const onFirstTap = (e) => {
+    if (!isTouch) return;
+    const card = e.target.closest('.artshop-card');
+    if (!card) return;
+    // 버튼 자체 누른 경우는 여기서 처리하지 않음
+    if (e.target.closest('.btn-preview, .btn-purchase')) return;
+
+    if (!card.classList.contains('show-actions')) {
+      showOnly(card);
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    }
+  };
+
+  // iOS 사파리 등 대비: pointerdown + touchstart 둘 다 등록
+  container.addEventListener('pointerdown', onFirstTap, { capture: true, passive: false });
+  container.addEventListener('touchstart',  onFirstTap, { capture: true, passive: false });
+
+  // === Preview 클릭 ===
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-preview');
+    if (!btn) return;
+    const card = btn.closest('.artshop-card');
+    if (!card) return;
+
+    if (isTouch && !card.classList.contains('show-actions')) {
+      showOnly(card);
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    const title    = card.querySelector('.title')?.textContent?.trim() ?? '';
+    const idTxt    = card.querySelector('.id')?.textContent?.replace('#','').trim() ?? '';
+    const priceTxt = card.querySelector('.price')?.textContent?.replace(/[^\d.]/g,'') ?? '';
+    const imageSrc = card.querySelector('.img-wrap img')?.getAttribute('src') ?? '';
+    const desc     = document.getElementById('previewDesc')?.textContent || '';
+
+    openPreview({
+      id: Number(idTxt) || idTxt,
+      title,
+      imagePath: imageSrc,
+      description: desc,
+      price: Number(priceTxt) || priceTxt
+    });
+  });
+
+  // === Purchase 클릭 ===
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-purchase');
+    if (!btn) return;
+    const card = btn.closest('.artshop-card');
+    if (!card) return;
+
+    if (isTouch && !card.classList.contains('show-actions')) {
+      showOnly(card);
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    const idTxt = card.querySelector('.id')?.textContent?.replace('#','').trim() ?? '';
+    window.location.href = idTxt ? `/purchase?id=${encodeURIComponent(idTxt)}` : `/purchase`;
+  });
+
+  // 바깥 클릭 시 닫기
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.artshop-card')) return;
+    document.querySelectorAll('.artshop-card.show-actions')
+      .forEach(el => el.classList.remove('show-actions'));
+  });
+});
+</script>
+
 
 
 

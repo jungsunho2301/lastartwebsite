@@ -6,6 +6,9 @@ html {
 /* Google Fonts Import */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
+
+
+
 /* Base Styles */
 body {
   font-family: 'Noto Sans KR', sans-serif;
@@ -18,6 +21,13 @@ body {
 .font-serif {
   font-family: 'Playfair Display', serif;
 }
+
+.container {
+  max-width: 75rem;   /* 데스크톱 최대폭 */
+  margin: 0 auto;
+  padding: 0 1rem;    /* 모바일 좌우 여백 */
+}
+
 
 
 
@@ -417,49 +427,7 @@ textarea {
   height: auto;
 }
 
-.full-width-banner {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  height: 25rem; /* 필요시 높이 고정 */
-}
 
-.full-width-banner img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* 텍스트를 배너 중앙에 오버레이 */
-.banner-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-  text-shadow: .0625rem .0625rem .25rem rgba(0, 0, 0, 0.6);
-}
-
-.banner-text h1 {
-  font-size: 2.25rem;
-  font-family: 'Playfair Display', serif;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-}
-
-.banner-text p {
-  font-size: 1.25rem;
-  font-family: 'Playfair Display', serif;
-  font-weight: 400;
-}
-
-.banner-text .copyright-text {
-  font-size: 1.125rem;  /* 원래보다 작게 조정 (원하는 크기로 변경 가능) */
-  line-height: 1.2; /* 줄 간격도 조금 넉넉하게 */
-  color: #eee;      /* 배경에 맞춰 흰색 계열로 가독성 향상 */
-}
 
 .artist-intro {
   padding: 3.75rem 1.25rem 1.875rem;
@@ -821,4 +789,561 @@ textarea {
   height: 35.3125rem;
   object-fit: cover;
   border-radius: .625rem;
+}
+
+
+/* 0) 공통: 급한 불 끄기 (가로 스크롤 차단) */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+
+
+
+/* 헤더 */
+
+/* ===== Mobile header overrides (<=48rem) ===== */
+@media (max-width: 48rem) {
+
+  /* 헤더 기본 + 우측 상단 번역버튼 공간 확보 */
+  header {
+    position: relative;
+    padding: 2.75rem .75rem .5rem;   /* ↑ top 패딩을 늘려서 고정된 번역버튼과 겹침 방지 */
+    overflow-x: hidden;
+  }
+
+  .header-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  /* 로고 */
+  .logo {
+    margin: 0 auto .5rem;
+    text-align: center;
+    line-height: 1.1;
+    font-size: clamp(1.4rem, 6vw, 1.9rem);
+  }
+
+  /* 메뉴: 가로 나열 + 줄바꿈 */
+  .nav-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: row;      /* 가로 */
+    flex-wrap: wrap;          /* 필요 시 줄바꿈 */
+    justify-content: center;
+    align-items: center;
+    gap: .5rem .75rem;
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: inline-block;
+    width: auto;
+    max-width: none;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 0.85rem;       /* 버튼 텍스트 축소 */
+    padding: 0.4rem 0.7rem;   /* 버튼 내부 여백 */
+  }
+
+  /* 번역 버튼: 헤더 우측 상단 고정, 다른 요소 안 밀어냄 */
+  .lang {
+    position: absolute !important;
+    top: .5rem;
+    right: .5rem;
+    transform: none;
+    margin: 0;
+    width: auto;
+    z-index: 10; /* 다른 요소 위에 표시 */
+  }
+
+  /* 국기만 보이게 */
+  .gtranslate_wrapper select {
+    padding-left: 0;
+    text-indent: -624.9375rem; /* 텍스트 숨김 */
+    overflow: hidden;
+    width: 2.5rem; /* 국기 폭 */
+    height: 1.75rem; /* 국기 높이 */
+  }
+
+  /* 이미지형 스위처 크기 조정 */
+  .gtranslate_wrapper .gt_float_switcher {
+    width: 2.5rem;
+    height: 1.75rem;
+    overflow: hidden;
+  }
+    /* 로그인 버튼: 모바일에서 숨김 */
+  #adminButton { display: none !important; }
+}
+
+
+@media (max-width: 48rem) {
+  .Main-section {
+    display: none !important;
+  }
+}
+
+@media (max-width: 48rem) {
+  /* ARTIST 섹션 썸네일 제거 */
+  .flex.items-end.gap-4 img {
+    display: none !important;
+  }
+}
+
+@media (max-width: 48rem) {
+  /* 제목 바 위치 동일 + 상단 여백 동일 */
+  .artist123-section {
+    position: relative;
+    padding-top: 2.25rem;                 /* 두 섹션 공통 상단여백 */
+  }
+
+
+
+  /* 제목 아래 첫 번째 큰 이미지가 바로 붙도록 통일 */
+  .artist123-section .max-w-6xl > .w-full:first-child{
+    margin-top: 0 !important;
+  }
+
+  /* 섹션 내 첫 번째 이미지에 동일한 위쪽 여백 부여(정밀 통일) */
+  .artist123-section img:first-of-type {
+    margin-top: .5rem !important;        /* 제목과 이미지 간격 */
+    display: block;                     /* 인라인 여백 방지 */
+  }
+
+  /* 섹션 내부 컬럼 사이 간격도 동일하게 */
+  .artist123-section .max-w-6xl {
+    gap: .75rem !important;
+  }
+
+  
+}
+
+@media (max-width: 48rem) {
+  /* 폼 전체 */
+  #newsletterForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
+  /* 입력창 폭 100%로 확장 */
+  #newsletterForm input[type="text"],
+  #newsletterForm input[type="email"],
+  #newsletterForm .subscribe-input {
+    width: 100% !important;
+    max-width: 21.875rem; /* 너무 넓어지지 않게 제한 */
+  }
+
+  /* 체크박스 영역 가운데 정렬 */
+  #newsletterForm .flex.items-center {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* reCAPTCHA 영역 가운데 고정 */
+  #newsletterForm .g-recaptcha {
+    transform: scale(0.9); /* 모바일에서 크기 조금 축소 */
+    transform-origin: center;
+  }
+
+  /* 버튼 폭 맞추기 */
+  #newsletterForm .subscribe-button {
+    width: 100%;
+    max-width: 21.875rem;
+  }
+}
+
+@media (max-width: 48rem) {
+  .carousel-section {
+    display: none;
+  }
+}
+
+@media (max-width: 48rem) {
+  /* .section-block 안의 레이아웃을 세로로 변경 */
+  .section-block {
+    display: block !important;
+  }
+
+  /* 제목 밑에 선 */
+  .section-title {
+    padding-bottom: .375rem;
+    margin-bottom: .75rem;
+    border-bottom: .0625rem solid #d1d5db; /* 선 */
+  }
+
+  /* 기존 divider는 숨김 */
+  .section-divider {
+    display: none !important;
+  }
+
+  /* 내용은 제목 아래로 */
+  .section-content {
+    margin-top: 0;
+    display: block !important;
+  }
+}
+
+
+@media (max-width: 48rem) {
+  /* 부모 가로 배치 유지 */
+  .section-pair-block {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between;
+    gap: .75rem;
+  }
+
+  /* 각 아이템 폭 줄이기 */
+  .section-pair-block > div {
+    flex: 1 1 0;
+    max-width: 48%;
+  }
+
+  /* 제목: 아주 작게 + 밑줄 */
+  .section-pair-title,
+  .pair-title,
+  .section-pair-block h2,
+  .section-pair-block h3,
+  .artist-section-pair h2,
+  .artist-section-pair h3 {
+    font-size: clamp(1.75rem, 3.6vw, .875rem) !important;
+    line-height: 1.25 !important;
+    padding-bottom: .375rem !important;
+    margin-bottom: .75rem !important;
+    border-bottom: .0625rem solid #d1d5db !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* 본문: 더 작게 */
+  .section-pair-content,
+  .pair-content,
+  .section-pair-block p,
+  .artist-section-pair p {
+    font-size: clamp(.8125rem, 3.6vw, .875rem) !important;
+    line-height: 1.5 !important;
+  }
+    /* 구분선 숨김 */
+  .section-pair-divider,
+  .pair-divider {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .artist-gallery {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    padding: 0 8px;
+    box-sizing: border-box;
+  }
+
+  .artist-gallery img { display: none !important; }
+
+  /* 2~4번만 표시 + 정사각형 + 동일 크기 */
+  .artist-gallery img:nth-child(2),
+  .artist-gallery img:nth-child(3),
+  .artist-gallery img:nth-child(4) {
+    display: block !important;
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    height: calc((100vw - 16px - 2 * 8px) / 3) !important; /* 여기 */
+    object-fit: cover !important;
+    border-radius: 8px;
+  }
+}
+
+/* 모바일 전용 (768px 이하) */
+@media (max-width: 768px) {
+  /* 그리드 3열 강제 */
+  #artwork-grid.artwork-container {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: .75rem !important;
+    padding: .75rem !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  /* 카드 박스(있다면) */
+  .artwork-card {
+    padding: .5rem !important;
+    border: 1px solid #eee;     /* 선택 */
+    border-radius: .5rem;
+    height: auto !important;
+  }
+
+  /* 이미지 크기 통일(정사각, 꽉차게) */
+  .artwork-card img,
+  #artwork-grid > img {
+    display: block;
+    width: 100% !important;
+    aspect-ratio: 3 / 4 !important;  /* 가로:세로 = 4:3 직사각형 */
+    object-fit: cover !important;
+    border-radius: .5rem;
+    height: auto !important;
+  }
+}
+
+/* 모바일 전용 */
+@media (max-width: 900px) { /* 828px도 잡히게 여유있게 */
+  .hero-section {
+    padding-top: 1.25rem !important;  /* 위 여백 크게 축소 */
+    padding-bottom: 1.25rem !important; /* 아래 여백 크게 축소 */
+  }
+
+  .hero-section .hero-title {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin: 0.25rem 0 !important;   /* h2의 위/아래 마진 최소화 */
+  }
+}
+
+/* 배너 */
+.full-width-banner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 25rem; /* 필요시 높이 고정 */
+}
+
+.full-width-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 텍스트를 배너 중앙에 오버레이 */
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  text-shadow: .0625rem .0625rem .25rem rgba(0, 0, 0, 0.6);
+}
+
+.banner-text h1 {
+  font-size: 2.25rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+}
+
+.banner-text p {
+  font-size: 1.25rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+}
+
+.banner-text .copyright-text {
+  font-size: 1.125rem;  /* 원래보다 작게 조정 (원하는 크기로 변경 가능) */
+  line-height: 1.2; /* 줄 간격도 조금 넉넉하게 */
+  color: #eee;      /* 배경에 맞춰 흰색 계열로 가독성 향상 */
+}
+
+/* 모바일 전용 */
+@media (max-width: 768px) {
+  .banner-text h1 {
+    font-size: 1.5rem; /* 모바일 제목 축소 */
+  }
+
+  .banner-text p {
+    font-size: 0.9rem; /* 본문 축소 */
+    line-height: 1.4;
+  }
+
+  .banner-text .copyright-text {
+    /* 폭을 줄여서 줄 수 고정 */
+    max-width: 15rem;        /* 약 240px 폭 → 4줄 맞춤 */
+    margin: 0 auto;          /* 가운데 정렬 */
+    text-align: center;
+
+    /* 폰트 크기와 줄 간격 */
+    font-size: 0.9rem;       /* 줄 수 맞추는 크기 */
+    line-height: 1.4;
+
+    /* 글자가 줄 수 넘어가면 자동 줄임 */
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+}
+
+/* 모바일 전용 (<=768px) */
+@media (max-width: 768px) {
+  /* 아트샵 그리드 2열 강제 */
+  #artshop-items.artshop-grid,
+  #artshop-items,
+  .artshop-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    padding: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  /* 카드가 flex 1열을 고집하는 경우 무력화 */
+  #artshop-items > *,
+  .artshop-grid > * {
+    width: auto !important;
+    max-width: 100% !important;
+    flex: 0 0 auto !important;
+    box-sizing: border-box;
+  }
+
+  /* 카드 이미지 직사각형(4:3) 통일 */
+  .artshop-card img,
+  #artshop-items img,
+  .artshop-grid img {
+    display: block;
+    width: 100% !important;
+    aspect-ratio: 4 / 3 !important;   /* 필요 시 16/9, 3/2 등으로 변경 */
+    object-fit: cover !important;
+    height: auto !important;
+    border-radius: .5rem;
+  }
+}
+
+/* 모바일 전용 (작품 탭 시 오버레이/버튼 표시) */
+@media (max-width: 768px) {
+  .artshop-card { position: relative; overflow: hidden; }
+
+  /* 실제 HTML 구조에 맞춤: .card-overlay 사용 */
+  .artshop-card .card-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;                 /* 기본 숨김 */
+    pointer-events: none;
+    transition: opacity .2s ease;
+    z-index: 2;
+    background: rgba(0,0,0,.35); /* 어두운 배경은 오버레이 자체에서 처리 */
+  }
+
+  /* 오버레이 안 버튼 래퍼 (.overlay-actions) */
+  .artshop-card .overlay-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* 카드에 show-actions 붙으면 보이기 */
+  .artshop-card.show-actions .card-overlay {
+    opacity: 1;
+    pointer-events: auto;       /* 버튼 클릭 가능 */
+  }
+}
+
+/* 터치 디바이스(hover 없음)에서도 확실히 작동하도록 보강 */
+@media (hover: none) {
+  .artshop-card .img-wrap { position: relative; z-index: 0; }
+  .artshop-card .card-overlay { position: absolute; inset: 0; z-index: 2; }
+  .artshop-card.show-actions .card-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* 데스크탑에서만 hover로 오버레이 표시 */
+@media (hover: hover) {
+  .artshop-card:hover .card-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+
+/* 모바일: 모달 내부 위/아래 배치 + 가운데 정렬 */
+@media (max-width: 768px) {
+  /* 모달 박스 크기 */
+  #previewBox {
+    width: min(92vw, 640px);
+    height: auto;
+    max-height: 90vh;
+    overflow: auto;
+  }
+
+  /* 레이아웃 세로 전환 */
+  #previewBox .preview-body {
+    display: flex;
+    flex-direction: column !important;
+    gap: 0;
+  }
+
+  /* 이미지 영역 */
+  #previewBox .preview-image-wrap {
+    width: 21.25rem  !important;
+    flex: 0 0 auto !important;
+    max-height: 50vh;
+    margin-left: 10%;
+    margin-right: 10%;
+    display: flex;
+     /* 가로 가운데 */
+    align-items: center;     /* 세로 가운데 */
+  }
+  #previewBox #previewImage {
+    display: block;
+    max-width: 100%;
+    max-height: 50vh;
+    object-fit: contain;
+  }
+
+  /* 정보 영역 */
+  #previewBox .preview-info {
+    width: 100% !important;
+    flex: 0 0 auto !important;
+    border-left: 0 !important;
+    border-top: 1px solid #eee;
+    padding: 0 16px;
+  }
+
+  /* 제목, 가격, 설명 모두 가운데 
+  #previewBox .preview-info h3,
+  #previewBox .preview-info p {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }*/
+}
+
+
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: auto;
+    max-width: 70vw;   /* 가로 크기 줄이기 */
+  }
+
+  #modal-image {
+    max-width: 70vw;   /* 화면 너비의 85%까지만 */
+    max-height: 65vh;  /* 화면 높이의 75%까지만 */
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 768px){
+  .artwork-section .max-w-6xl{ gap:0 !important; }
 }
