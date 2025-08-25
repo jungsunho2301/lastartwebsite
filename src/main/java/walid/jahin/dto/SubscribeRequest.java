@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 
 public class SubscribeRequest {
 
-    @NotBlank(message = "이름은 필수입니다.")
+    @NotBlank(message = "Name is required.")
     private String name;
 
-    @NotBlank(message = "이메일은 필수입니다.")
-    @Email(message = "유효한 이메일 주소를 입력해주세요.")
+    @NotBlank(message = "Email is required.")
+    @Email(message = "Please enter a valid email address.")
     private String email;
 
     // Getter & Setter

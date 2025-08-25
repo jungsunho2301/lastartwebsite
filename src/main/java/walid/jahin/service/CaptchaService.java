@@ -49,7 +49,7 @@ public class CaptchaService {
 
             return Boolean.TRUE.equals(result.get("success"));
         } catch (Exception e) {
-            log.warn("❗ reCAPTCHA 검증 실패: {}", e.getMessage(), e);
+            log.warn("reCAPTCHA verification failed: {}", e.getMessage(), e);
             return false;
         }
     }

@@ -26,7 +26,7 @@ public class AdminNewsController {
         // ✅ 관리자 세션 여부 확인
         String adminUsername = (String) session.getAttribute(SessionConst.LOGIN_ADMIN);
         if (adminUsername == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근 권한이 없습니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied.");
         }
 
         // ✅ XSS 방지 처리
@@ -35,6 +35,6 @@ public class AdminNewsController {
 
         // ✅ 뉴스 전송
         newsService.sendNewsToSubscribers(safeTitle, safeContent);
-        return ResponseEntity.ok("뉴스가 모든 구독자에게 전송되었습니다.");
+        return ResponseEntity.ok("News has been sent to all subscribers.");
     }
 }

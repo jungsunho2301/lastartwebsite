@@ -32,22 +32,22 @@ public class SubscribeController {
                                             HttpServletRequest httpRequest) {
 
         if (!captchaService.verify(recaptchaToken)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("reCAPTCHA 인증에 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Failed to verify reCAPTCHA.");
         }
 
         String clientIp = getClientIp(httpRequest);
 
         if (!rateLimiterService.isAllowed(clientIp)) {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                    .body("같은 IP에서 너무 많은 요청이 감지되었습니다. 잠시 후 다시 시도해주세요.");
+                    .body("Too many requests detected from the same IP. Please try again later.");
         }
 
         boolean subscribed = subscribeService.subscribe(request.getName(), request.getEmail());
         if (!subscribed) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 구독된 이메일입니다.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("This email is already subscribed.");
         }
 
-        return ResponseEntity.ok("구독이 성공적으로 완료되었습니다.");
+        return ResponseEntity.ok("Subscription completed successfully.");
     }
 
     private String getClientIp(HttpServletRequest request) {

@@ -26,7 +26,7 @@ public class ArtshopService {
     public Artshop saveArtshop(String title, String description, Integer price, MultipartFile image)
             throws IOException {
         if (image == null || image.isEmpty()) {
-            throw new IOException("이미지 파일이 비어 있습니다.");
+            throw new IOException("The image file is empty.");
         }
         String imageUrl = objectStorageUtil.uploadArtworkToObjectStorage(image, "artshop");
         Artshop artshop = Artshop.builder()
@@ -42,7 +42,7 @@ public class ArtshopService {
     public Artshop updateArtshop(Long id, String title, String description, Integer price, MultipartFile image)
             throws IOException {
         Artshop artshop = artshopRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 작품입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("The artwork does not exist."));
 
         if (title != null && !title.isBlank())
             artshop.setTitle(HtmlUtils.htmlEscape(title));

@@ -63,7 +63,7 @@ header {
 
 /* 로고 */
 .logo {
-  font-family: 'Roboto Serif', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 3.75rem; /* 사용자 요청 */
   font-weight: 800;
   font-style: italic;
@@ -545,7 +545,7 @@ textarea {
   flex-direction: column;
   gap: 5rem;
   padding: 2.5rem 1.25rem;
-  background-color: rgb(255, 255, 255);
+  background-color: #f9f9f9;
 }
 
 .section-block {
@@ -606,7 +606,7 @@ textarea {
   justify-content: space-between;
   gap: 2.5rem;
   padding: 2.5rem 1.25rem;
-  background-color: #ffffff;
+  background-color: #f9f9f9;
 }
 
 .pair-block {
@@ -684,7 +684,7 @@ textarea {
   justify-content: space-between;
   gap: 5rem;
   padding: 2.5rem 1.25rem;
-  background-color: #ffffff;
+  background-color: #f9f9f9;
 }
 
 .row-block {
@@ -728,6 +728,7 @@ textarea {
 
 .hero-description {
   font-size: 1.1rem;
+  font-weight: 100;
   font-family: 'Roboto Serif', serif;
   color: #969696;
   text-align: center;
@@ -741,7 +742,7 @@ textarea {
 
 .card-title {
   font-family: 'Roboto Serif', serif;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
 }
 

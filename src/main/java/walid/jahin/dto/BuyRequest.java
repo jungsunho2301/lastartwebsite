@@ -16,10 +16,10 @@ public class BuyRequest {
     @NotBlank
     private String id;
 
-    @Pattern(regexp = "^[0-9-]+$", message = "전화번호는 10~11자리 숫자여야 합니다.")
+    @Pattern(regexp = "^[0-9-]+$", message = "Please enter numbers and '-' only.")
     private String phone;
 
-    @Size(max = 500, message = "메시지는 최대 500자까지 입력 가능합니다.")
+    @Size(max = 500, message = "Message can be up to 500 characters.")
     private String message;
 
     // ✅ Getter

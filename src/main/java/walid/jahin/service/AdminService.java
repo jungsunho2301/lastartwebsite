@@ -31,13 +31,13 @@ public class AdminService {
                 boolean result = passwordEncoder.matches(rawPassword, admin.getPassword());
 
                 if (!result) {
-                    log.warn("❌ 로그인 실패 - 비밀번호 불일치 (username: {})", username);
+                    log.warn("Login failed – Incorrect password. (username: {})", username);
                 }
 
                 return result;
             })
             .orElseGet(() -> {
-                log.warn("❌ 로그인 실패 - 존재하지 않는 계정 (username: {})", username);
+                log.warn("Login failed – Account does not exist. (username: {})", username);
                 return false;
             });
     }

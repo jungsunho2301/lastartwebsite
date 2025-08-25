@@ -15,7 +15,7 @@
     body {
       margin: 0;
       font-family: 'Noto Sans KR', serif;
-      background-color: #fff;
+      background-color: #f9f9f9;
       color: #111;
     }
 
@@ -50,7 +50,7 @@
   border-radius: .75rem;
   box-shadow: 0 .125rem .625rem rgba(0,0,0,.06);
   background: #fff;
-
+  border: 1px solid rgba(0,0,0,0.08);
   height: 21.25rem;              /* 카드 전체 높이 */
   display: flex;
   flex-direction: column;
@@ -337,7 +337,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       else fbEl.style.display = 'none';
     }
   } catch (e) {
-    console.error('SNS 링크 로드 실패:', e);
+    console.error('SNS link load failed:', e);
     if (igEl) igEl.style.display = 'none';
     if (fbEl) fbEl.style.display = 'none';
   }

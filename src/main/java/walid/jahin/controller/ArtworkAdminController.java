@@ -36,13 +36,13 @@ public class ArtworkAdminController {
         }
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_ADMIN) == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("관리자 로그인 필요");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login required");
         }
 
         try {
-            System.out.println("📦 Content-Type: " + request.getContentType());
+            System.out.println("Content-Type: " + request.getContentType());
             for (jakarta.servlet.http.Part part : request.getParts()) {
-                System.out.println("📦 Part-Name: " + part.getName());
+                System.out.println("Part-Name: " + part.getName());
             }
 
             Artwork saved = artworkService.saveArtwork(image);
@@ -66,22 +66,20 @@ public class ArtworkAdminController {
 
         // ✅ 세션 확인 및 로그 출력
         HttpSession session = request.getSession(false);
-        System.out.println("🧪 세션 존재 여부: " + (session != null));
         if (session != null) {
             Object loginAttr = session.getAttribute(SessionConst.LOGIN_ADMIN);
-            System.out.println("🧪 세션 loginAdmin 값: " + loginAttr);
         }
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_ADMIN) == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("관리자 로그인 필요");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login required");
         }
 
         if (!artworkRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 작품이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This artwork does not exist.");
         }
 
         artworkService.deleteArtwork(id);
-        return ResponseEntity.ok("작품 삭제 완료");
+        return ResponseEntity.ok("Artwork has been deleted.");
     }
 
     // ✅ 작품 이미지 수정
@@ -91,26 +89,24 @@ public class ArtworkAdminController {
             HttpServletRequest request) {
         // ✅ 세션 확인
         HttpSession session = request.getSession(false);
-        System.out.println("🧪 세션 존재 여부: " + (session != null));
         if (session != null) {
             Object loginAttr = session.getAttribute(SessionConst.LOGIN_ADMIN);
-            System.out.println("🧪 세션 loginAdmin 값: " + loginAttr);
         }
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_ADMIN) == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("관리자 로그인 필요");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login required");
         }
 
         // ✅ 수정 처리
         if (!artworkRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 작품이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This artwork does not exist.");
         }
 
         try {
             Artwork updated = artworkService.updateArtworkImage(id, image);
             return ResponseEntity.ok(updated);
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 수정 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to edit");
         }
     }
 

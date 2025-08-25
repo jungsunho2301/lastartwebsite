@@ -20,6 +20,6 @@ public class ArtistInfoController {
     public ResponseEntity<String> updateArtistEmail(@RequestBody Map<String, String> body) {
         String email = body.get("email");
         artistInfoService.resetAndSaveEmail(email);
-        return ResponseEntity.ok("화가 이메일이 저장되었습니다.");
+        return ResponseEntity.ok("Artist email saved.");
     }
 }

@@ -13,7 +13,7 @@
     body {
       margin: 0;
       font-family: 'Noto Sans KR', serif;
-      background-color: #fff;
+      background-color: #f9f9f9;
       color: #111;
     }
 
@@ -47,7 +47,7 @@
 .hero-section {
   width: 100%;
   padding: 6rem 0; /* 6rem top & bottom */
-  background-color: white;
+  background-color: #f9f9f9;
   text-align: center;
   font-family: 'Roboto Serif', serif;
   font-size: 3.75rem; /* 사용자 요청 */
@@ -64,12 +64,14 @@
 }
 
 .hero-title {
+  font-family: 'Playfair Display', serif;
   font-size: 5rem; /* 약 5rem */
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
 .hero-description {
+  font-weight: 100;
   font-size: 1.5rem;
   line-height: 2rem;
   color: #767676
@@ -378,7 +380,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       else fbEl.style.display = 'none';
     }
   } catch (e) {
-    console.error('SNS 링크 로드 실패:', e);
+    console.error('SNS link load failed:', e);
     if (igEl) igEl.style.display = 'none';
     if (fbEl) fbEl.style.display = 'none';
   }

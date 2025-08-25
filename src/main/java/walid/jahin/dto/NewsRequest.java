@@ -5,12 +5,12 @@ import jakarta.validation.constraints.Size;
 
 public class NewsRequest {
 
-    @NotBlank(message = "제목은 필수입니다.")
-    @Size(max = 100, message = "제목은 최대 100자까지 가능합니다.")
+    @NotBlank(message = "Title is required.")
+    @Size(max = 100, message = "Title can be up to 100 characters.")
     private String title;
 
-    @NotBlank(message = "내용은 필수입니다.")
-    @Size(max = 2000, message = "내용은 최대 2000자까지 가능합니다.")
+    @NotBlank(message = "Content is required.")
+    @Size(max = 2000, message = "Content can be up to 2,000 characters.")
     private String content;
 
     // Getter & Setter

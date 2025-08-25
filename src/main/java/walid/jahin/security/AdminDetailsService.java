@@ -20,7 +20,7 @@ public class AdminDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Admin admin = adminRepository.findById(username)
-                .orElseThrow(() -> new UsernameNotFoundException("관리자 계정 없음: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("No administrator account found: " + username));
 
         return new AdminUserDetails(admin);
     }

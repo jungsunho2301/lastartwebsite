@@ -50,7 +50,7 @@ public class AdminController {
 
         if (failCount >= 5) {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                    .body("로그인 5회 이상 실패. 10분 후 다시 시도해주세요.");
+                    .body("You have exceeded 5 failed login attempts. Please try again in 10 minutes.");
         }
 
         try {
@@ -76,7 +76,7 @@ public class AdminController {
 
             request.changeSessionId();
 
-            return ResponseEntity.ok("관리자 로그인 성공");
+            return ResponseEntity.ok("Login completed");
 
         } catch (Exception ex) {
             session.setAttribute("loginFailCount", failCount + 1);
@@ -86,7 +86,7 @@ public class AdminController {
                     loginRequest.getUsername(), clientIp, false, LocalDateTime.now()));
 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("로그인 실패 (" + (failCount + 1) + "회)");
+                    .body((failCount + 1) + "failed login attempt");
         }
     }
 
@@ -94,7 +94,7 @@ public class AdminController {
     public ResponseEntity<?> logout(HttpSession session) {
         session.invalidate();
         SecurityContextHolder.clearContext();
-        return ResponseEntity.ok("로그아웃 완료");
+        return ResponseEntity.ok("You have been logged out.");
     }
 
     @GetMapping("/check-session")

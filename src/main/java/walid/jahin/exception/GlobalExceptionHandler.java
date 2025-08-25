@@ -11,13 +11,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleIllegalArgument(IllegalArgumentException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body("잘못된 요청입니다: " + e.getMessage());
+                .body("Error: " + e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGeneral(Exception e) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("서버 에러가 발생했습니다. 관리자에게 문의하세요.");
+                .body("Error");
     }
 }

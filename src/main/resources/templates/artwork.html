@@ -12,7 +12,7 @@
     body {
       margin: 0;
       font-family: 'Noto Sans KR', serif;
-      background-color: #fff;
+      background-color: #f9f9f9;
       color: #111;
     }
 
@@ -25,6 +25,7 @@
   padding: 2.5rem;                        /* 안쪽 여백 */
   max-width: 75rem;                    /* 최대 너비(약 900px) */
   margin: 0 auto;                         /* 가운데 정렬 */
+  background-color: #f9f9f9;
 }
 
 /* 카드 */
@@ -154,7 +155,7 @@
  .hero-section {
   width: 100%;
   padding: 6rem 0; /* 6rem top & bottom */
-  background-color: white;
+  background-color: #f9f9f9;
   text-align: center;
   font-family: 'Roboto Serif', serif;
   font-size: 3.75rem; /* 사용자 요청 */
@@ -171,6 +172,7 @@
 }
 
 .hero-title {
+  font-family: 'Playfair Display', serif;
   font-size: 5rem; /* 약 5rem */
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -389,7 +391,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       hasNext = nextFlag;
       if (!hasNext) observer.unobserve(sentinel);  // 이제 observer는 존재
     } catch (e) {
-      console.error("🎯 작품 로딩 실패:", e);
+      console.error("WORK load failed:", e);
     } finally {
       loading = false;
     }
@@ -448,7 +450,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       else fbEl.style.display = 'none';
     }
   } catch (e) {
-    console.error('SNS 링크 로드 실패:', e);
+    console.error('SNS link load failed:', e);
     if (igEl) igEl.style.display = 'none';
     if (fbEl) fbEl.style.display = 'none';
   }

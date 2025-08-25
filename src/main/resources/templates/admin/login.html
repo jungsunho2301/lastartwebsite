@@ -82,7 +82,7 @@
 
         const text = await res.text();
 
-        if (res.ok && text.includes("관리자 로그인 성공")) {
+        if (res.ok && text.includes("Login completed")) {
           window.location.href = '/admin/dashboard';
         } else {
           errorMsg.innerHTML = DOMPurify.sanitize(text || 'Login failed. Please try again.');

@@ -38,7 +38,7 @@ public class ArtworkService {
     // ✅ 작품 이미지 수정
     public Artwork updateArtworkImage(Long id, MultipartFile newImage) throws IOException {
         Artwork artwork = artworkRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 작품이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("No artwork found with the given ID."));
 
         String prefix = "artwork";
         String fileUrl = objectStorageUtil.uploadArtworkToObjectStorage(newImage, prefix);

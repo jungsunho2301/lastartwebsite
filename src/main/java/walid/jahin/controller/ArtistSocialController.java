@@ -19,14 +19,14 @@ public class ArtistSocialController {
     public ResponseEntity<String> updateFacebook(@RequestBody Map<String, String> body) {
         String facebook = body.get("facebook");
         service.updateFacebook(facebook);
-        return ResponseEntity.ok("Facebook 링크 저장됨");
+        return ResponseEntity.ok("Facebook link has been saved.");
     }
 
     @PostMapping("/admin/api/social/instagram")
     public ResponseEntity<String> updateInstagram(@RequestBody Map<String, String> body) {
         String instagram = body.get("instagram");
         service.updateInstagram(instagram);
-        return ResponseEntity.ok("Instagram 링크 저장됨");
+        return ResponseEntity.ok("Instagram link has been saved.");
     }
 
     @GetMapping("/api/social/facebook")

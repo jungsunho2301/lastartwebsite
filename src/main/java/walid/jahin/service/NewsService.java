@@ -47,7 +47,7 @@ public class NewsService {
             sendEmailAsync(subscriber.getEmail(), title, content);
         }
 
-        log.info("총 {}명의 구독자에게 비동기 뉴스 발송 요청 완료", subscribers.size());
+        log.info("news delivery request completed for a total of {} subscribers.", subscribers.size());
     }
 
     // ✅ 개별 이메일 비동기 전송
@@ -59,9 +59,7 @@ public class NewsService {
             message.setSubject("[Walid Jahin] " + title);
             message.setText(content);
             mailSender.send(message);
-            log.info("✅ 이메일 발송 성공");
         } catch (MailException e) {
-            log.error("❌ 이메일 발송 실패");
         }
     }
 }

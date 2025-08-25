@@ -32,20 +32,18 @@ public class ArtshopAdminController {
 
         // ✅ 세션 확인
         HttpSession session = request.getSession(false);
-        System.out.println("🧪 세션 존재 여부: " + (session != null));
         if (session != null) {
-            System.out.println("🧪 세션 loginAdmin 값: " + session.getAttribute(SessionConst.LOGIN_ADMIN));
         }
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_ADMIN) == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("관리자 로그인 필요");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login required");
         }
 
         try {
             Artshop saved = artshopService.saveArtshop(title, description, price, image);
             return ResponseEntity.ok(saved);
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("업로드 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Upload failed");
         }
     }
 
@@ -54,15 +52,15 @@ public class ArtshopAdminController {
     public ResponseEntity<?> deleteArtshop(@PathVariable Long id, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute(SessionConst.LOGIN_ADMIN) == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("관리자 로그인 필요");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login required");
         }
 
         if (!artshopRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 작품이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This artwork does not exist.");
         }
 
         artshopService.deleteArtshop(id);
-        return ResponseEntity.ok("작품 삭제 완료");
+        return ResponseEntity.ok("Artwork has been deleted.");
     }
 
     // ✅ 작품 수정
@@ -77,18 +75,18 @@ public class ArtshopAdminController {
         // ✅ 세션 확인
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute(SessionConst.LOGIN_ADMIN) == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("관리자 로그인 필요");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login required");
         }
 
         if (!artshopRepository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 작품이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This artwork does not exist.");
         }
 
         try {
             Artshop updated = artshopService.updateArtshop(id, title, description, price, image);
             return ResponseEntity.ok(updated);
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("수정 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to edit");
         }
     }
 
