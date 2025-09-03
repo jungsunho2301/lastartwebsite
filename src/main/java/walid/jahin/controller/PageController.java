@@ -9,7 +9,7 @@ public class PageController {
     public String root() {
         return "index";
     }
-    
+
     @GetMapping("/index")
     public String index() {
         return "index"; // templates/index.html
@@ -48,5 +48,10 @@ public class PageController {
     @GetMapping("/terms")
     public String terms() {
         return "terms"; // templates/terms.html
+    }
+
+    @GetMapping("/solo")
+    public String solo() {
+        return "solo"; // templates/soloart.html
     }
 }

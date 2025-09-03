@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solo Art - Walid Jahin</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fff;
+            color: #111;
+        }
+
+        .hero-section {
+            width: 100%;
+            padding: 6rem 0;
+            /* 6rem top & bottom */
+            background-color: #f9f9f9;
+            text-align: center;
+            font-family: 'Roboto Serif', serif;
+            font-size: 3.75rem;
+            /* 사용자 요청 */
+            font-weight: 800;
+            font-style: italic;
+            letter-spacing: -0.0625rem;
+            color: #111;
+        }
+
+        .hero-container {
+            max-width: 48rem;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            /* 약 5rem */
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* 블럭(카드) 공통: 모서리 둥글게 + 배경 꽉 채움 */
+        .solo-card {
+            position: relative;
+            min-height: 260px;
+            /* 필요시 높이/비율 조정 */
+            /* 선택: 일정 비율 고정하고 싶으면 주석 해제 */
+            /* aspect-ratio: 3 / 2; */
+
+            border-radius: 16px;
+            /* 🔹 둥근 모서리 */
+            overflow: hidden;
+            /* 둥근 모서리에 맞게 내부 잘림 */
+
+            background-color: #eee;
+            background-position: center;
+            /* 🔹 중앙 정렬 */
+            background-size: cover;
+            /* 🔹 꽉 채움 */
+            background-repeat: no-repeat;
+            /* 반복 금지 */
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 그라데이션 오버레이도 모서리 따라가도록 */
+        .solo-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, .55), rgba(0, 0, 0, .1));
+            border-radius: inherit;
+            /* 🔹 부모의 둥근 값 상속 */
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-inner">
+            <div class="nav-wrapper">
+                <div class="logo">Walid Jahin</div>
+                <div class="nav-links">
+                    <a th:href="@{/index}">HOME</a>
+                    <a th:href="@{/artist}">ARTIST</a>
+                    <a th:href="@{/solo}">SOLO ART</a>
+                    <a th:href="@{/artwork}">ART WORK</a>
+                    <a th:href="@{/artshop}">ART SHOP</a>
+                </div>
+            </div>
+            <div class="lang">
+                <div class="gtranslate_wrapper"></div>
+                <button id="adminButton"
+                    style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        const adminButton = document.getElementById('adminButton');
+        function updateAdminButton() {
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+            adminButton.onclick = () => {
+                if (isAdmin) {
+                    localStorage.removeItem('isAdmin');
+                    location.reload();
+                } else {
+                    location.href = '/admin/login';
+                }
+            };
+        }
+        document.addEventListener('DOMContentLoaded', updateAdminButton);
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const igEl = document.getElementById('footerInstagram');
+            const fbEl = document.getElementById('footerFacebook');
+
+            try {
+                const [igRes, fbRes] = await Promise.all([
+                    fetch('/api/social/instagram'),
+                    fetch('/api/social/facebook'),
+                ]);
+
+                const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
+                const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
+
+                if (igEl) {
+                    if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
+                    else igEl.style.display = 'none';
+                }
+                if (fbEl) {
+                    if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
+                    else fbEl.style.display = 'none';
+                }
+            } catch (e) {
+                console.error('SNS link load failed:', e);
+                if (igEl) igEl.style.display = 'none';
+                if (fbEl) fbEl.style.display = 'none';
+            }
+        });
+    </script>
+
+    <section class="hero-section">
+        <div class="hero-container">
+            <h2 class="hero-title">
+                SOLO<br>
+                Exhibitions
+            </h2>
+        </div>
+    </section>
+
+
+    <!-- 솔로 시작 -->
+
+    <section id="solo-items" class="solo-grid" aria-live="polite" aria-busy="false"></section>
+
+    <!-- Modal -->
+    <div id="soloModalBackdrop" class="modal-backdrop hidden" aria-hidden="true"></div>
+    <div id="soloPreviewBox" class="preview-box hidden" role="dialog" aria-modal="true"
+        aria-labelledby="soloPreviewTitle">
+        <button id="soloPreviewClose" class="modal-close" aria-label="Close">×</button>
+
+        <div class="solo-modal-body">
+            <button class="nav prev" id="navPrev" aria-label="Previous image">‹</button>
+            <div class="img-stage">
+                <img id="soloModalImage" alt="">
+                <div id="soloModalCaption" class="caption"></div>
+            </div>
+            <button class="nav next" id="navNext" aria-label="Next image">›</button>
+        </div>
+
+        <div class="solo-modal-meta">
+            <h3 id="soloPreviewTitle"></h3>
+            <p id="soloPreviewDay" class="muted"></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+
+    <style>
+        .solo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem
+        }
+
+        @media (max-width:640px) {
+            .solo-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .solo-card {
+            position: relative;
+            min-height: 260px;
+            border-radius: .75rem;
+            overflow: hidden;
+            background: #eee center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .solo-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, .55), rgba(0, 0, 0, .1))
+        }
+
+        .solo-card .center {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem
+        }
+
+        .solo-card .title {
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-shadow: 0 1px 8px rgba(0, 0, 0, .6)
+        }
+
+        .solo-card .day {
+            opacity: .95
+        }
+
+        .solo-card .btn {
+            border: none;
+            border-radius: .5rem;
+            padding: .6rem 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            background: #fff;
+            color: #111
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .5);
+            z-index: 90
+        }
+
+        .preview-box {
+            position: fixed;
+            inset: 10%;
+            background: #0b0b0b;
+            border-radius: .75rem;
+            color: #fff;
+            z-index: 99;
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+            padding: 1rem
+        }
+
+        .preview-box.hidden,
+        .modal-backdrop.hidden {
+            display: none
+        }
+
+        .modal-close {
+            position: absolute;
+            top: .5rem;
+            right: .75rem;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 1.6rem;
+            cursor: pointer
+        }
+
+        .solo-modal-body {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            min-height: 50vh
+        }
+
+        .img-stage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .5rem
+        }
+
+        .img-stage img {
+            max-height: 60vh;
+            max-width: 100%;
+            object-fit: contain;
+            border-radius: .25rem
+        }
+
+        .caption {
+            font-size: .9rem;
+            opacity: .9
+        }
+
+        .nav {
+            border: none;
+            background: rgba(255, 255, 255, .15);
+            color: #fff;
+            border-radius: .5rem;
+            width: 40px;
+            height: 40px;
+            cursor: pointer
+        }
+
+        .nav:disabled {
+            opacity: .4;
+            cursor: default
+        }
+
+        .solo-modal-meta {
+            padding: 0 .5rem 0 2.5rem
+        }
+
+        .muted {
+            opacity: .9
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const API_BASE = '/api/solo'; // read-only public
+            const container = document.getElementById('solo-items');
+
+            // 페이지네이션 상태(원하면 크기 조정 가능)
+            let page = 0, size = 20, loading = false, hasNext = true;
+
+            // sentinel for infinite scroll
+            const sentinel = document.createElement('div');
+            sentinel.id = 'solo-sentinel'; sentinel.style.height = '1px';
+            container.after(sentinel);
+
+            async function fetchPage(p, s) {
+                const res = await fetch(`${API_BASE}?page=${p}&size=${s}`);
+                if (!res.ok) throw new Error('fetch failed');
+                const data = await res.json();
+                if (Array.isArray(data.items)) return { items: data.items, hasNext: !!data.hasNext };
+                const items = data.content ?? [];
+                const last = typeof data.last === 'boolean' ? data.last : (items.length < s);
+                return { items, hasNext: !last };
+            }
+
+            function renderCards(items) {
+                const frag = document.createDocumentFragment();
+
+                items.forEach(raw => {
+                    const id = raw.id;
+                    const title = DOMPurify.sanitize(raw.title ?? '');
+                    const day = DOMPurify.sanitize(raw.day ?? '');
+                    const bg = DOMPurify.sanitize(raw.backgroundImage ?? raw.imagePath ?? '');
+                    // images: [{url,name}]
+                    const images = Array.isArray(raw.images) ? raw.images
+                        .map(i => ({ url: DOMPurify.sanitize(i.url || ''), name: DOMPurify.sanitize(i.name || '') }))
+                        : [];
+
+                    const card = document.createElement('article');
+                    card.className = 'solo-card';
+                    if (bg) card.style.backgroundImage = `url("${bg}")`;
+
+                    card.innerHTML = `
+        <div class="center">
+          <div class="title">${title}</div>
+          <div class="day">${day}</div>
+          <button class="btn view-more" type="button">View More</button>
+        </div>
+      `;
+
+                    card.querySelector('.view-more').addEventListener('click', () => {
+                        openGallery({
+                            id, title, day,
+                            images: images.length ? images : (bg ? [{ url: bg, name: title }] : [])
+                        });
+                    });
+
+                    frag.appendChild(card);
+                });
+
+                container.appendChild(frag);
+            }
+
+            async function loadNext() {
+                if (loading || !hasNext) return;
+                loading = true; container.setAttribute('aria-busy', 'true');
+                if (page === 0 && container.children.length === 0) container.textContent = 'Loading...';
+                try {
+                    const { items, hasNext: next } = await fetchPage(page, size);
+                    if (page === 0) container.textContent = '';
+                    renderCards(items);
+                    page++; hasNext = next;
+                    if (!hasNext) observer.unobserve(sentinel);
+                } catch (e) {
+                    console.error(e);
+                    container.textContent = 'Failed to load items.';
+                } finally {
+                    loading = false; container.setAttribute('aria-busy', 'false');
+                }
+            }
+
+            const observer = new IntersectionObserver((entries) => {
+                if (entries.some(e => e.isIntersecting)) loadNext();
+            }, { rootMargin: '200px' });
+
+            observer.observe(sentinel);
+            await loadNext(); await loadNext(); // 초기 2페이지
+        });
+
+        /* ===== Modal Gallery ===== */
+        (function () {
+            const backdrop = document.getElementById('soloModalBackdrop');
+            const box = document.getElementById('soloPreviewBox');
+            const closeBtn = document.getElementById('soloPreviewClose');
+
+            const imgEl = document.getElementById('soloModalImage');
+            const capEl = document.getElementById('soloModalCaption');
+            const titleEl = document.getElementById('soloPreviewTitle');
+            const dayEl = document.getElementById('soloPreviewDay');
+
+            const prevBtn = document.getElementById('navPrev');
+            const nextBtn = document.getElementById('navNext');
+
+            let gallery = []; // [{url,name}]
+            let idx = 0;
+
+            function updateNav() {
+                prevBtn.disabled = gallery.length <= 1;
+                nextBtn.disabled = gallery.length <= 1;
+            }
+
+            function show(i) {
+                if (!gallery.length) { imgEl.removeAttribute('src'); capEl.textContent = ''; return; }
+                idx = (i + gallery.length) % gallery.length;
+                const it = gallery[idx];
+                imgEl.src = it.url || '';
+                imgEl.alt = it.name || '';
+                capEl.textContent = it.name || '';
+                updateNav();
+            }
+
+            window.openGallery = function ({ id, title, day, images }) {
+                titleEl.textContent = title || '';
+                dayEl.textContent = day || '';
+                gallery = Array.isArray(images) ? images.filter(x => x && x.url) : [];
+                idx = 0;
+                show(idx);
+
+                backdrop.classList.remove('hidden');
+                box.classList.remove('hidden');
+                closeBtn.focus();
+            };
+
+            function close() {
+                backdrop.classList.add('hidden');
+                box.classList.add('hidden');
+            }
+
+            // Events
+            backdrop.addEventListener('click', close);
+            closeBtn.addEventListener('click', close);
+            prevBtn.addEventListener('click', () => show(idx - 1));
+            nextBtn.addEventListener('click', () => show(idx + 1));
+
+            window.addEventListener('keydown', (e) => {
+                if (box.classList.contains('hidden')) return;
+                if (e.key === 'Escape') close();
+                if (e.key === 'ArrowLeft') show(idx - 1);
+                if (e.key === 'ArrowRight') show(idx + 1);
+            });
+
+            // Touch swipe
+            let startX = null;
+            imgEl.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+            imgEl.addEventListener('touchend', e => {
+                if (startX == null) return;
+                const dx = e.changedTouches[0].clientX - startX;
+                if (Math.abs(dx) > 40) {
+                    if (dx < 0) show(idx + 1); else show(idx - 1);
+                }
+                startX = null;
+            }, { passive: true });
+        })();
+    </script>
+
+
+    <!-- 솔로 끝 -->
+
+
+
+
+
+
+
+
+
+    <footer>
+        <nav>
+            <a th:href="@{/index}">HOME</a>
+            <a th:href="@{/privacy}">PRIVACY POLICY</a>
+            <a th:href="@{/terms}">TERMS OF USE</a>
+            <a th:href="@{/contact}">CONTACT</a>
+        </nav>
+        <div class="footer-sns">
+            <!-- 인스타 -->
+            <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram"
+                style="display:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path
+                        d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
+                </svg>
+            </a>
+
+            <!-- 페이스북 -->
+            <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path
+                        d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
+                </svg>
+        </div>
+        </a>
+
+        <div class="footer-logo">Walid Jahin Art Studio</div>
+        <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+    </footer>
+
+
+
+
+
+    <script>
+        window.gtranslateSettings = {
+            "default_language": "en",
+            "native_language_names": true,
+            "languages": ["en", "ar", "ko"],
+            "wrapper_selector": ".gtranslate_wrapper",
+            "flag_size": 24,
+            "switcher_horizontal_position": "inline"
+        };
+    </script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+</body>
+
+</html>

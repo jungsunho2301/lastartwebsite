@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy - Walid Jahin</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
   <link th:href="@{/css/style.css}" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
@@ -18,37 +20,58 @@
     }
 
 
-    .privacy-section { max-width: 50rem; margin: 5rem auto; padding: 0 1.25rem; line-height: 1.8; }
-    .privacy-section h2 { 
-  font-size: 3rem; 
-  font-weight: 700; 
-  margin-bottom: 1.5rem;  
-  font-family: 'Roboto Serif', serif;
-  font-size: 3.75rem; /* 사용자 요청 */
-  font-weight: 800;
-  font-style: italic;
-  letter-spacing: -0.0625rem;
-  color: #111;
-}
-    .privacy-section h3 { font-size: 1.5rem; font-weight: 600; margin-top: 2.5rem;
+    .privacy-section {
+      max-width: 50rem;
+      margin: 5rem auto;
+      padding: 0 1.25rem;
+      line-height: 1.8;
+    }
+
+    .privacy-section h2 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
       font-family: 'Roboto Serif', serif;
-      font-size: 1.75rem; /* 사용자 요청 */
+      font-size: 3.75rem;
+      /* 사용자 요청 */
       font-weight: 800;
       font-style: italic;
       letter-spacing: -0.0625rem;
-      color: #111; }
-    .privacy-section p { font-size: .875rem; color: #333; 
+      color: #111;
     }
 
-        .privacy-section h4 { 
+    .privacy-section h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 2.5rem;
+      font-family: 'Roboto Serif', serif;
+      font-size: 1.75rem;
+      /* 사용자 요청 */
+      font-weight: 800;
+      font-style: italic;
+      letter-spacing: -0.0625rem;
+      color: #111;
+    }
+
+    .privacy-section p {
+      font-size: .875rem;
+      color: #333;
+    }
+
+    .privacy-section h4 {
       font-family: 'Roboto Serif', serif;
       font-style: italic;
       letter-spacing: -0.0625rem;
-      color: #767676; }
-    .privacy-section p { font-size: .875rem; color: #333; 
+      color: #767676;
+    }
+
+    .privacy-section p {
+      font-size: .875rem;
+      color: #333;
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="header-inner">
@@ -57,13 +80,15 @@
         <div class="nav-links">
           <a th:href="@{/index}">HOME</a>
           <a th:href="@{/artist}">ARTIST</a>
+          <a th:href="@{/solo}">SOLO ART</a>
           <a th:href="@{/artwork}">ART WORK</a>
           <a th:href="@{/artshop}">ART SHOP</a>
         </div>
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
+        <button id="adminButton"
+          style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
       </div>
     </div>
   </header>
@@ -88,115 +113,134 @@
   <section class="privacy-section">
     <h2>Privacy Policy</h2>
     <p class="effective-date" th:utext="${privacyContent}"></p>
-     <p class="effective-date">
-         
-          <h3>1. Introduction </h3>
-         <h4><br />This Privacy Policy describes how Walid
-          Jahin (“we,” “us,” or “our”) collects, uses, stores, and shares your personal information when you visit or
-          interact with our website (“Site”). By using this Site, you agree to the practices described in this
-          policy.
-          <br /></h4>
-          
-          <h3>2. Information We Collect</h3>
+    <p class="effective-date">
 
-<h4><br /><p>We may collect the following types of information:</p>
-<ul style="list-style-type: disc; padding-left: 20px;">
-  <li>Personal Data: Name, email address, and other contact details you provide via contact forms,
-      newsletter sign-ups, or purchases.</li>
-  <li>Usage Data: Information about how you use the Site, such as pages visited, time spent, and referring website.</li>
-  <li>Cookies: Small data files stored on your device to enhance your browsing experience and analyze website traffic.</li>
-</ul><br /></h4>
+    <h3>1. Introduction </h3>
+    <h4><br />This Privacy Policy describes how Walid
+      Jahin (“we,” “us,” or “our”) collects, uses, stores, and shares your personal information when you visit or
+      interact with our website (“Site”). By using this Site, you agree to the practices described in this
+      policy.
+      <br />
+    </h4>
 
-          
-          <h3>3. How We Use Your Information</h3>
+    <h3>2. Information We Collect</h3>
 
-          <h4><br /><p>We may use your information to:</p>
-<ul style="list-style-type: disc; padding-left: 20px;">
-  <li>Respond to your inquiries or requests.</li>
-  <li>Send newsletters or updates if you have opted in.</li>
-  <li>Process orders or transactions (if applicable)</li>
-  <li>Improve and personalize your experience on the Site.</li>
-  <li>Analyze website usage and performance.</li>
-</ul><br /></h4>
-
-          
-          <h3>4. Data Sharing and Disclosure</h3>
-
-<h4><br /><p>We do not sell or rent your personal information. We may share your data only in the following circumstances:</p>
-<ul style="list-style-type: disc; padding-left: 20px;">
-  <li>With trusted service providers who assist us in operating the Site (e.g., email services, payment processors).</li>
-  <li>If required by law or to protect our rights.</li>
-</ul><br /></h4>
+    <h4><br />
+      <p>We may collect the following types of information:</p>
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li>Personal Data: Name, email address, and other contact details you provide via contact forms,
+          newsletter sign-ups, or purchases.</li>
+        <li>Usage Data: Information about how you use the Site, such as pages visited, time spent, and referring
+          website.</li>
+        <li>Cookies: Small data files stored on your device to enhance your browsing experience and analyze website
+          traffic.</li>
+      </ul><br />
+    </h4>
 
 
-          
-          <h3>5. Data Retention</h3>
-          <h4><br />We retain your personal information only as long as necessary to fulfill the purposes
-          outlined in this policy or as required by law.
-          <br /></h4>
-          
-          <h3>6. Cookies and Tracking Technologies</h3>
-          <h4><br />We use cookies and similar technologies to enhance your experience and analyze usage. You can manage
-          cookie preferences through your browser settings.<br /></h4>
-          
-          <h3>7. Your Rights</h3>
+    <h3>3. How We Use Your Information</h3>
 
-          <h4><br /><p>Depending on your jurisdiction, you may have the right to:</p>
-          <ul style="list-style-type: disc; padding-left: 20px;">
-          <li>Access, correct, or delete your personal information</li>
-          <li>Withdraw consent for data processing</li>
-          <li>Opt out of marketing communications at any time</li>
-          </ul><br /></h4>
+    <h4><br />
+      <p>We may use your information to:</p>
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li>Respond to your inquiries or requests.</li>
+        <li>Send newsletters or updates if you have opted in.</li>
+        <li>Process orders or transactions (if applicable)</li>
+        <li>Improve and personalize your experience on the Site.</li>
+        <li>Analyze website usage and performance.</li>
+      </ul><br />
+    </h4>
 
 
-          <h3>8. Children’s Privacy</h3>
-          <h4><br />We do not knowingly collect personal information from children under the age of 13. If you believe a child has provided
-          us with personal data, please contact us to have it removed.
-          <br /></h4>
+    <h3>4. Data Sharing and Disclosure</h3>
 
-          <h3>9. Security</h3>
-          <h4><br />We implement reasonable measures to protect your personal information from unauthorized access, disclosure, or misuse.
-          <br /></h4>
-          
-          <h3>10. Changes</h3>
-          <h4><br />We may update this Privacy Policy from time to time. Changes will be posted on this
-          page with an updated effective date. Continued use of the Site after changes constitutes acceptance of the
-          revised policy.
-          <br /><br /></h4>
-          
-        </p>
+    <h4><br />
+      <p>We do not sell or rent your personal information. We may share your data only in the following circumstances:
+      </p>
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li>With trusted service providers who assist us in operating the Site (e.g., email services, payment
+          processors).</li>
+        <li>If required by law or to protect our rights.</li>
+      </ul><br />
+    </h4>
+
+
+
+    <h3>5. Data Retention</h3>
+    <h4><br />We retain your personal information only as long as necessary to fulfill the purposes
+      outlined in this policy or as required by law.
+      <br />
+    </h4>
+
+    <h3>6. Cookies and Tracking Technologies</h3>
+    <h4><br />We use cookies and similar technologies to enhance your experience and analyze usage. You can manage
+      cookie preferences through your browser settings.<br /></h4>
+
+    <h3>7. Your Rights</h3>
+
+    <h4><br />
+      <p>Depending on your jurisdiction, you may have the right to:</p>
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li>Access, correct, or delete your personal information</li>
+        <li>Withdraw consent for data processing</li>
+        <li>Opt out of marketing communications at any time</li>
+      </ul><br />
+    </h4>
+
+
+    <h3>8. Children’s Privacy</h3>
+    <h4><br />We do not knowingly collect personal information from children under the age of 13. If you believe a child
+      has provided
+      us with personal data, please contact us to have it removed.
+      <br />
+    </h4>
+
+    <h3>9. Security</h3>
+    <h4><br />We implement reasonable measures to protect your personal information from unauthorized access,
+      disclosure, or misuse.
+      <br />
+    </h4>
+
+    <h3>10. Changes</h3>
+    <h4><br />We may update this Privacy Policy from time to time. Changes will be posted on this
+      page with an updated effective date. Continued use of the Site after changes constitutes acceptance of the
+      revised policy.
+      <br /><br />
+    </h4>
+
+    </p>
   </section>
 
 
   <script>
-document.addEventListener('DOMContentLoaded', async () => {
-  const igEl = document.getElementById('footerInstagram');
-  const fbEl = document.getElementById('footerFacebook');
+    document.addEventListener('DOMContentLoaded', async () => {
+      const igEl = document.getElementById('footerInstagram');
+      const fbEl = document.getElementById('footerFacebook');
 
-  try {
-    const [igRes, fbRes] = await Promise.all([
-      fetch('/api/social/instagram'),
-      fetch('/api/social/facebook'),
-    ]);
+      try {
+        const [igRes, fbRes] = await Promise.all([
+          fetch('/api/social/instagram'),
+          fetch('/api/social/facebook'),
+        ]);
 
-    const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
-    const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
+        const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
+        const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
 
-    if (igEl) {
-      if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
-      else igEl.style.display = 'none';
-    }
-    if (fbEl) {
-      if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
-      else fbEl.style.display = 'none';
-    }
-  } catch (e) {
-    console.error('SNS link load failed:', e);
-    if (igEl) igEl.style.display = 'none';
-    if (fbEl) fbEl.style.display = 'none';
-  }
-});
-</script>
+        if (igEl) {
+          if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
+          else igEl.style.display = 'none';
+        }
+        if (fbEl) {
+          if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
+          else fbEl.style.display = 'none';
+        }
+      } catch (e) {
+        console.error('SNS link load failed:', e);
+        if (igEl) igEl.style.display = 'none';
+        if (fbEl) fbEl.style.display = 'none';
+      }
+    });
+  </script>
 
 
   <footer>
@@ -206,28 +250,30 @@ document.addEventListener('DOMContentLoaded', async () => {
       <a th:href="@{/terms}">TERMS OF USE</a>
       <a th:href="@{/contact}">CONTACT</a>
     </nav>
-<div class="footer-sns">
-    <!-- 인스타 -->
-    <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
+    <div class="footer-sns">
+      <!-- 인스타 -->
+      <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
         </svg>
-    </a>
+      </a>
 
-    <!-- 페이스북 -->
-    <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
+      <!-- 페이스북 -->
+      <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
         </svg>
-  </div>
-</a>
+    </div>
+    </a>
 
     <div class="footer-logo">Walid Jahin Art Studio</div>
     <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
   </footer>
 
 
-  
+
 
 
   <script>
@@ -243,4 +289,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
 </body>
+
 </html>

@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Art Work - Walid Jahin</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
   <link th:href="@{/css/style.css}" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
     body {
       margin: 0;
       font-family: 'Noto Sans KR', serif;
@@ -17,124 +20,141 @@
     }
 
 
-/* 그리드 컨테이너 */
-.artwork-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 기본 4열 */
-  gap: 1.125rem;                          /* 카드 간격 */
-  padding: 2.5rem;                        /* 안쪽 여백 */
-  max-width: 75rem;                    /* 최대 너비(약 900px) */
-  margin: 0 auto;                         /* 가운데 정렬 */
-  background-color: #f9f9f9;
-}
+    /* 그리드 컨테이너 */
+    .artwork-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      /* 기본 4열 */
+      gap: 1.125rem;
+      /* 카드 간격 */
+      padding: 2.5rem;
+      /* 안쪽 여백 */
+      max-width: 75rem;
+      /* 최대 너비(약 900px) */
+      margin: 0 auto;
+      /* 가운데 정렬 */
+      background-color: #f9f9f9;
+    }
 
-/* 카드 */
-.artwork-card {
-  display: flex;                
-  flex-direction: column;
-  align-items: center;          
-  justify-content: flex-start;  /* 상단 기준, 필요 시 center로 변경 */
-  border: .0625rem solid #eee;
-  padding: .75rem;
-  text-align: center;
-  transition: box-shadow 0.3s;
-  cursor: pointer;
+    /* 카드 */
+    .artwork-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      /* 상단 기준, 필요 시 center로 변경 */
+      border: .0625rem solid #eee;
+      padding: .75rem;
+      text-align: center;
+      transition: box-shadow 0.3s;
+      cursor: pointer;
 
-  /* 높이 일정하게 */
-  height: 21.25rem;            /* 카드 최소 높이 (약 288px) */
-  box-sizing: border-box;       /* 패딩 포함 계산 */
-}
-.artwork-card:hover {
-  box-shadow: 0 .25rem 1rem rgba(0,0,0,0.1);
-}
+      /* 높이 일정하게 */
+      height: 21.25rem;
+      /* 카드 최소 높이 (약 288px) */
+      box-sizing: border-box;
+      /* 패딩 포함 계산 */
+      border-radius: .75rem;
+      /* 모서리 둥글게 */
+      box-shadow: 0 .25rem .75rem rgba(0, 0, 0, 0.1);
+      /* 은은한 그림자 */
+    }
 
-/* 이미지: 가운데 고정 + 꽉 채우기 */
-.artwork-card img {
-  display: block;       
-  margin: 0 auto;       
-  max-width: 100%;
-  height: 100%;      
-  object-fit: cover;    
-  border-radius: .5rem;
-}
+    .artwork-card:hover {
+      box-shadow: 0 .25rem 1rem rgba(0, 0, 0, 0.1);
+    }
 
-/* 반응형 */
-@media (max-width: 1024px) {
-  .artwork-container { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 768px) {
-  .artwork-container {
-    grid-template-columns: repeat(2, 1fr);
-    padding: 2rem;
-    gap: 1.25rem;
-  }
-}
-@media (max-width: 480px) {
-  .artwork-container {
-    grid-template-columns: 1fr;
-    padding: 1.25rem;
-    gap: 1rem;
-  }
-}
+    /* 이미지: 가운데 고정 + 꽉 채우기 */
+    .artwork-card img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: .5rem;
+    }
 
-#artwork-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-}
+    /* 반응형 */
+    @media (max-width: 1024px) {
+      .artwork-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
 
-.modal-backdrop {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
-}
+    @media (max-width: 768px) {
+      .artwork-container {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 2rem;
+        gap: 1.25rem;
+      }
+    }
 
-.modal-content {
-  position: relative;
-  max-width: 30vw;
-  max-height: 40vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    @media (max-width: 480px) {
+      .artwork-container {
+        grid-template-columns: 1fr;
+        padding: 1.25rem;
+        gap: 1rem;
+      }
+    }
 
-/* ✅ 이미지 + ID 라벨을 감싸는 래퍼 */
-.image-wrapper {
-  position: relative;
-  display: inline-block;
-  max-width: 100%;
-  max-height: 100%;
-}
+    #artwork-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+    }
 
-.image-wrapper img {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
+    .modal-backdrop {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+    }
 
-.id-label {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.95);
-  color: #333;
-  font-size: .9375rem;
-  padding: .375rem .75rem;
-  border-radius: .375rem;
-  font-weight: bold;
-  box-shadow: 0 .125rem .375rem rgba(0, 0, 0, 0.25);
-  z-index: 10;
+    .modal-content {
+      position: relative;
+      max-width: 30vw;
+      max-height: 40vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-  /* ✅ 새로 추가된 핵심 속성 */
-  white-space: nowrap;
-  min-width: 3.75rem;
-  text-align: center;
-}
+    /* ✅ 이미지 + ID 라벨을 감싸는 래퍼 */
+    .image-wrapper {
+      position: relative;
+      display: inline-block;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .image-wrapper img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .id-label {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      font-size: .9375rem;
+      padding: .375rem .75rem;
+      border-radius: .375rem;
+      font-weight: bold;
+      box-shadow: 0 .125rem .375rem rgba(0, 0, 0, 0.25);
+      z-index: 10;
+
+      /* ✅ 새로 추가된 핵심 속성 */
+      white-space: nowrap;
+      min-width: 3.75rem;
+      text-align: center;
+    }
 
 
 
@@ -148,102 +168,120 @@
       cursor: pointer;
       z-index: 10001;
     }
+
     .hidden {
       display: none;
     }
 
- .hero-section {
-  width: 100%;
-  padding: 6rem 0; /* 6rem top & bottom */
-  background-color: #f9f9f9;
-  text-align: center;
-  font-family: 'Roboto Serif', serif;
-  font-size: 3.75rem; /* 사용자 요청 */
-  font-weight: 800;
-  font-style: italic;
-  letter-spacing: -0.0625rem;
-  color: #111;
-}
+    .hero-section {
+      width: 100%;
+      padding: 6rem 0;
+      /* 6rem top & bottom */
+      background-color: #f9f9f9;
+      text-align: center;
+      font-family: 'Roboto Serif', serif;
+      font-size: 3.75rem;
+      /* 사용자 요청 */
+      font-weight: 800;
+      font-style: italic;
+      letter-spacing: -0.0625rem;
+      color: #111;
+    }
 
-.hero-container {
-  max-width: 48rem;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
+    .hero-container {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
 
-.hero-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 5rem; /* 약 5rem */
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      /* 약 5rem */
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
 
 
 
-/* 모바일 전용: 3열 + 카드 축소 */
-@media (max-width: 560px) {
-  /* 그리드: 3열 고정 */
-  .artwork-container {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem;      /* 카드 간격 축소 */
-    padding: 1rem;     /* 좌우 여백 축소 */
-  }
+    /* 모바일 전용: 3열 + 카드 축소 */
+    @media (max-width: 560px) {
 
-  /* 카드 자체 축소 (레이아웃 기반) */
-  .artwork-card {
-    padding: 0.5rem;         /* 안쪽 여백 축소 */
-    border-radius: 0.375rem;
-    font-size: 0.9rem;       /* 텍스트 전체 살짝 축소 */
-  }
+      /* 그리드: 3열 고정 */
+      .artwork-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        /* 카드 간격 축소 */
+        padding: 1rem;
+        /* 좌우 여백 축소 */
+      }
 
-  /* 이미지: 비율 유지하며 작게 */
-  .artwork-card img {
-    width: 100%;
-    aspect-ratio: 4 / 3;     /* 필요하면 1 / 1 로 바꿔도 OK */
-    object-fit: cover;
-    border-radius: 0.375rem;
-  }
+      /* 카드 자체 축소 (레이아웃 기반) */
+      .artwork-card {
+        padding: 0.5rem;
+        /* 안쪽 여백 축소 */
+        border-radius: 0.375rem;
+        font-size: 0.9rem;
+        /* 텍스트 전체 살짝 축소 */
+      }
 
-  /* 텍스트 간격 타이트하게 */
-  .artwork-card .title { margin: 0.5rem 0 0.2rem; }
-  .artwork-card .meta,
-  .artwork-card .price,
-  .artwork-card .desc { margin: 0.2rem 0; }
+      /* 이미지: 비율 유지하며 작게 */
+      .artwork-card img {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        /* 필요하면 1 / 1 로 바꿔도 OK */
+        object-fit: cover;
+        border-radius: 0.375rem;
+      }
 
-  /* (선택) 제목 줄 길이 제한 + 말줄임 */
-  .artwork-card .title {
-    max-width: 18ch;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+      /* 텍스트 간격 타이트하게 */
+      .artwork-card .title {
+        margin: 0.5rem 0 0.2rem;
+      }
 
-  /* (선택) 버튼 터치 타깃 최소 확보 */
-  .artwork-card .btn,
-  .artwork-card button {
-    min-height: 40px; /* 44px이 권장 기준, 디자인에 맞춰 조절 */
-    padding: 0.5rem 0.75rem;
-  }
-}
+      .artwork-card .meta,
+      .artwork-card .price,
+      .artwork-card .desc {
+        margin: 0.2rem 0;
+      }
 
+      /* (선택) 제목 줄 길이 제한 + 말줄임 */
+      .artwork-card .title {
+        max-width: 18ch;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* (선택) 버튼 터치 타깃 최소 확보 */
+      .artwork-card .btn,
+      .artwork-card button {
+        min-height: 40px;
+        /* 44px이 권장 기준, 디자인에 맞춰 조절 */
+        padding: 0.5rem 0.75rem;
+      }
+    }
   </style>
 </head>
+
 <body>
 
-    <header>
+  <header>
     <div class="header-inner">
       <div class="nav-wrapper">
         <div class="logo">Walid Jahin</div>
         <div class="nav-links">
           <a th:href="@{/index}">HOME</a>
           <a th:href="@{/artist}">ARTIST</a>
+          <a th:href="@{/solo}">SOLO ART</a>
           <a th:href="@{/artwork}">ART WORK</a>
           <a th:href="@{/artshop}">ART SHOP</a>
         </div>
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
+        <button id="adminButton"
+          style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
       </div>
     </div>
   </header>
@@ -294,114 +332,114 @@
       };
     }
 
-document.addEventListener("DOMContentLoaded", async () => {
-  updateAdminButton();
+    document.addEventListener("DOMContentLoaded", async () => {
+      updateAdminButton();
 
-  const grid = document.getElementById("artwork-grid");
-  const modal = document.getElementById("artwork-modal");
-  const modalImg = document.getElementById("modal-image");
-  const modalIdLabel = document.getElementById("modal-id-label");
-  const closeModal = document.getElementById("close-modal");
+      const grid = document.getElementById("artwork-grid");
+      const modal = document.getElementById("artwork-modal");
+      const modalImg = document.getElementById("modal-image");
+      const modalIdLabel = document.getElementById("modal-id-label");
+      const closeModal = document.getElementById("close-modal");
 
-  let page = 0;
-  const size = 20;
-  let loading = false;
-  let hasNext = true;
+      let page = 0;
+      const size = 20;
+      let loading = false;
+      let hasNext = true;
 
-  // sentinel 준비
-  let sentinel = document.getElementById("sentinel");
-  if (!sentinel) {
-    sentinel = document.createElement("div");
-    sentinel.id = "sentinel";
-    sentinel.style.height = "1px";
-    grid.after(sentinel);
-  }
+      // sentinel 준비
+      let sentinel = document.getElementById("sentinel");
+      if (!sentinel) {
+        sentinel = document.createElement("div");
+        sentinel.id = "sentinel";
+        sentinel.style.height = "1px";
+        grid.after(sentinel);
+      }
 
-  // 모달 이벤트
-  closeModal.addEventListener("click", () => (modal.style.display = "none"));
-  modal.addEventListener("click", (e) => {
-    if (!document.querySelector(".modal-content").contains(e.target)) {
-      modal.style.display = "none";
-    }
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") modal.style.display = "none";
-  });
-
-  async function fetchPage(p, s) {
-    const url = `/api/artwork?sort=latest&page=${p}&size=${s}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("fetch failed");
-    const data = await res.json();
-
-    if (Array.isArray(data.items)) {
-      return { items: data.items, hasNext: !!data.hasNext };
-    }
-    const items = data.content ?? [];
-    const last = typeof data.last === "boolean" ? data.last : (items.length < s);
-    return { items, hasNext: !last };
-  }
-
-  function appendItems(items) {
-    const frag = document.createDocumentFragment();
-    items.forEach((item) => {
-      const safeSrc = DOMPurify.sanitize(item.imagePath ?? "");
-      const safeId  = DOMPurify.sanitize(String(item.id ?? ""));
-
-      const card = document.createElement("div");
-      card.className = "artwork-card";
-      card.innerHTML = `<img src="${safeSrc}" alt="Artwork ${safeId}" loading="lazy" />`;
-
-      card.addEventListener("click", () => {
-        if (!safeSrc) return;
-        modalImg.src = safeSrc;
-        modal.style.display = "flex";
-        modalImg.onload = () => {
-          modalIdLabel.textContent = `ID: ${safeId}`;
-          const imgRect = modalImg.getBoundingClientRect();
-          const wrapperRect = modalImg.parentElement.getBoundingClientRect();
-          modalIdLabel.style.position = "absolute";
-          modalIdLabel.style.top  = `${imgRect.top - wrapperRect.top}px`;
-          modalIdLabel.style.left = `${imgRect.right - wrapperRect.left + 12}px`;
-        };
+      // 모달 이벤트
+      closeModal.addEventListener("click", () => (modal.style.display = "none"));
+      modal.addEventListener("click", (e) => {
+        if (!document.querySelector(".modal-content").contains(e.target)) {
+          modal.style.display = "none";
+        }
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") modal.style.display = "none";
       });
 
-      frag.appendChild(card);
+      async function fetchPage(p, s) {
+        const url = `/api/artwork?sort=latest&page=${p}&size=${s}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("fetch failed");
+        const data = await res.json();
+
+        if (Array.isArray(data.items)) {
+          return { items: data.items, hasNext: !!data.hasNext };
+        }
+        const items = data.content ?? [];
+        const last = typeof data.last === "boolean" ? data.last : (items.length < s);
+        return { items, hasNext: !last };
+      }
+
+      function appendItems(items) {
+        const frag = document.createDocumentFragment();
+        items.forEach((item) => {
+          const safeSrc = DOMPurify.sanitize(item.imagePath ?? "");
+          const safeId = DOMPurify.sanitize(String(item.id ?? ""));
+
+          const card = document.createElement("div");
+          card.className = "artwork-card";
+          card.innerHTML = `<img src="${safeSrc}" alt="Artwork ${safeId}" loading="lazy" />`;
+
+          card.addEventListener("click", () => {
+            if (!safeSrc) return;
+            modalImg.src = safeSrc;
+            modal.style.display = "flex";
+            modalImg.onload = () => {
+              modalIdLabel.textContent = `ID: ${safeId}`;
+              const imgRect = modalImg.getBoundingClientRect();
+              const wrapperRect = modalImg.parentElement.getBoundingClientRect();
+              modalIdLabel.style.position = "absolute";
+              modalIdLabel.style.top = `${imgRect.top - wrapperRect.top}px`;
+              modalIdLabel.style.left = `${imgRect.right - wrapperRect.left + 12}px`;
+            };
+          });
+
+          frag.appendChild(card);
+        });
+        grid.appendChild(frag);
+      }
+
+      // 1) 옵저버를 '먼저' 준비
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) loadNext();
+        },
+        { rootMargin: "200px" }
+      );
+      observer.observe(sentinel);
+
+      // 2) 그 다음에 로드 호출
+      async function loadNext() {
+        if (loading || !hasNext) return;
+        loading = true;
+        try {
+          const { items, hasNext: nextFlag } = await fetchPage(page, size);
+          appendItems(items);
+          page += 1;
+          hasNext = nextFlag;
+          if (!hasNext) observer.unobserve(sentinel);  // 이제 observer는 존재
+        } catch (e) {
+          console.error("WORK load failed:", e);
+        } finally {
+          loading = false;
+        }
+      }
+
+      await loadNext();
+      await loadNext();
     });
-    grid.appendChild(frag);
-  }
 
-  // 1) 옵저버를 '먼저' 준비
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (entries.some((e) => e.isIntersecting)) loadNext();
-    },
-    { rootMargin: "200px" }
-  );
-  observer.observe(sentinel);
-
-  // 2) 그 다음에 로드 호출
-  async function loadNext() {
-    if (loading || !hasNext) return;
-    loading = true;
-    try {
-      const { items, hasNext: nextFlag } = await fetchPage(page, size);
-      appendItems(items);
-      page += 1;
-      hasNext = nextFlag;
-      if (!hasNext) observer.unobserve(sentinel);  // 이제 observer는 존재
-    } catch (e) {
-      console.error("WORK load failed:", e);
-    } finally {
-      loading = false;
-    }
-  }
-
-  await loadNext();
-  await loadNext();
-});
-
-</script>
+  </script>
 
 
 
@@ -428,34 +466,34 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
   <script>
-document.addEventListener('DOMContentLoaded', async () => {
-  const igEl = document.getElementById('footerInstagram');
-  const fbEl = document.getElementById('footerFacebook');
+    document.addEventListener('DOMContentLoaded', async () => {
+      const igEl = document.getElementById('footerInstagram');
+      const fbEl = document.getElementById('footerFacebook');
 
-  try {
-    const [igRes, fbRes] = await Promise.all([
-      fetch('/api/social/instagram'),
-      fetch('/api/social/facebook'),
-    ]);
+      try {
+        const [igRes, fbRes] = await Promise.all([
+          fetch('/api/social/instagram'),
+          fetch('/api/social/facebook'),
+        ]);
 
-    const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
-    const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
+        const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
+        const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
 
-    if (igEl) {
-      if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
-      else igEl.style.display = 'none';
-    }
-    if (fbEl) {
-      if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
-      else fbEl.style.display = 'none';
-    }
-  } catch (e) {
-    console.error('SNS link load failed:', e);
-    if (igEl) igEl.style.display = 'none';
-    if (fbEl) fbEl.style.display = 'none';
-  }
-});
-</script>
+        if (igEl) {
+          if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
+          else igEl.style.display = 'none';
+        }
+        if (fbEl) {
+          if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
+          else fbEl.style.display = 'none';
+        }
+      } catch (e) {
+        console.error('SNS link load failed:', e);
+        if (igEl) igEl.style.display = 'none';
+        if (fbEl) fbEl.style.display = 'none';
+      }
+    });
+  </script>
 
 
   <footer>
@@ -465,21 +503,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       <a th:href="@{/terms}">TERMS OF USE</a>
       <a th:href="@{/contact}">CONTACT</a>
     </nav>
-<div class="footer-sns">
-    <!-- 인스타 -->
-    <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
+    <div class="footer-sns">
+      <!-- 인스타 -->
+      <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
         </svg>
-    </a>
+      </a>
 
-    <!-- 페이스북 -->
-    <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
+      <!-- 페이스북 -->
+      <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
         </svg>
-  </div>
-</a>
+    </div>
+    </a>
 
     <div class="footer-logo">Walid Jahin Art Studio</div>
     <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
@@ -489,4 +529,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
 
 </body>
+
 </html>

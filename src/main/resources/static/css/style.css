@@ -23,9 +23,11 @@ body {
 }
 
 .container {
-  max-width: 75rem;   /* 데스크톱 최대폭 */
+  max-width: 75rem;
+  /* 데스크톱 최대폭 */
   margin: 0 auto;
-  padding: 0 1rem;    /* 모바일 좌우 여백 */
+  padding: 0 1rem;
+  /* 모바일 좌우 여백 */
 }
 
 
@@ -39,7 +41,8 @@ header {
   padding-bottom: 0rem;
   border-bottom: .0625rem solid #e5e5e5;
   position: relative;
-  height: 13.75rem; /* 명시적 높이로 중앙 배치 유도 */
+  height: 13.75rem;
+  /* 명시적 높이로 중앙 배치 유도 */
 }
 
 /* 중앙 정렬을 위한 래퍼 */
@@ -64,7 +67,8 @@ header {
 /* 로고 */
 .logo {
   font-family: 'Playfair Display', serif;
-  font-size: 3.75rem; /* 사용자 요청 */
+  font-size: 3.75rem;
+  /* 사용자 요청 */
   font-weight: 800;
   font-style: italic;
   letter-spacing: -0.0625rem;
@@ -90,9 +94,12 @@ header {
   font-weight: 400;
   color: #111;
   transition: background-color 0.3s;
-  display: flex;               /* ✅ flex로 내부 컨텐츠 제어 */
-  justify-content: center;     /* 가로 중앙 정렬 */
-  align-items: center;         /* 세로 중앙 정렬 */
+  display: flex;
+  /* ✅ flex로 내부 컨텐츠 제어 */
+  justify-content: center;
+  /* 가로 중앙 정렬 */
+  align-items: center;
+  /* 세로 중앙 정렬 */
   text-align: center;
 }
 
@@ -125,15 +132,60 @@ header {
 
 /* 푸터 */
 
-    footer { background-color: #191A1B; color: #fff; padding: 3.75rem 1.25rem 2.5rem; text-align: center; }
-    footer nav a { color: #ccc; margin: 0 .75rem; font-size: .875rem; text-decoration: none; }
-    footer nav a:hover { color: #fff; }
-    .footer-logo { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; margin-top: 1.25rem; }
-    .footer-bottom { font-size: .75rem; color: #888; margin-top: 1.25rem; }
-.footer-sns { display:flex; gap:.875rem; justify-content:center; margin:.625rem 0 1.125rem; }
-.footer-sns a { display:inline-flex; line-height:0; color:#fff; } /* SVG가 currentColor 사용 */
-.footer-sns svg { margin-top: 1.25rem; transition: fill 0.3s; fill: #888; }
-.footer-sns svg:hover { fill: #fff; }
+footer {
+  background-color: #191A1B;
+  color: #fff;
+  padding: 3.75rem 1.25rem 2.5rem;
+  text-align: center;
+}
+
+footer nav a {
+  color: #ccc;
+  margin: 0 .75rem;
+  font-size: .875rem;
+  text-decoration: none;
+}
+
+footer nav a:hover {
+  color: #fff;
+}
+
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-top: 1.25rem;
+}
+
+.footer-bottom {
+  font-size: .75rem;
+  color: #888;
+  margin-top: 1.25rem;
+}
+
+.footer-sns {
+  display: flex;
+  gap: .875rem;
+  justify-content: center;
+  margin: .625rem 0 1.125rem;
+}
+
+.footer-sns a {
+  display: inline-flex;
+  line-height: 0;
+  color: #fff;
+}
+
+/* SVG가 currentColor 사용 */
+.footer-sns svg {
+  margin-top: 1.25rem;
+  transition: fill 0.3s;
+  fill: #888;
+}
+
+.footer-sns svg:hover {
+  fill: #fff;
+}
 
 
 /* Artwork Section */
@@ -292,19 +344,22 @@ footer .links a:hover {
   flex-wrap: wrap;
 }
 
-.artwork-manage, .shop-manage {
+.artwork-manage,
+.shop-manage {
   border: .0625rem solid #ddd;
   border-radius: .625rem;
   padding: 2rem;
   margin-bottom: 2rem;
 }
 
-.artwork-manage h2, .shop-manage h2 {
+.artwork-manage h2,
+.shop-manage h2 {
   text-align: center;
   margin-bottom: 2rem;
 }
 
-.artwork-box, .shop-box {
+.artwork-box,
+.shop-box {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -397,7 +452,7 @@ textarea {
   display: flex;
   gap: 1.25rem;
   z-index: 1000;
-  box-shadow: 0 0 .9375rem rgba(0,0,0,0.2);
+  box-shadow: 0 0 .9375rem rgba(0, 0, 0, 0.2);
   max-width: 37.5rem;
 }
 
@@ -421,9 +476,12 @@ textarea {
 }
 
 .artshop-card img {
-  display: block;       /* inline 요소인 img를 block으로 바꿈 */
-  margin: 0 auto;       /* 좌우 margin 자동 */
-  max-width: 100%;      /* 혹시 너무 커질 경우 대비 */
+  display: block;
+  /* inline 요소인 img를 block으로 바꿈 */
+  margin: 0 auto;
+  /* 좌우 margin 자동 */
+  max-width: 100%;
+  /* 혹시 너무 커질 경우 대비 */
   height: auto;
 }
 
@@ -432,11 +490,13 @@ textarea {
 .artist-intro {
   padding: 3.75rem 1.25rem 1.875rem;
 }
+
 .artist-intro h2 {
   font-size: 3.2rem;
   font-weight: 800;
   font-family: 'Playfair Display', serif;
 }
+
 .artist-intro p {
   margin-top: .625rem;
   line-height: 1.6;
@@ -452,6 +512,7 @@ textarea {
   margin-top: 4.375rem;
   margin-bottom: 6.25rem;
 }
+
 .artist-gallery img {
   width: 18.75rem;
   height: 18.75rem;
@@ -482,7 +543,8 @@ textarea {
 
 .carousel-wrapper {
   position: relative;
-  width: 71.875rem; /* 17.5rem * 4 + .625rem * 3 */
+  width: 71.875rem;
+  /* 17.5rem * 4 + .625rem * 3 */
   margin: 0 auto;
 }
 
@@ -562,7 +624,8 @@ textarea {
   font-size: 2.5rem;
   font-weight: bold;
   line-height: 1.2;
-  word-break: keep-all; /* 단어 끊김 방지 */
+  word-break: keep-all;
+  /* 단어 끊김 방지 */
   margin-bottom: .3125rem;
 }
 
@@ -574,13 +637,15 @@ textarea {
   margin: 0;
   position: relative;
 }
+
 .section-divider::after {
   content: '';
   position: absolute;
   bottom: -0.0625rem;
   left: 0;
   width: .0938rem;
-  height: 6.25rem; /* 원하는 연결 길이 */
+  height: 6.25rem;
+  /* 원하는 연결 길이 */
   background-color: #ccc;
 }
 
@@ -594,33 +659,96 @@ textarea {
   color: #969696;
   line-height: 1.7;
   white-space: pre-line;
-  height: 100%; 
+  height: 100%;
   margin-left: 1.25rem;
   padding-bottom: .3125rem;
 }
 
 
-
-.artist-section-pair {
+.artist-section-group {
+  font-family: 'Playfair Display', serif;
   display: flex;
-  justify-content: space-between;
-  gap: 2.5rem;
+  flex-direction: column;
+  gap: 5rem;
   padding: 2.5rem 1.25rem;
   background-color: #f9f9f9;
 }
 
-.pair-block {
+.group-block {
+  display: grid;
+  grid-template-columns: 24.9375rem .0625rem 31.25rem;
+  column-gap: 0;
+  padding-bottom: .0625rem;
+  align-items: stretch;
+  border-bottom: .0938rem solid #ccc;
+}
+
+
+.group-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  line-height: 1.2;
+  word-break: keep-all;
+  /* 단어 끊김 방지 */
+  margin-bottom: .3125rem;
+}
+
+.group-divider {
+  width: .0938rem;
+  background-color: #ccc;
+  height: auto;
+  align-self: stretch;
+  margin: 0;
+  position: relative;
+}
+
+.group-divider::after {
+  content: '';
+  position: absolute;
+  bottom: -0.0625rem;
+  left: 0;
+  width: .0938rem;
+  height: 6.25rem;
+  /* 원하는 연결 길이 */
+  background-color: #ccc;
+}
+
+.group-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: #969696;
+  line-height: 1.7;
+  white-space: pre-line;
+  height: 100%;
+  margin-left: 1.25rem;
+  padding-bottom: .3125rem;
+}
+
+
+.artist-section-solo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5rem;
+  padding: 2.5rem 1.25rem;
+  background-color: #f9f9f9;
+  max-width: 53.5rem;
+  margin: 0 auto;
+  /* 수평 중앙 배치 */
+}
+
+.solo-block {
   flex: 1;
   display: flex;
   flex-direction: column;
   font-family: 'Playfair Display', serif;
 }
 
-.pair-block.group {
-  transform: translateX(-1.875rem);
-}
-
-.pair-title {
+.solo-title {
   font-size: 2.5rem;
   font-weight: bold;
   line-height: 1.2;
@@ -628,38 +756,14 @@ textarea {
   margin-bottom: .3125rem;
 }
 
-.pair-divider.solo {
+.solo-divider {
   width: 100%;
   height: .0938rem;
   background-color: #ccc;
   margin-bottom: .9375rem;
 }
 
-.pair-divider.group::after {
-  content: '';
-  position: absolute;
-  left: -6.25rem;
-  width: 18.75rem;
-  height: .0938rem;
-  background-color: #ccc;
-}
-
-.pair-divider.group {
-  width: 100%;
-  height: .0938rem;
-  background-color: #ccc;
-  margin-bottom: .9375rem;
-  position: relative;
-}
-
-.pair-divider-vertical {
-  width: .0938rem;
-  background-color: #ccc;
-  height: auto;
-  transform: translateX(-0.625rem);
-}
-
-.pair-content {
+.solo-content {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 1rem;
   font-style: italic;
@@ -678,6 +782,10 @@ textarea {
 
 
 
+
+
+
+
 .artist-section-row {
   display: flex;
   flex-direction: column;
@@ -685,6 +793,9 @@ textarea {
   gap: 5rem;
   padding: 2.5rem 1.25rem;
   background-color: #f9f9f9;
+  max-width: 53.5rem;
+  margin: 0 auto;
+  /* 수평 중앙 배치 */
 }
 
 .row-block {
@@ -781,7 +892,8 @@ textarea {
 
 /* 각각의 이미지 아이템 */
 .Main-item {
-  flex: 0 0 26.25rem; /* 가로 크기 */
+  flex: 0 0 26.25rem;
+  /* 가로 크기 */
 }
 
 /* 이미지 스타일 */
@@ -794,7 +906,8 @@ textarea {
 
 
 /* 0) 공통: 급한 불 끄기 (가로 스크롤 차단) */
-html, body {
+html,
+body {
   max-width: 100%;
   overflow-x: hidden;
 }
@@ -810,7 +923,8 @@ html, body {
   /* 헤더 기본 + 우측 상단 번역버튼 공간 확보 */
   header {
     position: relative;
-    padding: 2.75rem .75rem .5rem;   /* ↑ top 패딩을 늘려서 고정된 번역버튼과 겹침 방지 */
+    padding: 2.75rem .75rem .5rem;
+    /* ↑ top 패딩을 늘려서 고정된 번역버튼과 겹침 방지 */
     overflow-x: hidden;
   }
 
@@ -840,8 +954,10 @@ html, body {
 
   .nav-links {
     display: flex;
-    flex-direction: row;      /* 가로 */
-    flex-wrap: wrap;          /* 필요 시 줄바꿈 */
+    flex-direction: row;
+    /* 가로 */
+    flex-wrap: wrap;
+    /* 필요 시 줄바꿈 */
     justify-content: center;
     align-items: center;
     gap: .5rem .75rem;
@@ -854,8 +970,10 @@ html, body {
     max-width: none;
     white-space: nowrap;
     text-align: center;
-    font-size: 0.85rem;       /* 버튼 텍스트 축소 */
-    padding: 0.4rem 0.7rem;   /* 버튼 내부 여백 */
+    font-size: 0.85rem;
+    /* 버튼 텍스트 축소 */
+    padding: 0.4rem 0.7rem;
+    /* 버튼 내부 여백 */
   }
 
   /* 번역 버튼: 헤더 우측 상단 고정, 다른 요소 안 밀어냄 */
@@ -866,16 +984,20 @@ html, body {
     transform: none;
     margin: 0;
     width: auto;
-    z-index: 10; /* 다른 요소 위에 표시 */
+    z-index: 10;
+    /* 다른 요소 위에 표시 */
   }
 
   /* 국기만 보이게 */
   .gtranslate_wrapper select {
     padding-left: 0;
-    text-indent: -624.9375rem; /* 텍스트 숨김 */
+    text-indent: -624.9375rem;
+    /* 텍스트 숨김 */
     overflow: hidden;
-    width: 2.5rem; /* 국기 폭 */
-    height: 1.75rem; /* 국기 높이 */
+    width: 2.5rem;
+    /* 국기 폭 */
+    height: 1.75rem;
+    /* 국기 높이 */
   }
 
   /* 이미지형 스위처 크기 조정 */
@@ -884,8 +1006,11 @@ html, body {
     height: 1.75rem;
     overflow: hidden;
   }
-    /* 로그인 버튼: 모바일에서 숨김 */
-  #adminButton { display: none !important; }
+
+  /* 로그인 버튼: 모바일에서 숨김 */
+  #adminButton {
+    display: none !important;
+  }
 }
 
 
@@ -896,6 +1021,7 @@ html, body {
 }
 
 @media (max-width: 48rem) {
+
   /* ARTIST 섹션 썸네일 제거 */
   .flex.items-end.gap-4 img {
     display: none !important;
@@ -903,23 +1029,27 @@ html, body {
 }
 
 @media (max-width: 48rem) {
+
   /* 제목 바 위치 동일 + 상단 여백 동일 */
   .artist123-section {
     position: relative;
-    padding-top: 2.25rem;                 /* 두 섹션 공통 상단여백 */
+    padding-top: 2.25rem;
+    /* 두 섹션 공통 상단여백 */
   }
 
 
 
   /* 제목 아래 첫 번째 큰 이미지가 바로 붙도록 통일 */
-  .artist123-section .max-w-6xl > .w-full:first-child{
+  .artist123-section .max-w-6xl>.w-full:first-child {
     margin-top: 0 !important;
   }
 
   /* 섹션 내 첫 번째 이미지에 동일한 위쪽 여백 부여(정밀 통일) */
   .artist123-section img:first-of-type {
-    margin-top: .5rem !important;        /* 제목과 이미지 간격 */
-    display: block;                     /* 인라인 여백 방지 */
+    margin-top: .5rem !important;
+    /* 제목과 이미지 간격 */
+    display: block;
+    /* 인라인 여백 방지 */
   }
 
   /* 섹션 내부 컬럼 사이 간격도 동일하게 */
@@ -927,10 +1057,11 @@ html, body {
     gap: .75rem !important;
   }
 
-  
+
 }
 
 @media (max-width: 48rem) {
+
   /* 폼 전체 */
   #newsletterForm {
     display: flex;
@@ -944,7 +1075,8 @@ html, body {
   #newsletterForm input[type="email"],
   #newsletterForm .subscribe-input {
     width: 100% !important;
-    max-width: 21.875rem; /* 너무 넓어지지 않게 제한 */
+    max-width: 21.875rem;
+    /* 너무 넓어지지 않게 제한 */
   }
 
   /* 체크박스 영역 가운데 정렬 */
@@ -955,7 +1087,8 @@ html, body {
 
   /* reCAPTCHA 영역 가운데 고정 */
   #newsletterForm .g-recaptcha {
-    transform: scale(0.9); /* 모바일에서 크기 조금 축소 */
+    transform: scale(0.9);
+    /* 모바일에서 크기 조금 축소 */
     transform-origin: center;
   }
 
@@ -966,13 +1099,14 @@ html, body {
   }
 }
 
-@media (max-width: 48rem) {
+@media (max-width: 64rem) {
   .carousel-section {
     display: none;
   }
 }
 
 @media (max-width: 48rem) {
+
   /* .section-block 안의 레이아웃을 세로로 변경 */
   .section-block {
     display: block !important;
@@ -982,7 +1116,8 @@ html, body {
   .section-title {
     padding-bottom: .375rem;
     margin-bottom: .75rem;
-    border-bottom: .0625rem solid #d1d5db; /* 선 */
+    border-bottom: .0625rem solid #d1d5db;
+    /* 선 */
   }
 
   /* 기존 divider는 숨김 */
@@ -997,53 +1132,36 @@ html, body {
   }
 }
 
-
 @media (max-width: 48rem) {
-  /* 부모 가로 배치 유지 */
-  .section-pair-block {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-between;
-    gap: .75rem;
+
+  /* .section-block 안의 레이아웃을 세로로 변경 */
+  .group-block {
+    display: block !important;
   }
 
-  /* 각 아이템 폭 줄이기 */
-  .section-pair-block > div {
-    flex: 1 1 0;
-    max-width: 48%;
+  /* 제목 밑에 선 */
+  .group-title {
+    padding-bottom: .375rem;
+    margin-bottom: .75rem;
+    border-bottom: .0625rem solid #d1d5db;
+    /* 선 */
   }
 
-  /* 제목: 아주 작게 + 밑줄 */
-  .section-pair-title,
-  .pair-title,
-  .section-pair-block h2,
-  .section-pair-block h3,
-  .artist-section-pair h2,
-  .artist-section-pair h3 {
-    font-size: clamp(1.75rem, 3.6vw, .875rem) !important;
-    line-height: 1.25 !important;
-    padding-bottom: .375rem !important;
-    margin-bottom: .75rem !important;
-    border-bottom: .0625rem solid #d1d5db !important;
-    white-space: normal !important;
-    word-break: keep-all !important;
-    overflow-wrap: anywhere !important;
-  }
-
-  /* 본문: 더 작게 */
-  .section-pair-content,
-  .pair-content,
-  .section-pair-block p,
-  .artist-section-pair p {
-    font-size: clamp(.8125rem, 3.6vw, .875rem) !important;
-    line-height: 1.5 !important;
-  }
-    /* 구분선 숨김 */
-  .section-pair-divider,
-  .pair-divider {
+  /* 기존 divider는 숨김 */
+  .group-divider {
     display: none !important;
   }
+
+  /* 내용은 제목 아래로 */
+  .group-content {
+    margin-top: 0;
+    display: block !important;
+  }
 }
+
+
+
+
 
 @media (max-width: 768px) {
   .artist-gallery {
@@ -1054,7 +1172,9 @@ html, body {
     box-sizing: border-box;
   }
 
-  .artist-gallery img { display: none !important; }
+  .artist-gallery img {
+    display: none !important;
+  }
 
   /* 2~4번만 표시 + 정사각형 + 동일 크기 */
   .artist-gallery img:nth-child(2),
@@ -1063,7 +1183,8 @@ html, body {
     display: block !important;
     width: 100% !important;
     aspect-ratio: 1 / 1 !important;
-    height: calc((100vw - 16px - 2 * 8px) / 3) !important; /* 여기 */
+    height: calc((100vw - 16px - 2 * 8px) / 3) !important;
+    /* 여기 */
     object-fit: cover !important;
     border-radius: 8px;
   }
@@ -1071,6 +1192,7 @@ html, body {
 
 /* 모바일 전용 (768px 이하) */
 @media (max-width: 768px) {
+
   /* 그리드 3열 강제 */
   #artwork-grid.artwork-container {
     display: grid !important;
@@ -1085,17 +1207,19 @@ html, body {
   /* 카드 박스(있다면) */
   .artwork-card {
     padding: .5rem !important;
-    border: 1px solid #eee;     /* 선택 */
+    border: 1px solid #eee;
+    /* 선택 */
     border-radius: .5rem;
     height: auto !important;
   }
 
   /* 이미지 크기 통일(정사각, 꽉차게) */
   .artwork-card img,
-  #artwork-grid > img {
+  #artwork-grid>img {
     display: block;
     width: 100% !important;
-    aspect-ratio: 3 / 4 !important;  /* 가로:세로 = 4:3 직사각형 */
+    aspect-ratio: 3 / 4 !important;
+    /* 가로:세로 = 4:3 직사각형 */
     object-fit: cover !important;
     border-radius: .5rem;
     height: auto !important;
@@ -1103,16 +1227,21 @@ html, body {
 }
 
 /* 모바일 전용 */
-@media (max-width: 900px) { /* 828px도 잡히게 여유있게 */
+@media (max-width: 900px) {
+
+  /* 828px도 잡히게 여유있게 */
   .hero-section {
-    padding-top: 1.25rem !important;  /* 위 여백 크게 축소 */
-    padding-bottom: 1.25rem !important; /* 아래 여백 크게 축소 */
+    padding-top: 1.25rem !important;
+    /* 위 여백 크게 축소 */
+    padding-bottom: 1.25rem !important;
+    /* 아래 여백 크게 축소 */
   }
 
   .hero-section .hero-title {
     font-size: 2rem;
     line-height: 1.2;
-    margin: 0.25rem 0 !important;   /* h2의 위/아래 마진 최소화 */
+    margin: 0.25rem 0 !important;
+    /* h2의 위/아래 마진 최소화 */
   }
 }
 
@@ -1121,7 +1250,8 @@ html, body {
   position: relative;
   width: 100%;
   overflow: hidden;
-  height: 25rem; /* 필요시 높이 고정 */
+  height: 25rem;
+  /* 필요시 높이 고정 */
 }
 
 .full-width-banner img {
@@ -1156,30 +1286,38 @@ html, body {
 }
 
 .banner-text .copyright-text {
-  font-size: 1.125rem;  /* 원래보다 작게 조정 (원하는 크기로 변경 가능) */
-  line-height: 1.2; /* 줄 간격도 조금 넉넉하게 */
-  color: #eee;      /* 배경에 맞춰 흰색 계열로 가독성 향상 */
+  font-size: 1.125rem;
+  /* 원래보다 작게 조정 (원하는 크기로 변경 가능) */
+  line-height: 1.2;
+  /* 줄 간격도 조금 넉넉하게 */
+  color: #eee;
+  /* 배경에 맞춰 흰색 계열로 가독성 향상 */
 }
 
 /* 모바일 전용 */
 @media (max-width: 768px) {
   .banner-text h1 {
-    font-size: 1.5rem; /* 모바일 제목 축소 */
+    font-size: 1.5rem;
+    /* 모바일 제목 축소 */
   }
 
   .banner-text p {
-    font-size: 0.9rem; /* 본문 축소 */
+    font-size: 0.9rem;
+    /* 본문 축소 */
     line-height: 1.4;
   }
 
   .banner-text .copyright-text {
     /* 폭을 줄여서 줄 수 고정 */
-    max-width: 15rem;        /* 약 240px 폭 → 4줄 맞춤 */
-    margin: 0 auto;          /* 가운데 정렬 */
+    max-width: 15rem;
+    /* 약 240px 폭 → 4줄 맞춤 */
+    margin: 0 auto;
+    /* 가운데 정렬 */
     text-align: center;
 
     /* 폰트 크기와 줄 간격 */
-    font-size: 0.9rem;       /* 줄 수 맞추는 크기 */
+    font-size: 0.9rem;
+    /* 줄 수 맞추는 크기 */
     line-height: 1.4;
 
     /* 글자가 줄 수 넘어가면 자동 줄임 */
@@ -1191,6 +1329,7 @@ html, body {
 
 /* 모바일 전용 (<=768px) */
 @media (max-width: 768px) {
+
   /* 아트샵 그리드 2열 강제 */
   #artshop-items.artshop-grid,
   #artshop-items,
@@ -1205,8 +1344,8 @@ html, body {
   }
 
   /* 카드가 flex 1열을 고집하는 경우 무력화 */
-  #artshop-items > *,
-  .artshop-grid > * {
+  #artshop-items>*,
+  .artshop-grid>* {
     width: auto !important;
     max-width: 100% !important;
     flex: 0 0 auto !important;
@@ -1219,7 +1358,8 @@ html, body {
   .artshop-grid img {
     display: block;
     width: 100% !important;
-    aspect-ratio: 4 / 3 !important;   /* 필요 시 16/9, 3/2 등으로 변경 */
+    aspect-ratio: 4 / 3 !important;
+    /* 필요 시 16/9, 3/2 등으로 변경 */
     object-fit: cover !important;
     height: auto !important;
     border-radius: .5rem;
@@ -1228,7 +1368,10 @@ html, body {
 
 /* 모바일 전용 (작품 탭 시 오버레이/버튼 표시) */
 @media (max-width: 768px) {
-  .artshop-card { position: relative; overflow: hidden; }
+  .artshop-card {
+    position: relative;
+    overflow: hidden;
+  }
 
   /* 실제 HTML 구조에 맞춤: .card-overlay 사용 */
   .artshop-card .card-overlay {
@@ -1237,11 +1380,13 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;                 /* 기본 숨김 */
+    opacity: 0;
+    /* 기본 숨김 */
     pointer-events: none;
     transition: opacity .2s ease;
     z-index: 2;
-    background: rgba(0,0,0,.35); /* 어두운 배경은 오버레이 자체에서 처리 */
+    background: rgba(0, 0, 0, .35);
+    /* 어두운 배경은 오버레이 자체에서 처리 */
   }
 
   /* 오버레이 안 버튼 래퍼 (.overlay-actions) */
@@ -1254,14 +1399,24 @@ html, body {
   /* 카드에 show-actions 붙으면 보이기 */
   .artshop-card.show-actions .card-overlay {
     opacity: 1;
-    pointer-events: auto;       /* 버튼 클릭 가능 */
+    pointer-events: auto;
+    /* 버튼 클릭 가능 */
   }
 }
 
 /* 터치 디바이스(hover 없음)에서도 확실히 작동하도록 보강 */
 @media (hover: none) {
-  .artshop-card .img-wrap { position: relative; z-index: 0; }
-  .artshop-card .card-overlay { position: absolute; inset: 0; z-index: 2; }
+  .artshop-card .img-wrap {
+    position: relative;
+    z-index: 0;
+  }
+
+  .artshop-card .card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+
   .artshop-card.show-actions .card-overlay {
     opacity: 1;
     pointer-events: auto;
@@ -1279,6 +1434,7 @@ html, body {
 
 /* 모바일: 모달 내부 위/아래 배치 + 가운데 정렬 */
 @media (max-width: 768px) {
+
   /* 모달 박스 크기 */
   #previewBox {
     width: min(92vw, 640px);
@@ -1296,15 +1452,17 @@ html, body {
 
   /* 이미지 영역 */
   #previewBox .preview-image-wrap {
-    width: 21.25rem  !important;
+    width: 21.25rem !important;
     flex: 0 0 auto !important;
     max-height: 50vh;
     margin-left: 10%;
     margin-right: 10%;
     display: flex;
-     /* 가로 가운데 */
-    align-items: center;     /* 세로 가운데 */
+    /* 가로 가운데 */
+    align-items: center;
+    /* 세로 가운데 */
   }
+
   #previewBox #previewImage {
     display: block;
     max-width: 100%;
@@ -1335,16 +1493,390 @@ html, body {
 @media (max-width: 768px) {
   .modal-content {
     width: auto;
-    max-width: 70vw;   /* 가로 크기 줄이기 */
+    max-width: 70vw;
+    /* 가로 크기 줄이기 */
   }
 
   #modal-image {
-    max-width: 70vw;   /* 화면 너비의 85%까지만 */
-    max-height: 65vh;  /* 화면 높이의 75%까지만 */
+    max-width: 70vw;
+    /* 화면 너비의 85%까지만 */
+    max-height: 65vh;
+    /* 화면 높이의 75%까지만 */
     object-fit: contain;
   }
 }
 
-@media (max-width: 768px){
-  .artwork-section .max-w-6xl{ gap:0 !important; }
+@media (max-width: 768px) {
+  .artwork-section .max-w-6xl {
+    gap: 0 !important;
+  }
+}
+
+
+/* ---- 공통 스케일 변수: 버튼 폰트/패딩/간격/아이콘 ---- */
+:root {
+  --btn-font: clamp(.0625rem, 0.6rem + 1.2vw, 0.75rem);
+  --btn-py: clamp(0.45rem, 0.3rem + 0.8vw, 0.65rem);
+  --btn-px: clamp(0.8rem, 0.45rem + 1.4vw, 1.05rem);
+  --btn-gap: clamp(0.4rem, 0.2rem + 1vw, 0.8rem);
+  --icon-size: clamp(1.125rem, .75rem + 2.2vw, 1.375rem);
+  --radius: 9999px;
+}
+
+/* ===================== 헤더 ===================== */
+
+/* ===== Header: 버튼 줄바꿈 금지 + 가로 스크롤 ===== */
+/* 헤더 버튼 줄: 한 줄 + 가로 스크롤 + 가장자리까지 풀블리드 */
+.nav-links {
+  display: flex;
+  flex-wrap: nowrap !important;
+  /* 항상 한 줄 */
+  overflow-x: auto;
+  /* 넘치면 가로 스크롤 */
+  -webkit-overflow-scrolling: touch;
+  /* iOS 부드러운 스크롤 */
+
+  /* 헤더의 좌우 패딩(1rem)을 상쇄해서 가장자리까지 보이게 */
+  margin-left: calc(-1rem - 0.0625rem);
+  /* = -1rem - 1px */
+  margin-right: calc(-1rem - 0.0625rem);
+
+  padding-left: calc(1rem + env(safe-area-inset-left));
+  padding-right: calc(1rem + env(safe-area-inset-right));
+
+  gap: clamp(0.4rem, 0.2rem + 1vw, 0.8rem);
+  padding-bottom: .2rem;
+  /* 스크롤 여유 */
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: .5rem;
+}
+
+/* 버튼 자체(줄바꿈 금지 + 반응형 크기) */
+.nav-links a {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: clamp(0.9rem, 0.6rem + 1.2vw, 1rem);
+  padding: clamp(0.45rem, 0.3rem + 0.8vw, 0.65rem) clamp(0.8rem, 0.45rem + 1.4vw, 1.05rem);
+  min-height: 44px;
+  text-decoration: none;
+  line-height: 1;
+
+  /* (이미 적용했다면 유지/생략 가능) */
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  background: #fff !important;
+}
+
+/* 스크롤바 안 보이게(선택) */
+.nav-links {
+  scrollbar-width: none;
+}
+
+.nav-links::-webkit-scrollbar {
+  display: none;
+}
+
+/* 아주 작은 기기에서 좌우 패딩만 살짝 더 줄이기(선택) */
+@media (max-width: 380px) {
+  .nav-links a {
+    padding-inline: .6rem;
+  }
+}
+
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  background: #f3f4f6;
+  outline: none;
+}
+
+
+/* ===================== 푸터 ===================== */
+footer {
+  background: #fff;
+  border-top: 1px solid #eee;
+  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
+  /* iOS 노치 대응 */
+  color: #111;
+}
+
+/* 상단 링크 버튼: 모바일은 2x2 그리드, 태블릿 이상은 행 배치 */
+footer nav {
+  display: grid;
+  gap: .5rem;
+  margin: 0 auto;
+}
+
+footer nav a {
+  text-decoration: none;
+  color: #000000;
+  text-align: center;
+  line-height: 1;
+  font-size: var(--btn-font);
+  padding: var(--btn-py) var(--btn-px);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  background: #000 !important;
+  /* 검은색 배경 */
+  color: #fff !important;
+  /* 글자 흰색 */
+  border: 1px solid #000 !important;
+}
+
+footer nav a:hover,
+footer nav a:focus-visible {
+  background: #111 !important;
+  outline: none
+}
+
+/* SNS 아이콘 줄 */
+.footer-sns {
+  display: flex;
+  gap: .6rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: .8rem;
+}
+
+.footer-sns a svg {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: block;
+}
+
+.footer-logo {
+  margin-top: .9rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: clamp(.95rem, .8rem + 1vw, 1.1rem);
+}
+
+.footer-bottom {
+  margin-top: .25rem;
+  text-align: center;
+  color: #000000;
+  font-size: clamp(.8rem, .7rem + .6vw, .95rem);
+}
+
+/* 레이아웃 브레이크포인트 */
+@media (min-width: 640px) {
+
+  /* ≥SM: 링크를 가로로 */
+  footer nav {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 639px) {
+
+  /* <SM: 2x2 그리드 */
+  footer nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 다크모드(선택) */
+@media (prefers-color-scheme: dark) {
+
+  header,
+  footer {
+    background: #0b0b0c;
+    border-color: #232327;
+    color: #e5e7eb;
+  }
+
+  .nav-links a,
+  footer nav a {
+    color: #e5e7eb;
+    background: #151518;
+    border-color: #232327;
+  }
+
+  .nav-links a:hover,
+  footer nav a:hover {
+    background: #1b1b20;
+  }
+
+  .footer-bottom {
+    color: #a1a1aa;
+  }
+
+  .lang #adminButton {
+    background: #151518;
+    color: #e5e7eb;
+    border-color: #232327;
+  }
+}
+
+/* 헤더는 항상 라이트 테마로 */
+@media (prefers-color-scheme: dark) {
+  header {
+    background: #fff !important;
+    border-color: #eee !important;
+  }
+
+  .nav-links a {
+    border-color: #e5e7eb !important;
+    color: #111827 !important;
+  }
+}
+
+/* nav-links의 가로 스크롤바 숨기기 */
+.nav-links {
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.nav-links::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari */
+}
+
+/* 헤더 버튼을 완전 흰색으로 고정 */
+header .nav-links>a {
+  background-color: #fff !important;
+  /* 배경 흰색 */
+  color: #111827 !important;
+  /* 글자색 */
+  border: 1px solid #e5e7eb !important;
+  box-shadow: none !important;
+  /* 테마/컴포넌트가 넣은 그림자 제거 */
+  background-image: none !important;
+  /* 그라디언트/이미지 제거 */
+  opacity: 1 !important;
+  /* 반투명 방지 */
+}
+
+/* 혹시 :before/:after 로 회색 배경을 올려놨다면 제거 */
+header .nav-links>a::before,
+header .nav-links>a::after {
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* 호버/포커스 때도 흰색 유지하고 싶다면 */
+header .nav-links>a:hover,
+header .nav-links>a:focus-visible {
+  background-color: #fff !important;
+}
+
+/* 시스템 다크모드에서도 흰색 유지 */
+@media (prefers-color-scheme: dark) {
+  header .nav-links>a {
+    background-color: #fff !important;
+    color: #111827 !important;
+    border-color: #e5e7eb !important;
+  }
+}
+
+/* 헤더 버튼: 무조건 흰색으로 고정 (가장 마지막에 배치) */
+header .nav-links>a {
+  background: #fff !important;
+  /* 배경 흰색 */
+  background-color: #fff !important;
+  /* shorthand 우회 */
+  color: #111827 !important;
+  /* 글자색 */
+  border: 1px solid #e5e7eb !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  opacity: 1 !important;
+}
+
+/* 호버/포커스에도 흰색 유지 (원하면 삭제 가능) */
+header .nav-links>a:hover,
+header .nav-links>a:focus-visible {
+  background: #fff !important;
+}
+
+/* 시스템 다크모드여도 흰색 유지 */
+@media (prefers-color-scheme: dark) {
+  header .nav-links>a {
+    background: #fff !important;
+    color: #111827 !important;
+    border-color: #e5e7eb !important;
+  }
+}
+
+footer {
+  background: #000 !important;
+  /* 배경 검정 */
+  border-top: 1px solid #222 !important;
+  /* 구분선은 살짝 연한 검정 */
+  color: #fff !important;
+  /* 기본 텍스트는 흰색 */
+}
+
+
+
+
+
+.artist-gallery {
+  display: flex;
+  /* 한 줄 가로 배치 */
+  flex-wrap: nowrap;
+  /* 줄바꿈 안 함 */
+  overflow-x: auto;
+  /* 화면보다 넓으면 스크롤 */
+  gap: 1rem;
+  /* 이미지 간격 */
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5rem 0;
+}
+
+.artist-gallery img {
+  flex: 0 0 auto;
+  width: 10rem;
+  /* 기본: 모바일용 160px */
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+
+/* 태블릿(≥48rem = 768px)에서는 조금 더 크게 */
+@media (min-width: 48rem) {
+  .artist-gallery img {
+    width: 12rem;
+    /* 192px */
+    height: 12rem;
+  }
+}
+
+/* 데스크탑(≥64rem = 1024px)에서는 더 크게 */
+@media (min-width: 64rem) {
+  .artist-gallery img {
+    width: 15rem;
+    /* 240px */
+    height: 15rem;
+  }
+}
+
+/* 큰 화면(≥80rem = 1280px)에서는 더 크게 */
+@media (min-width: 80rem) {
+  .artist-gallery img {
+    width: 18rem;
+    /* 288px */
+    height: 18rem;
+  }
+}
+
+/* artist-gallery의 가로 스크롤바 숨기기 */
+.artist-gallery {
+  -ms-overflow-style: none;
+  /* IE, Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.artist-gallery::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera */
 }

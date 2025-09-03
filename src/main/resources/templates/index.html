@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Art Work - Walid Jahin</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
   <link th:href="@{/css/style.css}" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
@@ -19,72 +21,100 @@
 
 
 
-.hero-section {
-  width: 100%;
-  padding: 6rem 0; /* 6rem top & bottom */
-  background-color: #f9f9f9;
-  text-align: center;
-  font-family: 'Roboto Serif', serif;
-  font-size: 3.75rem; /* 사용자 요청 */
-  font-weight: 800;
-  font-style: italic;
-  letter-spacing: -0.0625rem;
-  color: #222222
-}
+    .hero-section {
+      width: 100%;
+      padding: 6rem 0;
+      /* 6rem top & bottom */
+      background-color: #f9f9f9;
+      text-align: center;
+      font-family: 'Roboto Serif', serif;
+      font-size: 3.75rem;
+      /* 사용자 요청 */
+      font-weight: 800;
+      font-style: italic;
+      letter-spacing: -0.0625rem;
+      color: #222222
+    }
 
-.hero-container {
-  max-width: 48rem;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
+    .hero-container {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
 
-.hero-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 5rem; /* 약 5rem */
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      /* 약 5rem */
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
 
-.hero-description {
-  font-size: 1.5rem;
-  line-height: 2rem;
-  color: #767676
-}
-
-
-    .artwork-intro { text-align: center; padding: 3.75rem 1.25rem 1.25rem; }
-    .artwork-intro h2 { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 700; }
-    .artwork-intro p { margin-top: .625rem; font-size: 1rem; color: #555; }
-    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr)); gap: 1.25rem; padding: 1.25rem 2.5rem 3.75rem; }
-    .art-img { width: 100%; border-radius: .5rem; box-shadow: 0 .25rem .375rem rgba(0, 0, 0, 0.1); }
+    .hero-description {
+      font-size: 1.5rem;
+      line-height: 2rem;
+      color: #767676
+    }
 
 
-      .subscribe-input {
-    padding: 0.75rem 1rem;
-    border: .0625rem solid #ccc; /* 테두리 추가 */
-    border-radius: .5rem;     /* 모서리 둥글게 */
-    outline: none;
-  }
+    .artwork-intro {
+      text-align: center;
+      padding: 3.75rem 1.25rem 1.25rem;
+    }
 
-  .subscribe-input:focus {
-    border-color: #999;
-  }
+    .artwork-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
 
-  .subscribe-button {
-    background-color: black;
-    color: white;
-    padding: 0.75rem 2rem;
-    border: none;
-    border-radius: .5rem;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s;
-  }
+    .artwork-intro p {
+      margin-top: .625rem;
+      font-size: 1rem;
+      color: #555;
+    }
 
-  .subscribe-button:hover {
-    background-color: #333;
-  }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+      gap: 1.25rem;
+      padding: 1.25rem 2.5rem 3.75rem;
+    }
 
+    .art-img {
+      width: 100%;
+      border-radius: .5rem;
+      box-shadow: 0 .25rem .375rem rgba(0, 0, 0, 0.1);
+    }
+
+
+    .subscribe-input {
+      padding: 0.75rem 1rem;
+      border: .0625rem solid #ccc;
+      /* 테두리 추가 */
+      border-radius: .5rem;
+      /* 모서리 둥글게 */
+      outline: none;
+    }
+
+    .subscribe-input:focus {
+      border-color: #999;
+    }
+
+    .subscribe-button {
+      background-color: black;
+      color: white;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: .5rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.3s;
+    }
+
+    .subscribe-button:hover {
+      background-color: #333;
+    }
   </style>
   <header>
     <div class="header-inner">
@@ -93,13 +123,15 @@
         <div class="nav-links">
           <a th:href="@{/index}">HOME</a>
           <a th:href="@{/artist}">ARTIST</a>
+          <a th:href="@{/solo}">SOLO ART</a>
           <a th:href="@{/artwork}">ART WORK</a>
           <a th:href="@{/artshop}">ART SHOP</a>
         </div>
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-        <button id="adminButton" style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
+        <button id="adminButton"
+          style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
       </div>
     </div>
   </header>
@@ -141,344 +173,338 @@
 
 
 
-<!-- 메인 이미지 슬라이드 -->
-<section class="Main-section">
-  <div class="Main-wrapper">
-    <div class="Main-track-wrapper">
-      <div class="Main-track" id="MainTrack">
+  <!-- 메인 이미지 슬라이드 -->
+  <section class="Main-section">
+    <div class="Main-wrapper">
+      <div class="Main-track-wrapper">
+        <div class="Main-track" id="MainTrack">
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
   <!-- ARTIST Section -->
-<section class="w-full py-20 bg-[#f9f9f9] artist123-section">
-  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-end">
-    <!-- 왼쪽 메인 이미지 -->
-    <div class="w-full md:w-1/2">
-      <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4201-1.png"
-           alt="Artist Banner"
-           class="w-[49.4375rem] h-[31rem] rounded-xl shadow-md object-cover" />
-    </div>
-
-    <!-- 오른쪽 썸네일 3개 -->
-    <div class="w-full md:w-1/2 flex flex-col space-y-6">
-      <div class="flex justify-between items-center">
-        <h3 class="card-title">ARTIST</h3>
-        <a th:href="@{/artist}" class="border border-gray-400 rounded-full px-4 py-1 text-sm hover:bg-gray-100 transition">VIEW MORE</a>
+  <section class="w-full py-20 bg-[#f9f9f9] artist123-section">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-end">
+      <!-- 왼쪽 메인 이미지 -->
+      <div class="w-full md:w-1/2">
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4201-1.png" alt="Artist Banner"
+          class="w-[49.4375rem] h-[31rem] rounded-xl shadow-md object-cover" />
       </div>
 
-      <div class="flex items-end gap-4">
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233-1@2x.png"
-             class="rounded-xl object-cover w-40 h-40" />
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234-1@2x.png"
-             class="rounded-xl object-cover w-40 h-40" />
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235-1@2x.png"
-             class="rounded-xl object-cover w-40 h-40" />
+      <!-- 오른쪽 썸네일 3개 -->
+      <div class="w-full md:w-1/2 flex flex-col space-y-6">
+        <div class="flex justify-between items-center">
+          <h3 class="card-title">ARTIST</h3>
+          <a th:href="@{/artist}"
+            class="border border-gray-400 rounded-full px-4 py-1 text-sm hover:bg-gray-100 transition">VIEW MORE</a>
+        </div>
+
+        <div class="flex items-end gap-4">
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233-1@2x.png"
+            class="rounded-xl object-cover w-40 h-40 md:w-32 md:h-32" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234-1@2x.png"
+            class="rounded-xl object-cover w-40 h-40 md:w-32 md:h-32" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235-1@2x.png"
+            class="rounded-xl object-cover w-40 h-40 md:w-32 md:h-32" />
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
-<!-- ART WORK Section -->
-<section class="w-full py-20 bg-[#f9f9f9] artwork-section">
-  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-end ">
-    
-    <!-- 왼쪽 썸네일 3개 -->
-    <div class="w-full md:w-1/2 flex flex-col space-y-6">
-      <div class="flex justify-between items-center">
-        <h3 class="card-title">ART WORK</h3>
-        <a th:href="@{/artwork}" class="border border-gray-400 rounded-full px-4 py-1 text-sm hover:bg-gray-100 transition">VIEW MORE</a>
+  <!-- ART WORK Section -->
+  <section class="w-full py-20 bg-[#f9f9f9] artwork-section">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-end ">
+
+      <!-- 왼쪽 썸네일 3개 -->
+      <div class="w-full md:w-1/2 flex flex-col space-y-6">
+        <div class="flex justify-between items-center">
+          <h3 class="card-title">ART WORK</h3>
+          <a th:href="@{/artwork}"
+            class="border border-gray-400 rounded-full px-4 py-1 text-sm hover:bg-gray-100 transition">VIEW MORE</a>
+        </div>
+
+        <div class="flex items-end gap-4 md:mt-8 lg:mt-10">
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233-2@2x.png" alt="Work 1"
+            class="rounded-xl object-cover w-40 h-40 md:w-32 md:h-32" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234-2@2x.png" alt="Work 2"
+            class="rounded-xl object-cover w-40 h-40 md:w-32 md:h-32" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235-2@2x.png" alt="Work 3"
+            class="rounded-xl object-cover w-40 h-40 md:w-32 md:h-32" />
+        </div>
       </div>
 
-      <div class="flex items-end gap-4 md:mt-8 lg:mt-10">
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233-2@2x.png"
-             alt="Work 1"
-             class="rounded-xl object-cover w-40 h-40" />
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234-2@2x.png"
-             alt="Work 2"
-             class="rounded-xl object-cover w-40 h-40" />
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235-2@2x.png"
-             alt="Work 3"
-             class="rounded-xl object-cover w-40 h-40" />
+      <!-- 오른쪽 메인 배너 이미지 -->
+      <div class="w-full md:w-1/2">
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4200.png" alt="Art Work Banner"
+          class="w-full h-auto rounded-xl shadow-md" />
       </div>
     </div>
-
-    <!-- 오른쪽 메인 배너 이미지 -->
-    <div class="w-full md:w-1/2">
-      <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4200.png"
-           alt="Art Work Banner"
-           class="w-full h-auto rounded-xl shadow-md" />
-    </div>
-  </div>
-</section>
+  </section>
 
 
-<!-- ART SHOP Section -->
-<section class="w-full py-20 bg-[#f9f9f9] artist123-section">
-  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-end">
-    
-    <!-- 왼쪽 메인 배너 이미지 -->
-    <div class="w-full md:w-1/2">
-      <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4201.png"
-           alt="Art Shop Banner"
-           class="w-full h-auto rounded-xl shadow-md" />
-    </div>
+  <!-- ART SHOP Section -->
+  <section class="w-full py-20 bg-[#f9f9f9] artist123-section">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row gap-10 items-end">
 
-    <!-- 오른쪽 썸네일 이미지들 -->
-    <div class="w-full md:w-1/2 flex flex-col space-y-6">
-      <div class="flex justify-between items-center">
-        <h3 class="card-title">ART SHOP</h3>
-        <a th:href="@{/artshop}" class="border border-gray-400 rounded-full px-4 py-1 text-sm hover:bg-gray-100 transition">VIEW MORE</a>
+      <!-- 왼쪽 메인 배너 이미지 -->
+      <div class="w-full md:w-1/2">
+        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4201.png" alt="Art Shop Banner"
+          class="w-full h-auto rounded-xl shadow-md" />
       </div>
 
-      <div class="flex items-end gap-4">
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233@2x.png"
-             alt="Art 1"
-             class="rounded-xl object-cover w-40 h-40" />
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234@2x.png"
-             alt="Art 2"
-             class="rounded-xl object-cover w-40 h-40" />
-        <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235@2x.png"
-             alt="Art 3"
-             class="rounded-xl object-cover w-40 h-40" />
+      <!-- 오른쪽 썸네일 이미지들 -->
+      <div class="w-full md:w-1/2 flex flex-col space-y-6">
+        <div class="flex justify-between items-center">
+          <h3 class="card-title">ART SHOP</h3>
+          <a th:href="@{/artshop}"
+            class="border border-gray-400 rounded-full px-4 py-1 text-sm hover:bg-gray-100 transition">VIEW MORE</a>
+        </div>
+
+        <div class="flex items-end gap-4">
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4233@2x.png" alt="Art 1"
+            class="rounded-xl object-cover w-40 h-40 md:w-32 md:h-32" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4234@2x.png" alt="Art 2"
+            class="rounded-xl object-cover w-40 h-40 md:w-32 md:h-32" />
+          <img src="https://c.animaapp.com/Lw4WE84t/img/rectangle-4235@2x.png" alt="Art 3"
+            class="rounded-xl object-cover w-40 h-40 md:w-32 md:h-32" />
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
-<!-- 2. NEWSLETTER 섹션 -->
-<section class="w-full py-20 bg-[#f9f9f9] text-center">
-  <h3 class="text-3xl md:text-4xl font-serif font-semibold text-gray-900 mb-10">
-    SUBSCRIBE TO <br />WALID JAHIN NEWSLETTER
-  </h3>
+  <!-- 2. NEWSLETTER 섹션 -->
+  <section class="w-full py-20 bg-[#f9f9f9] text-center">
+    <h3 class="text-3xl md:text-4xl font-Roboto Serif font-bold text-gray-900 mb-10">
+      SUBSCRIBE TO <br />WALID JAHIN NEWSLETTER
+    </h3>
 
-  <form id="newsletterForm" class="max-w-3xl mx-auto space-y-6">
-    <div class="flex flex-col gap-6 justify-center items-center">
-      <input type="text" id="subscriberName" placeholder="Name" class="subscribe-input md:w-1/2" />
-      <input type="email" id="subscriberEmail" placeholder="Email" class="subscribe-input md:w-1/2" />
-    </div>
+    <form id="newsletterForm" class="max-w-3xl mx-auto space-y-6">
+      <div class="flex flex-col gap-6 justify-center items-center">
+        <input type="text" id="subscriberName" placeholder="Name" class="subscribe-input md:w-1/2" />
+        <input type="email" id="subscriberEmail" placeholder="Email" class="subscribe-input md:w-1/2" />
+      </div>
 
-    <div class="flex items-center justify-center gap-3 text-sm text-gray-600">
-      <input type="checkbox" id="agree" class="w-5 h-5 border-gray-400" />
-      <label for="agree">I AGREE TO RECEIVE EMAILS FROM YOUR COMPANY</label>
-    </div>
+      <div class="flex items-center justify-center gap-3 text-sm text-gray-600">
+        <input type="checkbox" id="agree" class="w-5 h-5 border-gray-400" />
+        <label for="agree">I AGREE TO RECEIVE EMAILS FROM YOUR COMPANY</label>
+      </div>
 
-    <div class="flex justify-center">
-      <!-- reCAPTCHA -->
-      <div class="g-recaptcha" data-sitekey="6Lc4XJQrAAAAAKgFydsKuyqsb7Iulz5DAO66i_HV"></div>
-    </div>
+      <div class="flex justify-center">
+        <!-- reCAPTCHA -->
+        <div class="g-recaptcha" data-sitekey="6Lc4XJQrAAAAAKgFydsKuyqsb7Iulz5DAO66i_HV"></div>
+      </div>
 
-    <button type="button" class="subscribe-button" onclick="handleSubscribe()">SUBSCRIBE</button>
-  </form>
-</section>
+      <button type="button" class="subscribe-button" onclick="handleSubscribe()">SUBSCRIBE</button>
+    </form>
+  </section>
 
-<!-- reCAPTCHA API 스크립트 -->
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- reCAPTCHA API 스크립트 -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-<!-- 뉴스레터 구독 스크립트 -->
-<script>
-async function handleSubscribe() {
-  const name = document.querySelector('input[placeholder="Name"]').value;
-  const email = document.querySelector('input[placeholder="Email"]').value;
-  const agree = document.getElementById("agree").checked;
+  <!-- 뉴스레터 구독 스크립트 -->
+  <script>
+    async function handleSubscribe() {
+      const name = document.querySelector('input[placeholder="Name"]').value;
+      const email = document.querySelector('input[placeholder="Email"]').value;
+      const agree = document.getElementById("agree").checked;
 
-  if (!agree) {
-    alert("You must agree to the terms and conditions to subscribe.");
-    return;
-  }
+      if (!agree) {
+        alert("You must agree to the terms and conditions to subscribe.");
+        return;
+      }
 
-  const recaptchaToken = grecaptcha.getResponse(); // ✅ reCAPTCHA 토큰 가져오기
-  if (!recaptchaToken) {
-    alert("Please complete the reCAPTCHA.");
-    return;
-  }
+      const recaptchaToken = grecaptcha.getResponse(); // ✅ reCAPTCHA 토큰 가져오기
+      if (!recaptchaToken) {
+        alert("Please complete the reCAPTCHA.");
+        return;
+      }
 
-  const payload = {
-    name,
-    email
-  };
+      const payload = {
+        name,
+        email
+      };
 
-  try {
-    const response = await fetch(`/api/subscribe?g-recaptcha-response=${recaptchaToken}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
+      try {
+        const response = await fetch(`/api/subscribe?g-recaptcha-response=${recaptchaToken}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.text();
+
+        if (response.ok) {
+          alert("Your subscription has been completed.");
+        } else {
+          alert(`Subscribe failed: ${result}`);
+        }
+      } catch (err) {
+        alert("Error");
+        console.error(err);
+      }
+    }
+
+  </script>
+
+
+
+  <script>
+    // 메인 이미지 슬라이드
+    const imagePaths = [
+      "/image/main7.jpg", "/image/main8.jpg", "/image/main9.jpg", "/image/main10.jpg", "/image/main11.jpg", "/image/main12.jpg"
+      /* "/image/main9.jpg", "/image/main10.jpg", "/image/main11.jpg", "/image/main12.jpg",
+       "/image/main13.jpg", "/image/main14.jpg", "/image/main15.jpg", "/image/main16.jpg",
+       "/image/main17.jpg", "/image/main18.jpg", "/image/main19.jpg", "/image/main20.jpg",
+       "/image/main21.jpg", "/image/main22.jpg", "/image/main23.jpg", "/image/main24.jpg",
+       "/image/main25.jpg", "/image/main26.jpg", "/image/main27.jpg", "/image/main28.jpg",
+       "/image/main29.jpg", "/image/main30.jpg", "/image/main31.jpg", "/image/main32.jpg",
+       "/image/main33.jpg", "/image/main34.jpg", "/image/main35.jpg", "/image/main36.jpg",
+       "/image/main37.jpg", "/image/main38.jpg", "/image/main39.jpg", "/image/main40.jpg",
+       "/image/main41.jpg", "/image/main42.jpg", "/image/main43.jpg", "/image/main44.jpg",
+       "/image/main45.jpg", "/image/main46.jpg", "/image/main47.jpg", "/image/main48.jpg",
+       "/image/main49.jpg", "/image/main50.jpg", "/image/main51.jpg", "/image/main52.jpg",
+       "/image/main53.jpg", "/image/main54.jpg", "/image/main55.jpg", "/image/main56.jpg",
+       "/image/main57.jpg", "/image/main58.jpg", "/image/main59.jpg", "/image/main60.jpg",
+       "/image/main61.jpg", "/image/main62.jpg", "/image/main63.jpg", "/image/main64.jpg",
+       "/image/main65.jpg", "/image/main66.jpg", "/image/main67.jpg", "/image/main68.jpg",
+       "/image/main69.jpg", "/image/main70.jpg", "/image/main71.jpg", "/image/main72.jpg",
+       "/image/main73.jpg", "/image/main74.jpg" */
+    ];
+
+    const track = document.getElementById("MainTrack");
+    const wrapper = document.querySelector(".Main-track-wrapper");
+    const visibleCount = 3;
+    const total = imagePaths.length;
+
+    // 무한 루프용 앞뒤 복제
+    const extendedPaths = [
+      ...imagePaths.slice(-visibleCount),
+      ...imagePaths,
+      ...imagePaths.slice(0, visibleCount)
+    ];
+
+    // DOM 생성
+    track.innerHTML = "";
+    extendedPaths.forEach(path => {
+      const item = document.createElement("div");
+      item.classList.add("Main-item");
+      const img = document.createElement("img");
+      img.src = path;
+      item.appendChild(img);
+      track.appendChild(item);
     });
 
-    const result = await response.text();
-
-    if (response.ok) {
-      alert("Your subscription has been completed.");
-    } else {
-      alert(`Subscribe failed: ${result}`);
+    // ======= 치수 계산 =======
+    function remToPx(v) {
+      const rootPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+      return v * rootPx;
     }
-  } catch (err) {
-    alert("Error");
-    console.error(err);
-  }
-}
 
-</script>
+    // CSS 설계값 (현재 CSS 기준)
+    const ITEM_REM = 26.25;        // .Main-item width
+    const GAP_REM = 1.25;         // .Main-track gap
+    const TRACK_PADDING_REM = 8.75;// .Main-track padding-left/right
+    const DESIRED_PEEK_PX = 20;    // 양옆에 보일 픽셀 수(한쪽 기준)
 
+    function calcMetrics() {
+      const itemPx = remToPx(ITEM_REM);
+      const gapPx = remToPx(GAP_REM);
+      const itemWidth = itemPx + gapPx;
 
+      // 중앙에 3장 온전히 보이도록 이상적인 패딩
+      const wrapperWidth = wrapper.clientWidth;
+      const contentWidth3 = itemPx * 3 + gapPx * 2; // 3장 + gap 2개
+      const idealPadding = (wrapperWidth - contentWidth3) / 2;
 
-<script>
-  // 메인 이미지 슬라이드
-  const imagePaths = [
-    "/image/main7.jpg", "/image/main8.jpg", "/image/main9.jpg", "/image/main10.jpg", "/image/main11.jpg", "/image/main12.jpg"
-   /* "/image/main9.jpg", "/image/main10.jpg", "/image/main11.jpg", "/image/main12.jpg",
-    "/image/main13.jpg", "/image/main14.jpg", "/image/main15.jpg", "/image/main16.jpg",
-    "/image/main17.jpg", "/image/main18.jpg", "/image/main19.jpg", "/image/main20.jpg",
-    "/image/main21.jpg", "/image/main22.jpg", "/image/main23.jpg", "/image/main24.jpg",
-    "/image/main25.jpg", "/image/main26.jpg", "/image/main27.jpg", "/image/main28.jpg",
-    "/image/main29.jpg", "/image/main30.jpg", "/image/main31.jpg", "/image/main32.jpg",
-    "/image/main33.jpg", "/image/main34.jpg", "/image/main35.jpg", "/image/main36.jpg",
-    "/image/main37.jpg", "/image/main38.jpg", "/image/main39.jpg", "/image/main40.jpg",
-    "/image/main41.jpg", "/image/main42.jpg", "/image/main43.jpg", "/image/main44.jpg",
-    "/image/main45.jpg", "/image/main46.jpg", "/image/main47.jpg", "/image/main48.jpg",
-    "/image/main49.jpg", "/image/main50.jpg", "/image/main51.jpg", "/image/main52.jpg",
-    "/image/main53.jpg", "/image/main54.jpg", "/image/main55.jpg", "/image/main56.jpg",
-    "/image/main57.jpg", "/image/main58.jpg", "/image/main59.jpg", "/image/main60.jpg",
-    "/image/main61.jpg", "/image/main62.jpg", "/image/main63.jpg", "/image/main64.jpg",
-    "/image/main65.jpg", "/image/main66.jpg", "/image/main67.jpg", "/image/main68.jpg",
-    "/image/main69.jpg", "/image/main70.jpg", "/image/main71.jpg", "/image/main72.jpg",
-    "/image/main73.jpg", "/image/main74.jpg" */
-  ];
+      // 현재 트랙 padding
+      const trackComputed = getComputedStyle(track);
+      const currPaddingLeft =
+        parseFloat(trackComputed.paddingLeft) || remToPx(TRACK_PADDING_REM);
 
-  const track = document.getElementById("MainTrack");
-  const wrapper = document.querySelector(".Main-track-wrapper");
-  const visibleCount = 3;
-  const total = imagePaths.length;
+      // baseOffset = (현재 padding - 이상 padding) + 양옆 살짝 보이기
+      const baseOffset = Math.max(0, currPaddingLeft - idealPadding + DESIRED_PEEK_PX);
 
-  // 무한 루프용 앞뒤 복제
-  const extendedPaths = [
-    ...imagePaths.slice(-visibleCount),
-    ...imagePaths,
-    ...imagePaths.slice(0, visibleCount)
-  ];
-
-  // DOM 생성
-  track.innerHTML = "";
-  extendedPaths.forEach(path => {
-    const item = document.createElement("div");
-    item.classList.add("Main-item");
-    const img = document.createElement("img");
-    img.src = path;
-    item.appendChild(img);
-    track.appendChild(item);
-  });
-
-  // ======= 치수 계산 =======
-  function remToPx(v) {
-    const rootPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    return v * rootPx;
-  }
-
-  // CSS 설계값 (현재 CSS 기준)
-  const ITEM_REM = 26.25;        // .Main-item width
-  const GAP_REM  = 1.25;         // .Main-track gap
-  const TRACK_PADDING_REM = 8.75;// .Main-track padding-left/right
-  const DESIRED_PEEK_PX = 20;    // 양옆에 보일 픽셀 수(한쪽 기준)
-
-  function calcMetrics() {
-    const itemPx = remToPx(ITEM_REM);
-    const gapPx  = remToPx(GAP_REM);
-    const itemWidth = itemPx + gapPx;
-
-    // 중앙에 3장 온전히 보이도록 이상적인 패딩
-    const wrapperWidth = wrapper.clientWidth;
-    const contentWidth3 = itemPx * 3 + gapPx * 2; // 3장 + gap 2개
-    const idealPadding = (wrapperWidth - contentWidth3) / 2;
-
-    // 현재 트랙 padding
-    const trackComputed = getComputedStyle(track);
-    const currPaddingLeft =
-      parseFloat(trackComputed.paddingLeft) || remToPx(TRACK_PADDING_REM);
-
-    // baseOffset = (현재 padding - 이상 padding) + 양옆 살짝 보이기
-    const baseOffset = Math.max(0, currPaddingLeft - idealPadding + DESIRED_PEEK_PX);
-
-    return { itemWidth, baseOffset };
-  }
-
-  let { itemWidth, baseOffset } = calcMetrics();
-
-  // ======= 이동 로직 =======
-  let currentIndex = visibleCount;
-
-  function updateSlide(applyTransition = true) {
-    track.style.transition = applyTransition ? "transform 0.6s ease-in-out" : "none";
-    track.style.transform = `translateX(-${itemWidth * currentIndex + baseOffset}px)`;
-  }
-
-  // 초기 위치
-  updateSlide(false);
-
-  function handleNext() {
-    currentIndex++;
-    updateSlide(true);
-
-    // 마지막 복제구간 → 원본 구간으로 자연 리셋
-    if (currentIndex === extendedPaths.length - visibleCount) {
-      setTimeout(() => {
-        currentIndex = visibleCount;
-        updateSlide(false);
-      }, 610); // transition 0.6s보다 살짝 크게
+      return { itemWidth, baseOffset };
     }
-  }
 
-  // ======= 자동 슬라이드(3초) - 호버/터치와 무관하게 계속 동작 =======
-  setInterval(handleNext, 4000);
+    let { itemWidth, baseOffset } = calcMetrics();
 
-  // 창 크기/폰트 변경 시 재계산
-  function onResize() {
-    const m = calcMetrics();
-    itemWidth = m.itemWidth;
-    baseOffset = m.baseOffset;
+    // ======= 이동 로직 =======
+    let currentIndex = visibleCount;
+
+    function updateSlide(applyTransition = true) {
+      track.style.transition = applyTransition ? "transform 0.6s ease-in-out" : "none";
+      track.style.transform = `translateX(-${itemWidth * currentIndex + baseOffset}px)`;
+    }
+
+    // 초기 위치
     updateSlide(false);
-  }
-  window.addEventListener("resize", onResize);
-</script>
+
+    function handleNext() {
+      currentIndex++;
+      updateSlide(true);
+
+      // 마지막 복제구간 → 원본 구간으로 자연 리셋
+      if (currentIndex === extendedPaths.length - visibleCount) {
+        setTimeout(() => {
+          currentIndex = visibleCount;
+          updateSlide(false);
+        }, 610); // transition 0.6s보다 살짝 크게
+      }
+    }
+
+    // ======= 자동 슬라이드(3초) - 호버/터치와 무관하게 계속 동작 =======
+    setInterval(handleNext, 4000);
+
+    // 창 크기/폰트 변경 시 재계산
+    function onResize() {
+      const m = calcMetrics();
+      itemWidth = m.itemWidth;
+      baseOffset = m.baseOffset;
+      updateSlide(false);
+    }
+    window.addEventListener("resize", onResize);
+  </script>
 
 
 
 
 
   <script>
-document.addEventListener('DOMContentLoaded', async () => {
-  const igEl = document.getElementById('footerInstagram');
-  const fbEl = document.getElementById('footerFacebook');
+    document.addEventListener('DOMContentLoaded', async () => {
+      const igEl = document.getElementById('footerInstagram');
+      const fbEl = document.getElementById('footerFacebook');
 
-  try {
-    const [igRes, fbRes] = await Promise.all([
-      fetch('/api/social/instagram'),
-      fetch('/api/social/facebook'),
-    ]);
+      try {
+        const [igRes, fbRes] = await Promise.all([
+          fetch('/api/social/instagram'),
+          fetch('/api/social/facebook'),
+        ]);
 
-    const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
-    const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
+        const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
+        const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
 
-    if (igEl) {
-      if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
-      else igEl.style.display = 'none';
-    }
-    if (fbEl) {
-      if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
-      else fbEl.style.display = 'none';
-    }
-  } catch (e) {
-    console.error('SNS link load failed:', e);
-    if (igEl) igEl.style.display = 'none';
-    if (fbEl) fbEl.style.display = 'none';
-  }
-});
-</script>
+        if (igEl) {
+          if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
+          else igEl.style.display = 'none';
+        }
+        if (fbEl) {
+          if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
+          else fbEl.style.display = 'none';
+        }
+      } catch (e) {
+        console.error('SNS link load failed:', e);
+        if (igEl) igEl.style.display = 'none';
+        if (fbEl) fbEl.style.display = 'none';
+      }
+    });
+  </script>
 
 
   <footer>
@@ -488,21 +514,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       <a th:href="@{/terms}">TERMS OF USE</a>
       <a th:href="@{/contact}">CONTACT</a>
     </nav>
-<div class="footer-sns">
-    <!-- 인스타 -->
-    <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z"/>
+    <div class="footer-sns">
+      <!-- 인스타 -->
+      <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
         </svg>
-    </a>
+      </a>
 
-    <!-- 페이스북 -->
-    <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z"/>
+      <!-- 페이스북 -->
+      <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
         </svg>
-  </div>
-</a>
+    </div>
+    </a>
 
     <div class="footer-logo">Walid Jahin Art Studio</div>
     <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
@@ -511,9 +539,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   <script>
 
     fetch('/api/csrf-token', {
-  method: 'GET',
-  credentials: 'include' // ✅ 이게 없으면 쿠키가 아예 안 옴!
-});
+      method: 'GET',
+      credentials: 'include' // ✅ 이게 없으면 쿠키가 아예 안 옴!
+    });
 
     window.gtranslateSettings = {
       "default_language": "en",
@@ -526,5 +554,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   </script>
   <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
-</body>
+  </body>
+
 </html>
