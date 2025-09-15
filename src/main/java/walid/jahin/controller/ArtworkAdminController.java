@@ -67,7 +67,6 @@ public class ArtworkAdminController {
         // ✅ 세션 확인 및 로그 출력
         HttpSession session = request.getSession(false);
         if (session != null) {
-            Object loginAttr = session.getAttribute(SessionConst.LOGIN_ADMIN);
         }
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_ADMIN) == null) {
@@ -90,7 +89,6 @@ public class ArtworkAdminController {
         // ✅ 세션 확인
         HttpSession session = request.getSession(false);
         if (session != null) {
-            Object loginAttr = session.getAttribute(SessionConst.LOGIN_ADMIN);
         }
 
         if (session == null || session.getAttribute(SessionConst.LOGIN_ADMIN) == null) {
