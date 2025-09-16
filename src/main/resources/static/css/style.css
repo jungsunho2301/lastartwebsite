@@ -39,7 +39,7 @@ header {
   padding: 0 2.5rem;
   padding-top: 5rem;
   padding-bottom: 0rem;
-  border-bottom: .0625rem solid #e5e5e5;
+  border-bottom: .0625rem solid #f9f9f9;
   position: relative;
   height: 13.75rem;
   /* 명시적 높이로 중앙 배치 유도 */
@@ -67,7 +67,7 @@ header {
 /* 로고 */
 .logo {
   font-family: 'Playfair Display', serif;
-  font-size: 3.75rem;
+  font-size: 5rem;
   /* 사용자 요청 */
   font-weight: 800;
   font-style: italic;
@@ -86,26 +86,39 @@ header {
 /* nav 버튼들 */
 .nav-links a {
   text-decoration: none;
-  width: 11.25rem;
+  /* 밑줄 제거 */
+  width: 10rem;
+  /* 버튼 너비 */
   padding: 0 0;
-  border: .0625rem solid #ccc;
+  /* 패딩 없음 */
+  border: .0625rem solid #cccccc;
+  /* 테두리 회색 */
   border-radius: 624.9375rem;
-  font-size: 1.5rem;
+  /* 엄청 둥근 (완전 pill 모양) */
+  font-size: 2rem;
+  /* 글자 크기 */
   font-weight: 400;
+  /* 보통 굵기 */
   color: #111;
+  /* 글자색 진한 회색 */
   transition: background-color 0.3s;
+  /* hover 시 부드럽게 배경색 변경 */
+
   display: flex;
-  /* ✅ flex로 내부 컨텐츠 제어 */
+  /* flexbox로 내부 정렬 */
   justify-content: center;
-  /* 가로 중앙 정렬 */
+  /* 텍스트 가로 중앙 */
   align-items: center;
-  /* 세로 중앙 정렬 */
+  /* 텍스트 세로 중앙 */
   text-align: center;
+  /* 가운데 정렬 */
+  margin-bottom: 1.5rem;
+  margin-top: 1.75rem;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-  background-color: #f0f0f0;
+  background-color: #f9f9f9;
 }
 
 /* 오른쪽 상단: 언어 선택 + 로그인 */
@@ -123,8 +136,8 @@ header {
 
 .lang button {
   background: black;
-  color: white;
-  border: none;
+  color: #f9f9f9;
+  border: .0625rem solid #969494;
   padding: .375rem .875rem;
   border-radius: .25rem;
   cursor: pointer;
@@ -133,7 +146,7 @@ header {
 /* 푸터 */
 
 footer {
-  background-color: #191A1B;
+  background-color: #1a1a1a;
   color: #fff;
   padding: 3.75rem 1.25rem 2.5rem;
   text-align: center;
@@ -235,7 +248,7 @@ footer nav a:hover {
 
 /* Footer */
 footer {
-  background-color: #191A1B;
+  background-color: #1a1a1a;
   color: #fff;
   padding: 3.75rem 1.25rem 2.5rem;
   text-align: center;
@@ -672,6 +685,7 @@ textarea {
   gap: 5rem;
   padding: 2.5rem 1.25rem;
   background-color: #f9f9f9;
+  margin-bottom: .325rem;
 }
 
 .group-block {
@@ -1245,12 +1259,23 @@ body {
   }
 }
 
+
+:root {
+  --header-h: 1rem;
+  /* CSS 변수 정의: 헤더 높이를 13.75rem로 저장 */
+}
+
+.full-width-banner {
+  margin-top: var(--header-h);
+  /* 위쪽 여백을 CSS 변수(--header-h) 값(=13.75rem)만큼 줌 */
+}
+
 /* 배너 */
 .full-width-banner {
   position: relative;
   width: 100%;
   overflow: hidden;
-  height: 25rem;
+  height: 20rem;
   /* 필요시 높이 고정 */
 }
 
@@ -1273,7 +1298,7 @@ body {
 }
 
 .banner-text h1 {
-  font-size: 2.25rem;
+  font-size: 5rem;
   font-family: 'Playfair Display', serif;
   font-weight: 800;
   margin-bottom: 1.5rem;
@@ -1563,9 +1588,9 @@ body {
   line-height: 1;
 
   /* (이미 적용했다면 유지/생략 가능) */
-  border: 1px solid #e5e7eb;
+  border: 1px solid #cccccc;
   border-radius: 9999px;
-  background: #fff !important;
+  background: #f9f9f9 !important;
 }
 
 /* 스크롤바 안 보이게(선택) */
@@ -1587,7 +1612,7 @@ body {
 
 .nav-links a:hover,
 .nav-links a:focus-visible {
-  background: #f3f4f6;
+  background: #f9f9f9;
   outline: none;
 }
 
@@ -1598,7 +1623,7 @@ footer {
   border-top: 1px solid #eee;
   padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
   /* iOS 노치 대응 */
-  color: #111;
+  color: #1a1a1a;
 }
 
 /* 상단 링크 버튼: 모바일은 2x2 그리드, 태블릿 이상은 행 배치 */
@@ -1610,7 +1635,7 @@ footer nav {
 
 footer nav a {
   text-decoration: none;
-  color: #000000;
+  color: #1a1a1a;
   text-align: center;
   line-height: 1;
   font-size: var(--btn-font);
@@ -1622,16 +1647,16 @@ footer nav a {
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  background: #000 !important;
+  background: #1a1a1a !important;
   /* 검은색 배경 */
   color: #fff !important;
   /* 글자 흰색 */
-  border: 1px solid #000 !important;
+  border: 1px solid #1a1a1a !important;
 }
 
 footer nav a:hover,
 footer nav a:focus-visible {
-  background: #111 !important;
+  background: #1a1a1a !important;
   outline: none
 }
 
@@ -1660,7 +1685,7 @@ footer nav a:focus-visible {
 .footer-bottom {
   margin-top: .25rem;
   text-align: center;
-  color: #000000;
+  color: #1a1a1a;
   font-size: clamp(.8rem, .7rem + .6vw, .95rem);
 }
 
@@ -1687,21 +1712,21 @@ footer nav a:focus-visible {
 
   header,
   footer {
-    background: #0b0b0c;
-    border-color: #232327;
-    color: #e5e7eb;
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+    color: #f9f9f9;
   }
 
   .nav-links a,
   footer nav a {
-    color: #e5e7eb;
-    background: #151518;
-    border-color: #232327;
+    color: #f9f9f9;
+    background: #1a1a1a;
+    border-color: #1a1a1a;
   }
 
   .nav-links a:hover,
   footer nav a:hover {
-    background: #1b1b20;
+    background: #1a1a1a;
   }
 
   .footer-bottom {
@@ -1709,22 +1734,22 @@ footer nav a:focus-visible {
   }
 
   .lang #adminButton {
-    background: #151518;
-    color: #e5e7eb;
-    border-color: #232327;
+    background: #1a1a1a;
+    color: #f9f9f9;
+    border-color: #1a1a1a;
   }
 }
 
 /* 헤더는 항상 라이트 테마로 */
 @media (prefers-color-scheme: dark) {
   header {
-    background: #fff !important;
-    border-color: #eee !important;
+    background: #f9f9f9 !important;
+    border-color: #f9f9f9 !important;
   }
 
   .nav-links a {
-    border-color: #e5e7eb !important;
-    color: #111827 !important;
+    border-color: #cccccc !important;
+    color: #1a1a1a !important;
   }
 }
 
@@ -1741,11 +1766,11 @@ footer nav a:focus-visible {
 
 /* 헤더 버튼을 완전 흰색으로 고정 */
 header .nav-links>a {
-  background-color: #fff !important;
+  background-color: #f9f9f9 !important;
   /* 배경 흰색 */
   color: #111827 !important;
   /* 글자색 */
-  border: 1px solid #e5e7eb !important;
+  border: 1px solid #cccccc !important;
   box-shadow: none !important;
   /* 테마/컴포넌트가 넣은 그림자 제거 */
   background-image: none !important;
@@ -1765,27 +1790,27 @@ header .nav-links>a::after {
 /* 호버/포커스 때도 흰색 유지하고 싶다면 */
 header .nav-links>a:hover,
 header .nav-links>a:focus-visible {
-  background-color: #fff !important;
+  background-color: #f9f9f9 !important;
 }
 
 /* 시스템 다크모드에서도 흰색 유지 */
 @media (prefers-color-scheme: dark) {
   header .nav-links>a {
-    background-color: #fff !important;
+    background-color: #f9f9f9 !important;
     color: #111827 !important;
-    border-color: #e5e7eb !important;
+    border-color: #cccccc !important;
   }
 }
 
 /* 헤더 버튼: 무조건 흰색으로 고정 (가장 마지막에 배치) */
 header .nav-links>a {
-  background: #fff !important;
+  background: #f9f9f9 !important;
   /* 배경 흰색 */
-  background-color: #fff !important;
+  background-color: #f9f9f9 !important;
   /* shorthand 우회 */
   color: #111827 !important;
   /* 글자색 */
-  border: 1px solid #e5e7eb !important;
+  border: 1px solid #cccccc !important;
   box-shadow: none !important;
   background-image: none !important;
   opacity: 1 !important;
@@ -1794,20 +1819,20 @@ header .nav-links>a {
 /* 호버/포커스에도 흰색 유지 (원하면 삭제 가능) */
 header .nav-links>a:hover,
 header .nav-links>a:focus-visible {
-  background: #fff !important;
+  background: #f9f9f9 !important;
 }
 
 /* 시스템 다크모드여도 흰색 유지 */
 @media (prefers-color-scheme: dark) {
   header .nav-links>a {
-    background: #fff !important;
+    background: #f9f9f9 !important;
     color: #111827 !important;
-    border-color: #e5e7eb !important;
+    border-color: #cccccc !important;
   }
 }
 
 footer {
-  background: #000 !important;
+  background: #1a1a1a !important;
   /* 배경 검정 */
   border-top: 1px solid #222 !important;
   /* 구분선은 살짝 연한 검정 */
@@ -1879,4 +1904,13 @@ footer {
 .artist-gallery::-webkit-scrollbar {
   display: none;
   /* Chrome, Safari, Opera */
+}
+
+/* 언어 변환 버튼 숨기기 */
+
+/* 화면이 768px 이하(태블릿/모바일)일 때 숨김 */
+@media (max-width: 768px) {
+  .lang {
+    display: none !important;
+  }
 }

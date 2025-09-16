@@ -100,16 +100,6 @@
       width: 100%;
     }
 
-    .file-input-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: .25rem;
-      border: .0625rem dashed #ccc;
-      border-radius: .375rem;
-      padding: .625rem;
-      background-color: #fff;
-    }
-
     .image-preview {
       width: 100%;
       height: 15rem;
@@ -196,7 +186,7 @@
     }
 
     .form-section h3 {
-      font-size: 1rem;
+      font-size: 2rem;
       font-weight: 600;
       margin-bottom: .75rem;
     }
@@ -261,6 +251,8 @@
 
   <!-- Main (기존 코드 복원됨) -->
   <main class="dashboard">
+
+    <!-- 이메일 SNS 뉴스레터  -->
     <section class="upload-section" data-section="EMAILSNS">
       <h3>Update Artist Email</h3>
       <form id="emailForm">
@@ -299,6 +291,35 @@
       </form>
     </section>
 
+    <style>
+      .upload-section[data-section="EMAILSNS"] label {
+        font-size: 0.85rem;
+        /* 글씨 크기 줄이기 */
+        font-weight: 400;
+        /* 두께 조절 (옵션) */
+        color: #333;
+        /* 색상도 필요하면 지정 */
+      }
+
+      .upload-section[data-section="NEWSLETTER"] label {
+        font-size: 0.85rem;
+        /* 글씨 크기 줄이기 */
+        font-weight: 400;
+        /* 두께 조절 (옵션) */
+        color: #333;
+        /* 색상도 필요하면 지정 */
+      }
+
+
+      .upload-section h3 {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+    </style>
+
+    <!--   -->
+
+
     <!-- Artist Management -->
     <section class="artist-manage upload-section" data-section="ARTIST">
       <h2>Artist Section Content Editor</h2>
@@ -325,553 +346,776 @@
       <button id="btnUpdateSection">Save</button>
     </section>
 
-
-    <!-- Solo Management -->
-
-    <section class="solo-admin-card" data-section="SOLO">
-      <h2 class="panel-title">Solo Blocks</h2>
-
-      <!-- 큰 미리보기 박스 (배경이미지) -->
-      <div class="solo-dropzone" id="bgDropzone">
-        <img id="bgPreviewImg" alt="" />
-        <div class="solo-dropzone__placeholder" id="bgPlaceholder">Image</div>
-        <button type="button" class="attach-btn" id="btnAttachBG">Attach File</button>
-        <input type="file" id="bgFileInput" accept="image/*" hidden>
-      </div>
-
-      <!-- 폼 -->
-      <form id="soloForm" class="solo-form">
-        <input type="hidden" id="soloId">
-
-        <div class="form-row two">
-          <div class="field">
-            <label for="title">Title</label>
-            <input id="title" type="text" placeholder="e.g., Major Solo Show">
-          </div>
-          <div class="field">
-            <label for="day">Day</label>
-            <input id="day" type="text" placeholder="e.g., 2024.05.12 ">
-          </div>
-        </div>
-
-        <!-- 모달 이미지 리스트 -->
-        <fieldset class="images-fieldset">
-          <legend>Images for Modal (View More)</legend>
-
-          <!-- 썸네일 그리드 -->
-          <ul id="imageList" class="image-thumb-grid"></ul>
-
-          <!-- 파일 추가 -->
-          <div class="image-add-row">
-            <button type="button" id="btnPickImages" class="btn">Add Images</button>
-            <input type="file" id="modalFiles" accept="image/*" multiple hidden>
-          </div>
-        </fieldset>
-
-        <!-- 액션 버튼 -->
-        <div class="actions">
-          <button type="button" id="btnSave" class="btn">Save</button>
-          <button type="button" id="btnReset" class="btn">Reset</button>
-          <button type="button" id="btnDelete" class="btn danger" disabled>Delete Block</button>
-        </div>
-
-        <!-- 업로드 진행 상태 -->
-        <div id="uploadStatus" class="muted" style="margin-top:.5rem;"></div>
-      </form>
-
-      <hr class="panel-sep">
-    </section>
-
-    <!-- DOMPurify -->
-    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
-
     <style>
-      .solo-admin-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 18px
+      .artist-manage h2 {
+        font-size: 2rem;
+        /* 글자 크기 (약 32px) */
+        font-weight: bold;
+        /* 글자 굵게 */
       }
 
-      .panel-title {
-        margin: 0 0 10px;
-        font-size: 1.05rem;
-        font-weight: 700
-      }
-
-      .panel-subtitle {
-        margin: .25rem 0 .5rem;
-        font-size: 1rem
-      }
-
-      .panel-sep {
-        border: none;
-        border-top: 1px solid #e5e7eb;
-        margin: 18px 0
-      }
-
-      /* 미리보기 박스  */
-      .solo-dropzone {
-        position: relative;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        background: #f3f4f6;
-        display: grid;
-        place-items: center;
-        margin-bottom: 14px;
-        aspect-ratio: 16 / 9;
-        overflow: hidden;
-      }
-
-      .solo-dropzone img {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        display: none
-      }
-
-      .solo-dropzone__placeholder {
-        color: #9ca3af;
-        font-size: 1rem;
-        user-select: none
-      }
-
-      .attach-btn {
-        position: absolute;
-        bottom: 14px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #fff;
-        border: 2px dashed #d1d5db;
-        border-radius: 10px;
-        padding: .55rem 1rem;
-        cursor: pointer;
-        font-weight: 600;
-        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.02);
-      }
-
-      .solo-form .form-row {
-        display: flex;
-        gap: .75rem;
-        margin: .5rem 0
-      }
-
-      .solo-form .form-row.two .field {
-        flex: 1
-      }
-
-      .solo-form label {
-        display: block;
-        margin-bottom: .25rem;
-        font-weight: 600
-      }
-
-      .solo-form input[type="text"] {
-        width: 100%;
-        padding: .6rem .7rem;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        background: #fff
-      }
-
-      .images-fieldset {
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        padding: .75rem;
-        margin-top: .5rem
-      }
-
-      .images-fieldset legend {
-        padding: 0 .4rem;
-        font-weight: 700
-      }
-
-      .image-thumb-grid {
-        list-style: none;
-        margin: .25rem 0 .5rem;
-        padding: 0;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: .5rem;
-      }
-
-      .image-thumb-grid li {
-        display: flex;
-        align-items: center;
-        gap: .5rem;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        padding: .5rem;
-        background: #fff
-      }
-
-      .image-thumb-grid img {
-        width: 56px;
-        height: 56px;
-        object-fit: cover;
-        border-radius: 6px
-      }
-
-      .image-thumb-grid input.caption {
-        flex: 1;
-        border: 1px solid #e5e7eb;
-        border-radius: 6px;
-        padding: .4rem .5rem
-      }
-
-      .image-thumb-grid .remove {
-        margin-left: auto
-      }
-
-      .image-add-row {
-        display: flex;
-        gap: .5rem
-      }
-
-      .btn {
-        background: #fff;
-        border: 1px solid #d1d5db;
-        border-radius: 8px;
-        padding: .5rem .9rem;
-        cursor: pointer;
-        font-weight: 600
-      }
-
-      .btn:hover {
-        background: #f9fafb
-      }
-
-      .btn.danger {
-        background: #ef4444;
-        color: #fff;
-        border-color: #ef4444
-      }
-
-      .btn.danger:hover {
-        filter: brightness(.95)
-      }
-
-      .actions {
-        display: flex;
-        gap: .5rem;
-        margin-top: .75rem
-      }
-
-      .muted {
-        color: #6b7280;
-        font-size: .9rem
-      }
-
-      .blocks {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: .75rem;
-        margin-top: .25rem
-      }
-
-      .block-card {
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        padding: .6rem;
-        background: #fff
-      }
-
-      .block-card .meta {
-        font-size: .9rem;
-        color: #6b7280
-      }
-
-      .block-card .btns {
-        display: flex;
-        gap: .5rem;
-        margin-top: .5rem
+      .artist-manage[data-section="ARTIST"] label {
+        font-size: 0.85rem;
+        /* 글씨 크기 줄이기 */
+        font-weight: 400;
+        /* 두께 조절 (옵션) */
+        color: #333;
+        /* 색상도 필요하면 지정 */
       }
     </style>
+    <!--  -->
+
+
+    <!-- ===== Solo Dashboard (BE 매핑 반영 완성본) ===== -->
+
+    <!-- ===== Solo Dashboard (완전판: BE 매핑 + 오류 해결) ===== -->
+
+    <!-- 1) 전시회 등록/목록 -->
+    <section class="solo-admin-card" id="soloHeaderAdmin" data-section="SOLO">
+      <h2 class="panel-title">Solo 관리</h2>
+
+      <!-- 등록/업데이트 (업서트) -->
+      <form id="soloHeaderForm" class="solo-form" enctype="multipart/form-data">
+        <div class="form-row">
+          <label for="title">제목 (ID 표시용 텍스트)</label>
+          <input type="text" id="title" name="title" placeholder="예: solo-2025-fall" required maxlength="80" />
+          <small class="help">공백 없이 권장(서버의 기본 키는 숫자 id)</small>
+        </div>
+
+        <div class="form-row">
+          <label for="yearMonth">전시 월(YYYY-MM)</label>
+          <input type="month" id="yearMonth" name="yearMonth" required />
+        </div>
+
+        <div class="form-row">
+          <label>전시회 포스터</label>
+          <div class="solo-dropzone" id="dropzone">
+            <input type="file" id="posterFile" name="posterFile" accept="image/*" hidden />
+            <button type="button" class="btn" id="pickImageBtn">이미지 선택</button>
+            <img id="previewImg" alt="preview" style="display:none;" />
+          </div>
+          <small class="help">권장: 2560×1440 이상, jpg/png</small>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">등록 / 업데이트</button>
+          <button type="reset" class="btn ghost" id="resetBtn">초기화</button>
+        </div>
+      </form>
+
+      <!-- 목록 & 삭제 -->
+      <div class="list-wrap">
+        <div class="list-header">
+          <h3>등록된 항목</h3>
+          <input type="search" id="search" placeholder="제목 검색" />
+        </div>
+
+        <table class="solo-table" id="soloTable" aria-describedby="soloTableCaption">
+          <caption id="soloTableCaption" class="sr-only">Solo Header 리스트</caption>
+          <thead>
+            <tr>
+              <th style="width:28%">제목</th>
+              <th style="width:18%">연월</th>
+              <th style="width:34%">포스터</th>
+              <th style="width:20%">동작</th>
+            </tr>
+          </thead>
+          <tbody id="soloTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2) 전시회 작품 관리 -->
+    <section class="solo-admin-card" id="soloModalAdmin" data-section="SOLO">
+      <h2 class="panel-title">Solo 작품 관리</h2>
+
+      <!-- 전시회 선택 -->
+      <div class="form-row">
+        <label for="soloIdSelect">전시회 선택</label>
+        <div class="id-select-row">
+          <select id="soloIdSelect" class="id-select" required>
+            <option value="" selected disabled>전시회를 선택하세요</option>
+          </select>
+          <button class="btn ghost" id="reloadTitlesBtn" type="button">새로고침</button>
+        </div>
+        <small class="help">목록은 /api/solo/exhibitions 에서 불러옵니다.</small>
+      </div>
+
+      <!-- 작품 목록 -->
+      <div class="block-group">
+        <div class="block-header">
+          <h3>작품 목록</h3>
+          <div class="block-actions">
+            <button class="btn small" id="loadArtsBtn" type="button">서버 불러오기</button>
+          </div>
+        </div>
+        <div id="photoList" class="photo-list" aria-live="polite"></div>
+        <div class="add-row">
+          <button class="btn" id="addPhotoBtn" type="button">+ 작품 블록 추가</button>
+        </div>
+      </div>
+
+      <!-- 일괄 저장 -->
+      <div class="form-actions">
+        <button class="btn primary" id="saveAllBtn" type="button">등록/업데이트</button>
+      </div>
+    </section>
+
+    <!-- 작품 템플릿 -->
+    <template id="photoItemTpl">
+      <div class="photo-item" data-tempid="">
+        <div class="photo-left">
+          <div class="thumb">
+            <img alt="미리보기" style="display:none" />
+          </div>
+          <div class="file-row">
+            <input type="file" accept="image/*" class="file-input" />
+            <button class="btn small ghost pick-btn" type="button">파일 선택</button>
+          </div>
+        </div>
+        <div class="photo-right">
+          <label>작품명</label>
+          <input type="text" class="photo-title" placeholder="예: Untitled #1" maxlength="120" />
+          <div class="photo-actions">
+            <button class="btn small danger" data-action="remove" type="button">이 블록 삭제</button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+
+    <!-- ✅ Solo Dashboard JS (최종판) -->
+    <link rel="icon" href="data:,"><!-- favicon 500 방지 -->
 
     <script>
+      /* ───────── 공통 가드/유틸 ───────── */
       (() => {
-        const API_LIST = '/api/solo-admin/items';
-        const API_ITEM = (id) => `/api/solo-admin/items/${id}`;
-
-        const PAR_BASE = (window.ORACLE_PAR_BASE || '').replace(/\/+$/, '');
-        const PREFIX_BG = 'solo/bg/';
-        const PREFIX_IMG = 'solo/images/';
-
-        const $ = (id) => document.getElementById(id);
-
-        // 폼 요소
-        const soloId = $('soloId'), title = $('title'), day = $('day');
-
-        // 배경 이미지(파일 첨부 + 미리보기)
-        const bgDropzone = $('bgDropzone');
-        const bgFileInput = $('bgFileInput');
-        const btnAttachBG = $('btnAttachBG');
-        const bgPreviewImg = $('bgPreviewImg');
-        const bgPlaceholder = $('bgPlaceholder');
-
-        // 모달 이미지들
-        const imageList = $('imageList');
-        const btnPickImages = $('btnPickImages');
-        const modalFiles = $('modalFiles');
-
-        // 액션 버튼
-        const btnSave = $('btnSave'), btnReset = $('btnReset'), btnDelete = $('btnDelete');
-        const blocks = $('blocks');
-        const uploadStatus = $('uploadStatus');
-
-        // 상태
-        let editingId = null;
-        let bgFile = null;          // File | null
-        let bgUrl = '';            // 업로드 후 URL (저장용)
-        let currentImages = [];     // [{file?:File, url?:string, name:string}]
-
-        // Utils
-        const uuid = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-          const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8); return v.toString(16);
-        });
-        const sanitizeName = (s) => (s || '').replace(/[^\w.\-]+/g, '_');
-
-        async function uploadToPar(file, prefix) {
-          if (!PAR_BASE) throw new Error('ORACLE_PAR_BASE 설정이 필요합니다.');
-          const obj = `${prefix}${uuid()}-${sanitizeName(file.name)}`;
-          const url = `${PAR_BASE}/${encodeURIComponent(obj)}`;
-          const res = await fetch(url, {
-            method: 'PUT',
-            headers: { 'Content-Type': file.type || 'application/octet-stream' },
-            body: file
-          });
-          if (!res.ok) throw new Error('업로드 실패: ' + file.name);
-          return url; // PAR URL (read/write 가능)
-        }
-
-        // 배경: 파일 선택 → 미리보기
-        btnAttachBG.addEventListener('click', () => bgFileInput.click());
-        bgFileInput.addEventListener('change', () => {
-          const f = bgFileInput.files?.[0];
-          if (!f) return;
-          bgFile = f;
-          const url = URL.createObjectURL(f);
-          bgPreviewImg.src = url;
-          bgPreviewImg.style.display = 'block';
-          bgPlaceholder.style.display = 'none';
-        });
-
-        // 모달 이미지: 파일 여러 개 선택 → 리스트에 추가
-        btnPickImages.addEventListener('click', () => modalFiles.click());
-        modalFiles.addEventListener('change', () => {
-          if (!modalFiles.files?.length) return;
-          Array.from(modalFiles.files).forEach(f => {
-            currentImages.push({ file: f, name: '' }); // url은 업로드 후 세팅
-          });
-          modalFiles.value = '';
-          renderImages();
-        });
-
-        // 이미지 리스트 렌더
-        function renderImages() {
-          imageList.innerHTML = '';
-          currentImages.forEach((img, idx) => {
-            const li = document.createElement('li');
-            const thumbSrc = img.file ? URL.createObjectURL(img.file) : (img.url || '');
-            li.innerHTML = `
-        <img src="${DOMPurify.sanitize(thumbSrc)}" alt="">
-        <input class="caption" type="text" placeholder="caption" value="${DOMPurify.sanitize(img.name || '')}">
-        <button type="button" class="btn remove" data-idx="${idx}">Remove</button>
-      `;
-            li.querySelector('.caption').addEventListener('input', (e) => { img.name = e.target.value; });
-            li.querySelector('.remove').addEventListener('click', () => {
-              currentImages.splice(idx, 1); renderImages();
-            });
-            imageList.appendChild(li);
-          });
-        }
-
-        // 폼 초기화
-        function resetForm() {
-          editingId = null;
-          soloId.value = ''; title.value = ''; day.value = '';
-
-          bgFile = null; bgUrl = '';
-          bgPreviewImg.removeAttribute('src'); bgPreviewImg.style.display = 'none';
-          bgPlaceholder.style.display = 'block'; bgFileInput.value = '';
-
-          currentImages = [];
-          renderImages();
-
-          btnDelete.disabled = true;
-          uploadStatus.textContent = '';
-        }
-        btnReset.addEventListener('click', resetForm);
-
-        // 저장
-        btnSave.addEventListener('click', async () => {
-          try {
-            if (!title.value.trim()) { alert('Title은 필수입니다.'); return; }
-
-            uploadStatus.textContent = 'Uploading…';
-            // 1) 배경 업로드(선택됨에 한해)
-            if (bgFile) {
-              bgUrl = await uploadToPar(bgFile, PREFIX_BG);
-            }
-            // 2) 모달 이미지 업로드(파일 있는 항목만)
-            for (let i = 0; i < currentImages.length; i++) {
-              if (currentImages[i].file && !currentImages[i].url) {
-                currentImages[i].url = await uploadToPar(currentImages[i].file, PREFIX_IMG);
-              }
-            }
-            // 업로드 완료
-            uploadStatus.textContent = 'Saving…';
-
-            const payload = {
-              title: title.value.trim(),
-              day: day.value.trim(),
-              backgroundImage: bgUrl, // 기존 bgUrl이 비고 편집 아이템이면 기존 URL 유지
-              images: currentImages
-                .filter(x => x.url)                      // URL 있는 항목만 저장
-                .map(x => ({ url: x.url, name: x.name }))// file 제거
-            };
-
-            // 편집 모드에서 bgUrl 비었고 기존 배경이 있었다면 유지
-            if (editingId && !payload.backgroundImage) payload.backgroundImage = _loadedBgUrl || '';
-
-            const method = editingId ? 'PUT' : 'POST';
-            const url = editingId ? API_ITEM(editingId) : API_LIST;
-
-            const res = await fetch(url, {
-              method, headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            if (!res.ok) throw new Error('저장 실패');
-
-            await loadBlocks();
-            resetForm();
-            uploadStatus.textContent = 'Done.';
-            alert('저장 완료');
-          } catch (err) {
-            console.error(err);
-            uploadStatus.textContent = '';
-            alert(err.message || '오류가 발생했습니다.');
-          }
-        });
-
-        // 목록/편집
-        let _loadedBgUrl = ''; // 편집 시 기존 배경 URL
-        async function loadBlocks() {
-          const res = await fetch(API_LIST);
-          if (!res.ok) return;
-          const data = await res.json();
-          const list = Array.isArray(data.items) ? data.items : (data.content || []);
-          blocks.innerHTML = '';
-          list.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'block-card';
-            card.innerHTML = `
-        <div><strong>${DOMPurify.sanitize(item.title || '')}</strong></div>
-        <div class="meta">${DOMPurify.sanitize(item.day || '')}</div>
-        <div class="meta" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-          ${DOMPurify.sanitize(item.backgroundImage || item.imagePath || '')}
-        </div>
-        <div class="btns">
-          <button type="button" class="btn edit">Edit</button>
-          <button type="button" class="btn danger del">Delete</button>
-        </div>
-      `;
-            card.querySelector('.edit').addEventListener('click', () => startEdit(item));
-            card.querySelector('.del').addEventListener('click', async () => {
-              if (!confirm('정말 삭제할까요?')) return;
-              const r = await fetch(API_ITEM(item.id), { method: 'DELETE' });
-              if (!r.ok) return alert('삭제 실패');
-              await loadBlocks();
-              if (editingId === item.id) resetForm();
-            });
-            blocks.appendChild(card);
-          });
-        }
-
-        function startEdit(item) {
-          editingId = item.id;
-          soloId.value = item.id;
-          title.value = item.title || '';
-          day.value = item.day || '';
-
-          _loadedBgUrl = (item.backgroundImage || item.imagePath || '');
-          bgUrl = _loadedBgUrl; // 저장 시 기본으로 유지
-          if (_loadedBgUrl) {
-            bgPreviewImg.src = _loadedBgUrl;
-            bgPreviewImg.style.display = 'block';
-            bgPlaceholder.style.display = 'none';
-          } else {
-            bgPreviewImg.removeAttribute('src');
-            bgPreviewImg.style.display = 'none';
-            bgPlaceholder.style.display = 'block';
-          }
-          bgFile = null; // 새 파일 선택 전까지는 업로드 안 함
-
-          currentImages = Array.isArray(item.images) ? item.images.map(i => ({ url: i.url, name: i.name })) : [];
-          renderImages();
-
-          btnDelete.disabled = false;
-          uploadStatus.textContent = '';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // 초기화
-        resetForm();
-        loadBlocks().catch(console.error);
+        // 안전 리스너
+        window.safeOn = (el, ev, fn, opts) => el?.addEventListener?.(ev, fn, opts);
+        // 누락 함수 더미(다른 스크립트가 호출해도 에러 안 나게)
+        ['loadInstagramUrl', 'loadFacebookUrl', 'loadKakaoUrl']
+          .forEach(n => { if (typeof window[n] !== 'function') window[n] = () => { }; });
       })();
+      function readCookie(name) {
+        return document.cookie.split('; ').find(r => r.startsWith(name + '='))?.split('=')[1];
+      }
+      /* CSRF + same-origin + 실패시 본문 로그 */
+      async function xfetch(url, opts = {}) {
+        const method = (opts.method || 'GET').toUpperCase();
+        const headers = new Headers(opts.headers || {});
+        const metaTok = document.querySelector('meta[name="_csrf"]')?.content;
+        const metaHdr = document.querySelector('meta[name="_csrf_header"]')?.content || 'X-CSRF-TOKEN';
+        const cookieTok = readCookie('XSRF-TOKEN');
+        if (method !== 'GET') {
+          const tok = metaTok || cookieTok;
+          if (tok) headers.set(metaHdr, decodeURIComponent(tok));
+        }
+        const res = await fetch(url, { ...opts, headers, credentials: 'same-origin', cache: 'no-store' });
+        if (!res.ok) {
+          let body = ''; try { body = await res.clone().text(); } catch { }
+          console.error(`[xfetch ${res.status}] ${url}`, { body, headers: [...res.headers] });
+        }
+        return res;
+      }
+
+      /* ───────── 메인 ───────── */
+      document.addEventListener('DOMContentLoaded', () => {
+        /* DOM */
+        const form = document.getElementById('soloHeaderForm');
+        const titleEl = document.getElementById('title');
+        const ymEl = document.getElementById('yearMonth');
+        const fileEl = document.getElementById('posterFile');
+        const pickBtn = document.getElementById('pickImageBtn');
+        const dz = document.getElementById('dropzone');
+        const previewImg = document.getElementById('previewImg');
+        const resetBtn = document.getElementById('resetBtn');
+        const tbody = document.getElementById('soloTbody');
+        const searchEl = document.getElementById('search');
+
+        const idSelect = document.getElementById('soloIdSelect');
+        const reloadTitlesBtn = document.getElementById('reloadTitlesBtn');
+        const loadArtsBtn = document.getElementById('loadArtsBtn');
+        const addPhotoBtn = document.getElementById('addPhotoBtn');
+        const photoList = document.getElementById('photoList');
+        const tpl = document.getElementById('photoItemTpl');
+
+        const thisMonthStr = () => {
+          const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        };
+        if (ymEl && !ymEl.value) ymEl.value = thisMonthStr();
+
+        /* ─ 파일/드롭존 */
+        safeOn(pickBtn, 'click', () => fileEl?.click());
+        safeOn(fileEl, 'change', () => {
+          const f = fileEl.files?.[0]; if (!f) return;
+          previewImg.src = URL.createObjectURL(f); previewImg.style.display = 'block';
+        });
+        if (dz) {
+          ['dragenter', 'dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('dragover'); }));
+          ['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('dragover'); }));
+          dz.addEventListener('drop', e => {
+            const f = e.dataTransfer.files?.[0]; if (!f || !fileEl || !previewImg) return;
+            fileEl.files = e.dataTransfer.files;
+            previewImg.src = URL.createObjectURL(f); previewImg.style.display = 'block';
+          });
+          dz.addEventListener('click', e => {
+            const isBtn = e.target.closest?.('button'); const isImg = e.target.tagName === 'IMG';
+            if (!isBtn && !isImg) fileEl?.click();
+          });
+        }
+        safeOn(resetBtn, 'click', () => {
+          previewImg.removeAttribute('src'); previewImg.style.display = 'none';
+          if (fileEl) fileEl.value = '';
+          if (ymEl) setTimeout(() => ymEl.value = thisMonthStr(), 0);
+        });
+
+        /* ─ 전시회 업서트: POST /admin/solo/exhibitions (title, yearMonth, posterFile?) */
+        safeOn(form, 'submit', async (e) => {
+          e.preventDefault();
+          const submitBtn = form.querySelector('button[type="submit"]');
+          submitBtn?.setAttribute('disabled', 'disabled');
+
+          const title = (titleEl?.value || '').trim();
+          if (!title) { alert('제목을 입력하세요.'); return submitBtn?.removeAttribute('disabled'); }
+          if (!ymEl?.value) { alert('연월을 선택하세요.'); return submitBtn?.removeAttribute('disabled'); }
+
+          const fd = new FormData();
+          fd.append('title', title);
+          fd.append('yearMonth', ymEl.value);
+          if (fileEl?.files?.[0]) fd.append('posterFile', fileEl.files[0]);
+          console.debug('[upsert-exhibition]', [...fd.entries()].map(([k, v]) => [k, v instanceof File ? `File(${v.name})` : v]));
+
+          try {
+            const res = await xfetch('/admin/solo/exhibitions', { method: 'POST', body: fd });
+            if (!res.ok) throw new Error();
+            await loadList();
+            alert('전시회가 저장되었습니다.');
+          } catch {
+            alert('저장 중 오류가 발생했습니다.');
+          } finally { submitBtn?.removeAttribute('disabled'); }
+        });
+
+        /* ─ 전시회 목록/단건/삭제 */
+        async function loadList() {
+          try {
+            const res = await xfetch('/api/solo/exhibitions');
+            if (!res.ok) throw new Error();
+            const list = await res.json(); // [{id,title,yearMonth,posterImagePath}]
+            const q = (searchEl?.value || '').toLowerCase();
+            const items = q ? list.filter(x => (x.title || '').toLowerCase().includes(q)) : list;
+            renderRows(items);
+          } catch {
+            if (tbody) tbody.innerHTML = '<tr><td colspan="4">목록을 불러오지 못했습니다.</td></tr>';
+          }
+        }
+        function renderRows(items) {
+          if (!tbody) return;
+          if (!Array.isArray(items) || !items.length) {
+            tbody.innerHTML = '<tr><td colspan="4">등록된 항목이 없습니다.</td></tr>'; return;
+          }
+          tbody.innerHTML = items.map(it => {
+            const img = it.posterImagePath ? `<img src="${it.posterImagePath}" alt="${it.title}">` : '-';
+            return `<tr data-id="${it.id}">
+        <td><code>${it.title ?? ''}</code></td>
+        <td>${it.yearMonth ?? ''}</td>
+        <td>${img}</td>
+        <td>
+          <button class="btn small" data-edit="${it.id}">편집</button>
+          <button class="btn small danger" data-del="${it.id}">삭제</button>
+        </td>
+      </tr>`;
+          }).join('');
+        }
+        safeOn(searchEl, 'input', loadList);
+
+        safeOn(tbody, 'click', async (e) => {
+          const btn = e.target.closest?.('button'); if (!btn) return;
+          const id = btn.dataset.edit || btn.dataset.del;
+
+          if (btn.dataset.edit) {
+            try {
+              const res = await xfetch(`/api/solo/exhibitions/${encodeURIComponent(id)}`);
+              if (!res.ok) throw new Error();
+              const it = await res.json();
+              titleEl.value = it.title || '';
+              ymEl.value = it.yearMonth || thisMonthStr();
+              if (it.posterImagePath) { previewImg.src = it.posterImagePath; previewImg.style.display = 'block'; }
+              else { previewImg.removeAttribute('src'); previewImg.style.display = 'none'; }
+              window.scrollTo?.({ top: form.offsetTop - 16, behavior: 'smooth' });
+            } catch { alert('전시회 정보를 불러오지 못했습니다.'); }
+          }
+
+          if (btn.dataset.del) {
+            if (!confirm(`정말 삭제할까요?\nID: ${id}`)) return;
+            try {
+              const res = await xfetch(`/admin/solo/exhibitions/${encodeURIComponent(id)}`, { method: 'DELETE' });
+              if (!res.ok) throw new Error();
+              await loadList();
+              alert('삭제되었습니다.');
+            } catch { alert('삭제 중 오류가 발생했습니다.'); }
+          }
+        });
+
+        loadList(); // 초기 로드
+
+        /* ─ 작품: 목록/추가/삭제 */
+        async function loadTitlesForSelect() {
+          if (!idSelect) return;
+          try {
+            const res = await xfetch('/api/solo/exhibitions');
+            if (!res.ok) throw new Error();
+            const list = await res.json();
+            idSelect.innerHTML = '<option value="" disabled selected>전시회를 선택하세요</option>' +
+              list.map(x => `<option value="${x.id}">${x.title}</option>`).join('');
+          } catch {
+            idSelect.innerHTML = '<option value="" disabled selected>목록 불가</option>';
+          }
+        }
+        safeOn(reloadTitlesBtn, 'click', loadTitlesForSelect);
+        loadTitlesForSelect();
+
+        function addPhotoItem(from) {
+          if (!tpl || !photoList) return;
+          const node = tpl.content.firstElementChild.cloneNode(true);
+          node.dataset.tempid = 'temp_' + Math.random().toString(36).slice(2, 8);
+
+          const img = node.querySelector('img');
+          const fileInput = node.querySelector('.file-input');
+          const pick = node.querySelector('.pick-btn');
+          const titleInput = node.querySelector('.photo-title');
+
+          if (from) {
+            if (from.imagePath && img) { img.src = from.imagePath; img.style.display = 'block'; }
+            if (from.title && titleInput) titleInput.value = from.title;
+            if (from.id) node.dataset.photoId = from.id;
+          }
+
+          safeOn(pick, 'click', () => fileInput?.click());
+          safeOn(fileInput, 'change', () => {
+            const f = fileInput.files?.[0];
+            if (!f) { img.style.display = 'none'; return; }
+            img.src = URL.createObjectURL(f); img.style.display = 'block';
+          });
+
+          // 개별 삭제
+          node.addEventListener('click', async (e) => {
+            const b = e.target.closest?.('button'); if (!b) return;
+            if (b.dataset.action !== 'remove') return;
+            const expoId = idSelect?.value; if (!expoId) return alert('먼저 전시회를 선택하세요.');
+            if (node.dataset.photoId) {
+              if (!confirm('서버에서 이 작품을 삭제할까요?')) return;
+              try {
+                const res = await xfetch(`/admin/solo/exhibitions/${encodeURIComponent(expoId)}/arts/${encodeURIComponent(node.dataset.photoId)}`, { method: 'DELETE' });
+                if (!res.ok) throw new Error();
+              } catch { return alert('삭제 중 오류가 발생했습니다.'); }
+            }
+            node.remove();
+          });
+
+          photoList.appendChild(node);
+        }
+        safeOn(addPhotoBtn, 'click', () => addPhotoItem());
+
+        safeOn(loadArtsBtn, 'click', async () => {
+          const expoId = idSelect?.value; if (!expoId) return alert('전시회를 선택하세요.');
+          try {
+            const res = await xfetch(`/api/solo/exhibitions/${encodeURIComponent(expoId)}/arts`);
+            if (!res.ok) throw new Error();
+            const list = await res.json(); // [{id,title,imagePath}]
+            photoList.innerHTML = ''; list.forEach(it => addPhotoItem(it));
+          } catch { alert('작품 목록을 불러오지 못했습니다.'); }
+        });
+
+        // 일괄 저장(파일 있는 카드만 업로드) : POST /admin/solo/exhibitions/{id}/arts (title?, file)
+        const saveBtn = document.getElementById('saveAllBtn');
+        safeOn(saveBtn, 'click', async () => {
+          const expoId = idSelect?.value; if (!expoId) return alert('전시회를 선택하세요.');
+          const items = [...(photoList?.querySelectorAll('.photo-item') || [])];
+          if (!items.length && !confirm('작품 블록이 없습니다. 계속할까요?')) return;
+
+          saveBtn.setAttribute('disabled', 'disabled');
+          try {
+            for (const node of items) {
+              const fileInput = node.querySelector('.file-input');
+              const titleInput = node.querySelector('.photo-title');
+              const title = (titleInput?.value || '').trim();
+              if (!fileInput?.files?.[0]) continue;
+
+              const fd = new FormData();
+              if (title) fd.append('title', title);
+              fd.append('image', fileInput.files[0]); // 백엔드 @RequestParam("image")
+
+              const res = await xfetch(`/admin/solo/exhibitions/${encodeURIComponent(expoId)}/arts`, {
+                method: 'POST', body: fd
+              });
+              if (!res.ok) throw new Error();
+            }
+            alert('작품 저장이 완료되었습니다.');
+            const r = await xfetch(`/api/solo/exhibitions/${encodeURIComponent(expoId)}/arts`);
+            if (r.ok) { const list = await r.json(); photoList.innerHTML = ''; list.forEach(it => addPhotoItem(it)); }
+          } catch { alert('작품 저장 중 오류가 발생했습니다.'); }
+          finally { saveBtn.removeAttribute('disabled'); }
+        });
+      });
     </script>
 
 
 
-    <!-- solo Management end -->
+    <style>
+      /* ================================
+   Solo Dashboard Styles (Standalone)
+   - 밝은 대시 재질, 검정 버튼, 둥근 모서리, 소프트 그림자
+   - 드롭존/테이블/작품 카드/폼 레이아웃 포함
+   ================================ */
+
+      /* CSS 변수(테마) */
+      :root {
+        --bg: #f9f9f9;
+        --card: #ffffff;
+        --muted: #777;
+        --border: #e6e6e6;
+        --border-strong: #d9d9d9;
+        --shadow-sm: 0 .25rem .75rem rgba(0, 0, 0, .06);
+        --shadow-lg: 0 .5rem 1.25rem rgba(0, 0, 0, .08);
+        --radius-xs: .25rem;
+        --radius-sm: .375rem;
+        --radius-md: .5rem;
+        --radius-lg: .75rem;
+        --space-1: .25rem;
+        --space-2: .375rem;
+        --space-3: .5rem;
+        --space-4: .625rem;
+        --space-5: .75rem;
+        --space-6: 1rem;
+        --space-7: 1.25rem;
+        --space-8: 1.5rem;
+        --space-9: 1.875rem;
+        --focus: 2px solid #111;
+      }
+
+      /* 컨테이너 카드 */
+      .solo-admin-card {
+        padding: var(--space-8);
+        background: var(--bg);
+        margin-bottom: var(--space-9);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .panel-title {
+        margin: 0 0 var(--space-6);
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      /* ------ 폼 공통 ------ */
+      .solo-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-6) var(--space-8);
+        align-items: start;
+      }
+
+      .form-row {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+      }
+
+      .solo-form label {
+        font-weight: 600;
+      }
+
+      .solo-form input[type="text"],
+      .solo-form input[type="month"],
+      .solo-form input[type="search"],
+      .solo-form input[type="date"],
+      .id-select,
+      .photo-title,
+      .intro-textarea {
+        height: 2.5rem;
+        padding: .5rem .75rem;
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-md);
+        background: #fff;
+        font: inherit;
+        box-sizing: border-box;
+      }
+
+      .intro-textarea {
+        height: auto;
+        min-height: 6.5rem;
+        resize: vertical;
+        padding: .75rem;
+      }
+
+      .help {
+        color: var(--muted);
+        font-size: .8125rem;
+      }
+
+      /* 포커스 접근성 */
+      .solo-form input:focus,
+      .id-select:focus,
+      .photo-title:focus,
+      .intro-textarea:focus,
+      .btn:focus {
+        outline: var(--focus);
+        outline-offset: 2px;
+      }
+
+      /* ------ 드롭존 ------ */
+      .solo-dropzone {
+        background: #f3f3f3;
+        border: none;
+        border-radius: var(--radius-sm);
+        height: 18rem;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        position: relative;
+      }
+
+      .solo-dropzone img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        /* 전체 보이도록 */
+      }
+
+      .solo-dropzone.dragover {
+        outline: 2px dashed #999;
+        outline-offset: -10px;
+      }
+
+      /* ------ 버튼 ------ */
+      .btn {
+        border: 1px solid #111;
+        background: #111;
+        color: #fff;
+        border-radius: var(--radius-lg);
+        padding: .625rem 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        line-height: 1;
+      }
+
+      .btn.primary {
+        /* 의미상 유지 (기본과 동일 톤) */
+      }
+
+      .btn.ghost {
+        background: transparent;
+        color: #111;
+      }
+
+      .btn.danger {
+        border-color: #d92c2c;
+        background: #d92c2c;
+      }
+
+      .btn.small {
+        padding: .375rem .625rem;
+        font-weight: 600;
+      }
+
+      .btn:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+      }
+
+      .form-actions {
+        grid-column: 1 / -1;
+        display: flex;
+        gap: var(--space-5);
+      }
+
+      /* ------ 목록 테이블 ------ */
+      .list-wrap {
+        margin-top: var(--space-8);
+      }
+
+      .list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-5);
+      }
+
+      .list-header input[type="search"] {
+        width: 16rem;
+      }
+
+      .solo-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--card);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .solo-table th,
+      .solo-table td {
+        padding: .75rem;
+        border-bottom: 1px solid #eee;
+        vertical-align: middle;
+        text-align: left;
+      }
+
+      .solo-table thead th {
+        background: #fafafa;
+        font-weight: 700;
+      }
+
+      .solo-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .solo-table img {
+        width: 6rem;
+        height: 3.5rem;
+        object-fit: cover;
+        /* 목록에선 균일 썸네일 */
+        border-radius: var(--radius-xs);
+        background: #f3f3f3;
+      }
+
+      /* 스크린 리더 전용 */
+      .sr-only {
+        position: absolute;
+        left: -10000px;
+      }
+
+      /* ------ 셀렉트/블록/사진 카드 ------ */
+      .id-select-row {
+        display: flex;
+        gap: .5rem;
+        align-items: center;
+      }
+
+      .id-select {
+        min-width: 16rem;
+      }
+
+      .block-group {
+        margin-top: var(--space-7);
+        padding: var(--space-6);
+        background: #fff;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+      }
+
+      .block-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-5);
+      }
+
+      .block-header h3 {
+        margin: 0;
+        font-size: 1.125rem;
+      }
+
+      .block-actions {
+        display: flex;
+        gap: .5rem;
+      }
+
+      /* 사진 목록 그리드 */
+      .photo-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-5);
+      }
+
+      .photo-item {
+        display: grid;
+        grid-template-columns: 13rem 1fr;
+        gap: 1rem;
+        padding: .75rem;
+        border: 1px solid #eee;
+        border-radius: var(--radius-md);
+        background: #fafafa;
+      }
+
+      .photo-left {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+      }
+
+      .thumb {
+        width: 100%;
+        height: 8rem;
+        background: #f3f3f3;
+        border-radius: var(--radius-sm);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        /* 작품 이미지도 전체 보이게 */
+      }
+
+      .file-row {
+        display: flex;
+        gap: .5rem;
+        align-items: center;
+      }
+
+      .file-input {
+        display: none;
+      }
+
+      /* 실제 input 숨김 */
+      .pick-btn {
+        background: #fff;
+        color: #111;
+      }
+
+      /* 파일선택은 연한 톤 */
+
+      .photo-right {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+      }
+
+      .photo-actions {
+        display: flex;
+        gap: .5rem;
+      }
+
+      .add-row {
+        margin-top: .5rem;
+      }
+    </style>
+
+    <!--   -->
 
 
+    <!--  shop-manage -->
 
-    <section class="artwork-manage" data-section="ARTWORK">
-      <h2>Artwork Management (Register / Edit / Delete)</h2>
+    <section class="shop-manage solo-admin-card" data-section="SHOP">
+      <h2>Artshop Management</h2>
       <div class="shop-box">
-        <div class="image-preview" id="artworkPreviewContainer">
-          <img id="artworkPreviewImage" src="" alt="Preview Image"
-            style="display:none; width:100%; height:100%; object-fit:contain;" />
-          <span id="artworkPlaceholderText">Image</span>
-        </div>
-        <div class="file-input-wrapper">
-          <label for="artworkFile">Attach File</label>
-          <input type="file" id="artworkFile" accept="image/*" hidden />
-        </div>
-        <div class="info-inputs">
-          <label for="artworkId">Artwork ID</label>
-          <div class="id-search-group" style="display:flex; gap:0.5rem;">
-            <input type="text" id="artworkId" placeholder="Artwork ID" />
-            <button id="btnApply">Search</button>
-          </div>
-          <div class="btn-group">
-            <button id="btnRegisterArtwork" type="button">Register</button>
-            <button id="btnUpdateArtwork" type="button">Update</button>
-            <button id="btnDeleteArtwork" type="button">Delete</button>
-            <button id="btnCancelArtwork" type="button">Clear</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <hr style="margin: 2.5rem 0; border-top: .125rem solid #eee;" />
-
-    <section class="shop-manage" data-section="SHOP">
-      <h2>Artshop Management (Register / Edit / Delete)</h2>
-      <div class="shop-box">
-        <div class="image-preview" id="shopPreviewContainer">
+        <div class="image-preview solo-dropzone" id="shopPreviewContainer">
           <img id="shopPreviewImage" src="" alt="Preview Image"
             style="display:none; width:100%; height:100%; object-fit:contain;" />
           <span id="shopPlaceholderText">Image</span>
         </div>
-        <div class="file-input-wrapper">
-          <label for="shopImage">Attach File</label>
-          <input type="file" id="shopImage" accept="image/*" hidden />
-        </div>
+        <div class="file-input-wrapper"> <label for="artworkFile">Attach File</label> <input type="file"
+            id="artworkFile" accept="image/*" hidden /> </div>
+
         <div class="info-inputs">
           <label for="productId">Artwork ID</label>
           <div class="id-search-group">
@@ -893,6 +1137,79 @@
         </div>
       </div>
     </section>
+
+    <style>
+      .shop-manage h2 {
+        font-size: 2rem;
+        /* 글자 크기 (약 32px) */
+        font-weight: bold;
+        /* 글자 굵게 */
+        text-align: left !important;
+      }
+
+      .shop-manage button {
+        background-color: #000 !important;
+        /* 검은색 배경 (강제 적용) */
+        color: #fff !important;
+        /* 흰 글씨 (강제 적용) */
+        border: none !important;
+        /* 기존 테두리 제거 */
+        padding: 0.5rem 1rem;
+        /* 여백(버튼 크기) */
+        border-radius: 0.25rem;
+        /* 모서리 약간 둥글게 */
+        cursor: pointer;
+      }
+
+      .shop-manage[data-section="SHOP"] label {
+        font-size: 0.85rem;
+        /* 글씨 크기 줄이기 */
+        font-weight: 400;
+        /* 두께 조절 (옵션) */
+        color: #333;
+        /* 색상도 필요하면 지정 */
+      }
+
+      /* 카드 스타일 */
+      .solo-admin-card {
+        background-color: #f9f9f9 !important;
+        border: none !important;
+        border-radius: .625rem !important;
+        padding: 1.5rem !important;
+        margin-bottom: 1.875rem !important;
+        box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.05) !important;
+      }
+
+      /* 미리보기 박스 */
+      .solo-dropzone {
+        background-color: #f3f3f3 !important;
+        border: none !important;
+        border-radius: .625rem !important;
+        height: 20rem !important;
+        display: grid !important;
+        place-items: center !important;
+        overflow: hidden !important;
+        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, 0.06) !important;
+      }
+
+      /* Artwork Attach File 버튼 강제 스타일 */
+      .file-input-wrapper label[for="artworkFile"] {
+        cursor: pointer !important;
+        background-color: #000 !important;
+        /* 검은색 배경 (강제 적용) */
+        color: #fff !important;
+        /* 흰 글씨 (강제 적용) */
+        border: none !important;
+        /* 기존 테두리 제거 */
+        padding: 0.5rem 1rem;
+        /* 여백(버튼 크기) */
+        border-radius: 0.25rem;
+        /* 모서리 약간 둥글게 */
+      }
+    </style>
+    <!--  -->
+
+
   </main>
   <!-- 로그아웃 -->
   <script>
