@@ -53,9 +53,6 @@
       cursor: pointer;
     }
 
-    button:hover {
-      background-color: #333;
-    }
 
     .dashboard {
       max-width: 62.5rem;
@@ -366,848 +363,727 @@
     <!--  -->
 
 
-    <!-- ===== Solo Dashboard (BE 매핑 반영 완성본) ===== -->
+    <!-- ===== Solo Dashboard ===== -->
 
-    <!-- ===== Solo Dashboard (완전판: BE 매핑 + 오류 해결) ===== -->
-
-    <!-- 1) 전시회 등록/목록 -->
-    <section class="solo-admin-card" id="soloHeaderAdmin" data-section="SOLO">
-      <h2 class="panel-title">Solo 관리</h2>
-
-      <!-- 등록/업데이트 (업서트) -->
-      <form id="soloHeaderForm" class="solo-form" enctype="multipart/form-data">
-        <div class="form-row">
-          <label for="title">제목 (ID 표시용 텍스트)</label>
-          <input type="text" id="title" name="title" placeholder="예: solo-2025-fall" required maxlength="80" />
-          <small class="help">공백 없이 권장(서버의 기본 키는 숫자 id)</small>
-        </div>
-
-        <div class="form-row">
-          <label for="yearMonth">전시 월(YYYY-MM)</label>
-          <input type="month" id="yearMonth" name="yearMonth" required />
-        </div>
-
-        <div class="form-row">
-          <label>전시회 포스터</label>
-          <div class="solo-dropzone" id="dropzone">
-            <input type="file" id="posterFile" name="posterFile" accept="image/*" hidden />
-            <button type="button" class="btn" id="pickImageBtn">이미지 선택</button>
-            <img id="previewImg" alt="preview" style="display:none;" />
-          </div>
-          <small class="help">권장: 2560×1440 이상, jpg/png</small>
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn primary">등록 / 업데이트</button>
-          <button type="reset" class="btn ghost" id="resetBtn">초기화</button>
-        </div>
-      </form>
-
-      <!-- 목록 & 삭제 -->
-      <div class="list-wrap">
-        <div class="list-header">
-          <h3>등록된 항목</h3>
-          <input type="search" id="search" placeholder="제목 검색" />
-        </div>
-
-        <table class="solo-table" id="soloTable" aria-describedby="soloTableCaption">
-          <caption id="soloTableCaption" class="sr-only">Solo Header 리스트</caption>
-          <thead>
-            <tr>
-              <th style="width:28%">제목</th>
-              <th style="width:18%">연월</th>
-              <th style="width:34%">포스터</th>
-              <th style="width:20%">동작</th>
-            </tr>
-          </thead>
-          <tbody id="soloTbody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- 2) 전시회 작품 관리 -->
-    <section class="solo-admin-card" id="soloModalAdmin" data-section="SOLO">
-      <h2 class="panel-title">Solo 작품 관리</h2>
-
-      <!-- 전시회 선택 -->
-      <div class="form-row">
-        <label for="soloIdSelect">전시회 선택</label>
-        <div class="id-select-row">
-          <select id="soloIdSelect" class="id-select" required>
-            <option value="" selected disabled>전시회를 선택하세요</option>
-          </select>
-          <button class="btn ghost" id="reloadTitlesBtn" type="button">새로고침</button>
-        </div>
-        <small class="help">목록은 /api/solo/exhibitions 에서 불러옵니다.</small>
-      </div>
-
-      <!-- 작품 목록 -->
-      <div class="block-group">
-        <div class="block-header">
-          <h3>작품 목록</h3>
-          <div class="block-actions">
-            <button class="btn small" id="loadArtsBtn" type="button">서버 불러오기</button>
-          </div>
-        </div>
-        <div id="photoList" class="photo-list" aria-live="polite"></div>
-        <div class="add-row">
-          <button class="btn" id="addPhotoBtn" type="button">+ 작품 블록 추가</button>
-        </div>
-      </div>
-
-      <!-- 일괄 저장 -->
-      <div class="form-actions">
-        <button class="btn primary" id="saveAllBtn" type="button">등록/업데이트</button>
-      </div>
-    </section>
-
-    <!-- 작품 템플릿 -->
-    <template id="photoItemTpl">
-      <div class="photo-item" data-tempid="">
-        <div class="photo-left">
-          <div class="thumb">
-            <img alt="미리보기" style="display:none" />
-          </div>
-          <div class="file-row">
-            <input type="file" accept="image/*" class="file-input" />
-            <button class="btn small ghost pick-btn" type="button">파일 선택</button>
-          </div>
-        </div>
-        <div class="photo-right">
-          <label>작품명</label>
-          <input type="text" class="photo-title" placeholder="예: Untitled #1" maxlength="120" />
-          <div class="photo-actions">
-            <button class="btn small danger" data-action="remove" type="button">이 블록 삭제</button>
-          </div>
-        </div>
-      </div>
-    </template>
-
-
-    <!-- ✅ Solo Dashboard JS (최종판) -->
-    <link rel="icon" href="data:,"><!-- favicon 500 방지 -->
-
-    <script>
-      /* ───────── 공통 가드/유틸 ───────── */
-      (() => {
-        // 안전 리스너
-        window.safeOn = (el, ev, fn, opts) => el?.addEventListener?.(ev, fn, opts);
-        // 누락 함수 더미(다른 스크립트가 호출해도 에러 안 나게)
-        ['loadInstagramUrl', 'loadFacebookUrl', 'loadKakaoUrl']
-          .forEach(n => { if (typeof window[n] !== 'function') window[n] = () => { }; });
-      })();
-      function readCookie(name) {
-        return document.cookie.split('; ').find(r => r.startsWith(name + '='))?.split('=')[1];
-      }
-      /* CSRF + same-origin + 실패시 본문 로그 */
-      async function xfetch(url, opts = {}) {
-        const method = (opts.method || 'GET').toUpperCase();
-        const headers = new Headers(opts.headers || {});
-        const metaTok = document.querySelector('meta[name="_csrf"]')?.content;
-        const metaHdr = document.querySelector('meta[name="_csrf_header"]')?.content || 'X-CSRF-TOKEN';
-        const cookieTok = readCookie('XSRF-TOKEN');
-        if (method !== 'GET') {
-          const tok = metaTok || cookieTok;
-          if (tok) headers.set(metaHdr, decodeURIComponent(tok));
-        }
-        const res = await fetch(url, { ...opts, headers, credentials: 'same-origin', cache: 'no-store' });
-        if (!res.ok) {
-          let body = ''; try { body = await res.clone().text(); } catch { }
-          console.error(`[xfetch ${res.status}] ${url}`, { body, headers: [...res.headers] });
-        }
-        return res;
-      }
-
-      /* ───────── 메인 ───────── */
-      document.addEventListener('DOMContentLoaded', () => {
-        /* DOM */
-        const form = document.getElementById('soloHeaderForm');
-        const titleEl = document.getElementById('title');
-        const ymEl = document.getElementById('yearMonth');
-        const fileEl = document.getElementById('posterFile');
-        const pickBtn = document.getElementById('pickImageBtn');
-        const dz = document.getElementById('dropzone');
-        const previewImg = document.getElementById('previewImg');
-        const resetBtn = document.getElementById('resetBtn');
-        const tbody = document.getElementById('soloTbody');
-        const searchEl = document.getElementById('search');
-
-        const idSelect = document.getElementById('soloIdSelect');
-        const reloadTitlesBtn = document.getElementById('reloadTitlesBtn');
-        const loadArtsBtn = document.getElementById('loadArtsBtn');
-        const addPhotoBtn = document.getElementById('addPhotoBtn');
-        const photoList = document.getElementById('photoList');
-        const tpl = document.getElementById('photoItemTpl');
-
-        const thisMonthStr = () => {
-          const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-        };
-        if (ymEl && !ymEl.value) ymEl.value = thisMonthStr();
-
-        /* ─ 파일/드롭존 */
-        safeOn(pickBtn, 'click', () => fileEl?.click());
-        safeOn(fileEl, 'change', () => {
-          const f = fileEl.files?.[0]; if (!f) return;
-          previewImg.src = URL.createObjectURL(f); previewImg.style.display = 'block';
-        });
-        if (dz) {
-          ['dragenter', 'dragover'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('dragover'); }));
-          ['dragleave', 'drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('dragover'); }));
-          dz.addEventListener('drop', e => {
-            const f = e.dataTransfer.files?.[0]; if (!f || !fileEl || !previewImg) return;
-            fileEl.files = e.dataTransfer.files;
-            previewImg.src = URL.createObjectURL(f); previewImg.style.display = 'block';
-          });
-          dz.addEventListener('click', e => {
-            const isBtn = e.target.closest?.('button'); const isImg = e.target.tagName === 'IMG';
-            if (!isBtn && !isImg) fileEl?.click();
-          });
-        }
-        safeOn(resetBtn, 'click', () => {
-          previewImg.removeAttribute('src'); previewImg.style.display = 'none';
-          if (fileEl) fileEl.value = '';
-          if (ymEl) setTimeout(() => ymEl.value = thisMonthStr(), 0);
-        });
-
-        /* ─ 전시회 업서트: POST /admin/solo/exhibitions (title, yearMonth, posterFile?) */
-        safeOn(form, 'submit', async (e) => {
-          e.preventDefault();
-          const submitBtn = form.querySelector('button[type="submit"]');
-          submitBtn?.setAttribute('disabled', 'disabled');
-
-          const title = (titleEl?.value || '').trim();
-          if (!title) { alert('제목을 입력하세요.'); return submitBtn?.removeAttribute('disabled'); }
-          if (!ymEl?.value) { alert('연월을 선택하세요.'); return submitBtn?.removeAttribute('disabled'); }
-
-          const fd = new FormData();
-          fd.append('title', title);
-          fd.append('yearMonth', ymEl.value);
-          if (fileEl?.files?.[0]) fd.append('posterFile', fileEl.files[0]);
-          console.debug('[upsert-exhibition]', [...fd.entries()].map(([k, v]) => [k, v instanceof File ? `File(${v.name})` : v]));
-
-          try {
-            const res = await xfetch('/admin/solo/exhibitions', { method: 'POST', body: fd });
-            if (!res.ok) throw new Error();
-            await loadList();
-            alert('전시회가 저장되었습니다.');
-          } catch {
-            alert('저장 중 오류가 발생했습니다.');
-          } finally { submitBtn?.removeAttribute('disabled'); }
-        });
-
-        /* ─ 전시회 목록/단건/삭제 */
-        async function loadList() {
-          try {
-            const res = await xfetch('/api/solo/exhibitions');
-            if (!res.ok) throw new Error();
-            const list = await res.json(); // [{id,title,yearMonth,posterImagePath}]
-            const q = (searchEl?.value || '').toLowerCase();
-            const items = q ? list.filter(x => (x.title || '').toLowerCase().includes(q)) : list;
-            renderRows(items);
-          } catch {
-            if (tbody) tbody.innerHTML = '<tr><td colspan="4">목록을 불러오지 못했습니다.</td></tr>';
-          }
-        }
-        function renderRows(items) {
-          if (!tbody) return;
-          if (!Array.isArray(items) || !items.length) {
-            tbody.innerHTML = '<tr><td colspan="4">등록된 항목이 없습니다.</td></tr>'; return;
-          }
-          tbody.innerHTML = items.map(it => {
-            const img = it.posterImagePath ? `<img src="${it.posterImagePath}" alt="${it.title}">` : '-';
-            return `<tr data-id="${it.id}">
-        <td><code>${it.title ?? ''}</code></td>
-        <td>${it.yearMonth ?? ''}</td>
-        <td>${img}</td>
-        <td>
-          <button class="btn small" data-edit="${it.id}">편집</button>
-          <button class="btn small danger" data-del="${it.id}">삭제</button>
-        </td>
-      </tr>`;
-          }).join('');
-        }
-        safeOn(searchEl, 'input', loadList);
-
-        safeOn(tbody, 'click', async (e) => {
-          const btn = e.target.closest?.('button'); if (!btn) return;
-          const id = btn.dataset.edit || btn.dataset.del;
-
-          if (btn.dataset.edit) {
-            try {
-              const res = await xfetch(`/api/solo/exhibitions/${encodeURIComponent(id)}`);
-              if (!res.ok) throw new Error();
-              const it = await res.json();
-              titleEl.value = it.title || '';
-              ymEl.value = it.yearMonth || thisMonthStr();
-              if (it.posterImagePath) { previewImg.src = it.posterImagePath; previewImg.style.display = 'block'; }
-              else { previewImg.removeAttribute('src'); previewImg.style.display = 'none'; }
-              window.scrollTo?.({ top: form.offsetTop - 16, behavior: 'smooth' });
-            } catch { alert('전시회 정보를 불러오지 못했습니다.'); }
-          }
-
-          if (btn.dataset.del) {
-            if (!confirm(`정말 삭제할까요?\nID: ${id}`)) return;
-            try {
-              const res = await xfetch(`/admin/solo/exhibitions/${encodeURIComponent(id)}`, { method: 'DELETE' });
-              if (!res.ok) throw new Error();
-              await loadList();
-              alert('삭제되었습니다.');
-            } catch { alert('삭제 중 오류가 발생했습니다.'); }
-          }
-        });
-
-        loadList(); // 초기 로드
-
-        /* ─ 작품: 목록/추가/삭제 */
-        async function loadTitlesForSelect() {
-          if (!idSelect) return;
-          try {
-            const res = await xfetch('/api/solo/exhibitions');
-            if (!res.ok) throw new Error();
-            const list = await res.json();
-            idSelect.innerHTML = '<option value="" disabled selected>전시회를 선택하세요</option>' +
-              list.map(x => `<option value="${x.id}">${x.title}</option>`).join('');
-          } catch {
-            idSelect.innerHTML = '<option value="" disabled selected>목록 불가</option>';
-          }
-        }
-        safeOn(reloadTitlesBtn, 'click', loadTitlesForSelect);
-        loadTitlesForSelect();
-
-        function addPhotoItem(from) {
-          if (!tpl || !photoList) return;
-          const node = tpl.content.firstElementChild.cloneNode(true);
-          node.dataset.tempid = 'temp_' + Math.random().toString(36).slice(2, 8);
-
-          const img = node.querySelector('img');
-          const fileInput = node.querySelector('.file-input');
-          const pick = node.querySelector('.pick-btn');
-          const titleInput = node.querySelector('.photo-title');
-
-          if (from) {
-            if (from.imagePath && img) { img.src = from.imagePath; img.style.display = 'block'; }
-            if (from.title && titleInput) titleInput.value = from.title;
-            if (from.id) node.dataset.photoId = from.id;
-          }
-
-          safeOn(pick, 'click', () => fileInput?.click());
-          safeOn(fileInput, 'change', () => {
-            const f = fileInput.files?.[0];
-            if (!f) { img.style.display = 'none'; return; }
-            img.src = URL.createObjectURL(f); img.style.display = 'block';
-          });
-
-          // 개별 삭제
-          node.addEventListener('click', async (e) => {
-            const b = e.target.closest?.('button'); if (!b) return;
-            if (b.dataset.action !== 'remove') return;
-            const expoId = idSelect?.value; if (!expoId) return alert('먼저 전시회를 선택하세요.');
-            if (node.dataset.photoId) {
-              if (!confirm('서버에서 이 작품을 삭제할까요?')) return;
-              try {
-                const res = await xfetch(`/admin/solo/exhibitions/${encodeURIComponent(expoId)}/arts/${encodeURIComponent(node.dataset.photoId)}`, { method: 'DELETE' });
-                if (!res.ok) throw new Error();
-              } catch { return alert('삭제 중 오류가 발생했습니다.'); }
-            }
-            node.remove();
-          });
-
-          photoList.appendChild(node);
-        }
-        safeOn(addPhotoBtn, 'click', () => addPhotoItem());
-
-        safeOn(loadArtsBtn, 'click', async () => {
-          const expoId = idSelect?.value; if (!expoId) return alert('전시회를 선택하세요.');
-          try {
-            const res = await xfetch(`/api/solo/exhibitions/${encodeURIComponent(expoId)}/arts`);
-            if (!res.ok) throw new Error();
-            const list = await res.json(); // [{id,title,imagePath}]
-            photoList.innerHTML = ''; list.forEach(it => addPhotoItem(it));
-          } catch { alert('작품 목록을 불러오지 못했습니다.'); }
-        });
-
-        // 일괄 저장(파일 있는 카드만 업로드) : POST /admin/solo/exhibitions/{id}/arts (title?, file)
-        const saveBtn = document.getElementById('saveAllBtn');
-        safeOn(saveBtn, 'click', async () => {
-          const expoId = idSelect?.value; if (!expoId) return alert('전시회를 선택하세요.');
-          const items = [...(photoList?.querySelectorAll('.photo-item') || [])];
-          if (!items.length && !confirm('작품 블록이 없습니다. 계속할까요?')) return;
-
-          saveBtn.setAttribute('disabled', 'disabled');
-          try {
-            for (const node of items) {
-              const fileInput = node.querySelector('.file-input');
-              const titleInput = node.querySelector('.photo-title');
-              const title = (titleInput?.value || '').trim();
-              if (!fileInput?.files?.[0]) continue;
-
-              const fd = new FormData();
-              if (title) fd.append('title', title);
-              fd.append('image', fileInput.files[0]); // 백엔드 @RequestParam("image")
-
-              const res = await xfetch(`/admin/solo/exhibitions/${encodeURIComponent(expoId)}/arts`, {
-                method: 'POST', body: fd
-              });
-              if (!res.ok) throw new Error();
-            }
-            alert('작품 저장이 완료되었습니다.');
-            const r = await xfetch(`/api/solo/exhibitions/${encodeURIComponent(expoId)}/arts`);
-            if (r.ok) { const list = await r.json(); photoList.innerHTML = ''; list.forEach(it => addPhotoItem(it)); }
-          } catch { alert('작품 저장 중 오류가 발생했습니다.'); }
-          finally { saveBtn.removeAttribute('disabled'); }
-        });
-      });
-    </script>
-
-
-
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Solo Admin Dashboard (v1)</title>
     <style>
-      /* ================================
-   Solo Dashboard Styles (Standalone)
-   - 밝은 대시 재질, 검정 버튼, 둥근 모서리, 소프트 그림자
-   - 드롭존/테이블/작품 카드/폼 레이아웃 포함
-   ================================ */
-
-      /* CSS 변수(테마) */
-      :root {
-        --bg: #f9f9f9;
-        --card: #ffffff;
-        --muted: #777;
-        --border: #e6e6e6;
-        --border-strong: #d9d9d9;
-        --shadow-sm: 0 .25rem .75rem rgba(0, 0, 0, .06);
-        --shadow-lg: 0 .5rem 1.25rem rgba(0, 0, 0, .08);
-        --radius-xs: .25rem;
-        --radius-sm: .375rem;
-        --radius-md: .5rem;
-        --radius-lg: .75rem;
-        --space-1: .25rem;
-        --space-2: .375rem;
-        --space-3: .5rem;
-        --space-4: .625rem;
-        --space-5: .75rem;
-        --space-6: 1rem;
-        --space-7: 1.25rem;
-        --space-8: 1.5rem;
-        --space-9: 1.875rem;
-        --focus: 2px solid #111;
-      }
-
-      /* 컨테이너 카드 */
-      .solo-admin-card {
-        padding: var(--space-8);
-        background: var(--bg);
-        margin-bottom: var(--space-9);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-lg);
-      }
-
-      .panel-title {
-        margin: 0 0 var(--space-6);
-        font-size: 1.5rem;
-        font-weight: 700;
-      }
-
-      /* ------ 폼 공통 ------ */
-      .solo-form {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: var(--space-6) var(--space-8);
-        align-items: start;
-      }
-
-      .form-row {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-3);
-      }
-
-      .solo-form label {
-        font-weight: 600;
-      }
-
-      .solo-form input[type="text"],
-      .solo-form input[type="month"],
-      .solo-form input[type="search"],
-      .solo-form input[type="date"],
-      .id-select,
-      .photo-title,
-      .intro-textarea {
-        height: 2.5rem;
-        padding: .5rem .75rem;
-        border: 1px solid var(--border-strong);
-        border-radius: var(--radius-md);
-        background: #fff;
-        font: inherit;
-        box-sizing: border-box;
-      }
-
-      .intro-textarea {
-        height: auto;
-        min-height: 6.5rem;
-        resize: vertical;
-        padding: .75rem;
-      }
-
-      .help {
-        color: var(--muted);
-        font-size: .8125rem;
-      }
-
-      /* 포커스 접근성 */
-      .solo-form input:focus,
-      .id-select:focus,
-      .photo-title:focus,
-      .intro-textarea:focus,
-      .btn:focus {
-        outline: var(--focus);
-        outline-offset: 2px;
-      }
-
-      /* ------ 드롭존 ------ */
-      .solo-dropzone {
-        background: #f3f3f3;
-        border: none;
-        border-radius: var(--radius-sm);
-        height: 18rem;
-        display: grid;
-        place-items: center;
-        overflow: hidden;
-        box-shadow: var(--shadow-sm);
-        position: relative;
-      }
-
-      .solo-dropzone img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        /* 전체 보이도록 */
-      }
-
-      .solo-dropzone.dragover {
-        outline: 2px dashed #999;
-        outline-offset: -10px;
-      }
-
-      /* ------ 버튼 ------ */
-      .btn {
-        border: 1px solid #111;
-        background: #111;
-        color: #fff;
-        border-radius: var(--radius-lg);
-        padding: .625rem 1rem;
-        font-weight: 700;
-        cursor: pointer;
-        line-height: 1;
-      }
-
-      .btn.primary {
-        /* 의미상 유지 (기본과 동일 톤) */
-      }
-
-      .btn.ghost {
-        background: transparent;
-        color: #111;
-      }
-
-      .btn.danger {
-        border-color: #d92c2c;
-        background: #d92c2c;
-      }
-
-      .btn.small {
-        padding: .375rem .625rem;
-        font-weight: 600;
-      }
-
-      .btn:disabled {
-        opacity: .6;
-        cursor: not-allowed;
-      }
-
-      .form-actions {
-        grid-column: 1 / -1;
-        display: flex;
-        gap: var(--space-5);
-      }
-
-      /* ------ 목록 테이블 ------ */
-      .list-wrap {
-        margin-top: var(--space-8);
-      }
-
-      .list-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: var(--space-5);
-      }
-
-      .list-header input[type="search"] {
-        width: 16rem;
-      }
-
-      .solo-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: var(--card);
-        border-radius: var(--radius-md);
-        overflow: hidden;
-        box-shadow: var(--shadow-sm);
-      }
-
-      .solo-table th,
-      .solo-table td {
-        padding: .75rem;
-        border-bottom: 1px solid #eee;
-        vertical-align: middle;
-        text-align: left;
-      }
-
-      .solo-table thead th {
-        background: #fafafa;
-        font-weight: 700;
-      }
-
-      .solo-table tr:last-child td {
-        border-bottom: none;
-      }
-
-      .solo-table img {
-        width: 6rem;
-        height: 3.5rem;
-        object-fit: cover;
-        /* 목록에선 균일 썸네일 */
-        border-radius: var(--radius-xs);
-        background: #f3f3f3;
-      }
-
-      /* 스크린 리더 전용 */
-      .sr-only {
-        position: absolute;
-        left: -10000px;
-      }
-
-      /* ------ 셀렉트/블록/사진 카드 ------ */
-      .id-select-row {
-        display: flex;
-        gap: .5rem;
-        align-items: center;
-      }
-
-      .id-select {
-        min-width: 16rem;
-      }
-
-      .block-group {
-        margin-top: var(--space-7);
-        padding: var(--space-6);
-        background: #fff;
-        border-radius: var(--radius-md);
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--border);
-      }
-
-      .block-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: var(--space-5);
-      }
-
-      .block-header h3 {
+      /* 최소 스타일: 나중에 커스텀 예정 */
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        line-height: 1.4;
         margin: 0;
-        font-size: 1.125rem;
-      }
-
-      .block-actions {
-        display: flex;
-        gap: .5rem;
-      }
-
-      /* 사진 목록 그리드 */
-      .photo-list {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: var(--space-5);
-      }
-
-      .photo-item {
-        display: grid;
-        grid-template-columns: 13rem 1fr;
-        gap: 1rem;
-        padding: .75rem;
-        border: 1px solid #eee;
-        border-radius: var(--radius-md);
+        padding: 1rem;
         background: #fafafa;
       }
 
-      .photo-left {
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-      }
-
-      .thumb {
-        width: 100%;
-        height: 8rem;
-        background: #f3f3f3;
-        border-radius: var(--radius-sm);
-        display: grid;
-        place-items: center;
-        overflow: hidden;
-        box-shadow: var(--shadow-sm);
-      }
-
-      .thumb img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        /* 작품 이미지도 전체 보이게 */
-      }
-
-      .file-row {
-        display: flex;
-        gap: .5rem;
-        align-items: center;
-      }
-
-      .file-input {
-        display: none;
-      }
-
-      /* 실제 input 숨김 */
-      .pick-btn {
-        background: #fff;
-        color: #111;
-      }
-
-      /* 파일선택은 연한 톤 */
-
-      .photo-right {
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-      }
-
-      .photo-actions {
-        display: flex;
-        gap: .5rem;
-      }
-
-      .add-row {
-        margin-top: .5rem;
-      }
-    </style>
-
-    <!--   -->
-
-
-    <!--  shop-manage -->
-
-    <section class="shop-manage solo-admin-card" data-section="SHOP">
-      <h2>Artshop Management</h2>
-      <div class="shop-box">
-        <div class="image-preview solo-dropzone" id="shopPreviewContainer">
-          <img id="shopPreviewImage" src="" alt="Preview Image"
-            style="display:none; width:100%; height:100%; object-fit:contain;" />
-          <span id="shopPlaceholderText">Image</span>
-        </div>
-        <div class="file-input-wrapper"> <label for="artworkFile">Attach File</label> <input type="file"
-            id="artworkFile" accept="image/*" hidden /> </div>
-
-        <div class="info-inputs">
-          <label for="productId">Artwork ID</label>
-          <div class="id-search-group">
-            <input type="text" id="productId" placeholder="Artwork ID" />
-            <button id="btnSearch">Search</button>
-          </div>
-          <label for="titleInput">Title</label>
-          <input type="text" id="titleInput" placeholder="Enter title" />
-          <label for="descInput">Description</label>
-          <textarea id="descInput" placeholder="Enter artwork description"></textarea>
-          <label for="priceInput">Price</label>
-          <input type="number" id="priceInput" placeholder="Enter price" />
-          <div class="btn-group">
-            <button id="btnRegister">Register</button>
-            <button id="btnUpdate">Update</button>
-            <button id="btnDelete">Delete</button>
-            <button id="btnClear">Clear</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <style>
-      .shop-manage h2 {
+      h1 {
         font-size: 2rem;
         /* 글자 크기 (약 32px) */
         font-weight: bold;
         /* 글자 굵게 */
-        text-align: left !important;
       }
 
-      .shop-manage button {
-        background-color: #000 !important;
-        /* 검은색 배경 (강제 적용) */
-        color: #fff !important;
-        /* 흰 글씨 (강제 적용) */
-        border: none !important;
-        /* 기존 테두리 제거 */
-        padding: 0.5rem 1rem;
-        /* 여백(버튼 크기) */
-        border-radius: 0.25rem;
-        /* 모서리 약간 둥글게 */
+      h2 {
+        font-size: 1rem;
+        margin: 2rem 0 .75rem;
+      }
+
+      form,
+      .card,
+      .list {
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: .5rem;
+        padding: 1rem;
+      }
+
+      .row {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      label {
+        display: block;
+        font-size: .9rem;
+        color: #444;
+        margin-bottom: .25rem;
+      }
+
+      input[type="text"],
+      input[type="month"],
+      select {
+        width: 100%;
+        padding: .5rem .6rem;
+        border: 1px solid #ddd;
+        border-radius: .375rem;
+      }
+
+      input[type="file"] {
+        width: 100%;
+      }
+
+      button {
+        background: #000;
+        color: #fff;
+        border: none;
+        padding: .5rem 1rem;
+        border-radius: .25rem;
         cursor: pointer;
+        font-weight: 600;
       }
 
-      .shop-manage[data-section="SHOP"] label {
-        font-size: 0.85rem;
-        /* 글씨 크기 줄이기 */
-        font-weight: 400;
-        /* 두께 조절 (옵션) */
-        color: #333;
-        /* 색상도 필요하면 지정 */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
       }
 
-      /* 카드 스타일 */
-      .solo-admin-card {
-        background-color: #f9f9f9 !important;
-        border: none !important;
-        border-radius: .625rem !important;
-        padding: 1.5rem !important;
-        margin-bottom: 1.875rem !important;
-        box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.05) !important;
+      .card img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        background: #f3f3f3;
+        border-radius: .375rem;
       }
 
-      /* 미리보기 박스 */
-      .solo-dropzone {
-        background-color: #f3f3f3 !important;
-        border: none !important;
-        border-radius: .625rem !important;
-        height: 20rem !important;
-        display: grid !important;
-        place-items: center !important;
-        overflow: hidden !important;
-        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, 0.06) !important;
+      .muted {
+        color: #666;
+        font-size: .9rem;
       }
 
-      /* Artwork Attach File 버튼 강제 스타일 */
-      .file-input-wrapper label[for="artworkFile"] {
-        cursor: pointer !important;
-        background-color: #000 !important;
-        /* 검은색 배경 (강제 적용) */
-        color: #fff !important;
-        /* 흰 글씨 (강제 적용) */
-        border: none !important;
-        /* 기존 테두리 제거 */
-        padding: 0.5rem 1rem;
-        /* 여백(버튼 크기) */
-        border-radius: 0.25rem;
-        /* 모서리 약간 둥글게 */
+      .danger {
+        color: #c0392b;
+      }
+
+      .success {
+        color: #0a7;
+      }
+
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: .75rem 0;
+      }
+
+      .toolbar .pager {
+        display: flex;
+        gap: .5rem;
+        align-items: center;
+      }
+
+      .preview {
+        width: 160px;
+        height: 160px;
+        background: #f3f3f3;
+        display: grid;
+        place-items: center;
+        border: 1px dashed #ddd;
+        border-radius: .375rem;
+        overflow: hidden;
+      }
+
+      .preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .help {
+        font-size: .85rem;
+        color: #777;
+      }
+
+      .hr {
+        height: 1px;
+        background: #eee;
+        margin: 1rem 0;
       }
     </style>
-    <!--  -->
+    </head>
+
+    <body>
+      <section class="solo-admin-card" data-section="SOLO" style="display:none">
+        <h1>Solo Exhibitions </h1>
+
+        <!-- ===================== Exhibition Admin ===================== -->
+        <section>
+
+          <!-- Create Exhibition -->
+          <form id="exhForm" enctype="multipart/form-data">
+            <style>
+              .image-preview {
+                width: 100%;
+                height: 15rem;
+                border: .0625rem solid #ccc;
+                border-radius: .375rem;
+                background-color: #f0f0f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+              }
+
+              .image-preview img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                /* 이미지가 잘리지 않고 전체 보이도록 */
+              }
+            </style>
+
+            <div class="row" style="margin-top:.5rem; align-items:center;">
+              <div class="image-preview">
+                <img id="posterPreview" alt="poster preview" />
+              </div>
+              <div id="exhMsg" class="muted"></div>
+            </div>
+            <div class="row">
+              <div style="flex:1 1 15rem; min-width:13.75rem;">
+                <label for="exhTitle">title</label>
+                <input id="exhTitle" name="title" type="text" placeholder="ex: solo-2025-fall" required />
+              </div>
+              <div style="flex:0 0 180px;">
+                <label for="exhYM">date</label>
+                <!-- input month는 YYYY-MM 형식과 같아 프런트 검증에 편함 -->
+                <input id="exhYM" name="yearMonth" type="month" required />
+              </div>
+              <div style="flex:1 1 12.5rem; min-width:13.75rem;">
+                <label for="exhPoster">poster</label>
+                <input id="exhPoster" name="poster" type="file" accept="image/*" required />
+                <div class="help">Transport field title <code>poster</code></div>
+              </div>
+              <div style="flex:0 0 10.625rem;">
+                <label>&nbsp;</label>
+                <button type="submit"
+                  style="background:#000; color:#fff; border:none; padding:.5rem 1rem; border-radius:.25rem; cursor:pointer;">Register</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="hr"></div>
+
+          <!-- List Exhibitions -->
+          <div class="toolbar">
+            <div>
+              <strong>List Exhibitions</strong>
+              <span class="muted">(List: yearMonth desc, id desc)</span>
+            </div>
+            <div class="pager">
+              <button id="exhPrev">preview</button>
+              <span id="exhPageInfo" class="muted">page1</span>
+              <button id="exhNext">next</button>
+              <select id="exhPageSize">
+                <option value="6">6</option>
+                <option value="12" selected>12</option>
+                <option value="24">24</option>
+              </select>
+            </div>
+          </div>
+          <div id="exhList" class="grid"></div>
+        </section>
+
+        <!-- ===================== Artwork Admin (by Exhibition) ===================== -->
+        <section>
+          <div class="row">
+            <div style="width:1rem; height:1rem; min-width:1rem; min-height:1rem;">
+              <label for="artExhSelect"></label>
+            </div>
+          </div>
+
+          <form id="artForm" enctype="multipart/form-data" style="margin-top:.75rem;">
+            <style>
+              .image-preview {
+                width: 100%;
+                height: 15rem;
+                border: .0625rem solid #ccc;
+                border-radius: .375rem;
+                background-color: #f0f0f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+              }
+
+              .image-preview img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                /* 이미지 전체 보이도록 */
+              }
+            </style>
+
+            <div class="row" style="margin-top:.5rem; align-items:center;">
+              <div class="image-preview">
+                <img id="artPreview" alt="art preview" />
+              </div>
+              <div id="artMsg" class="muted"></div>
+            </div>
+
+            <div class="row">
+              <div style="flex:1 1 260px; min-width:220px;">
+                <label for="artTitle">title</label>
+                <input id="artTitle" name="title" type="text" placeholder="ex: Untitled #3" required />
+              </div>
+              <div style="flex:1 1 260px; min-width:220px;">
+                <label for="artImage">images</label>
+                <input id="artImage" name="image" type="file" accept="image/*" required />
+                <div class="help">Transport field title <code>image</code></div>
+              </div>
+              <div style="flex:0 0 170px;">
+                <label>&nbsp;</label>
+                <button type="submit">Register</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="toolbar">
+            <div>
+              <strong>List images</strong>
+              <span id="artListLabel" class="muted"></span>
+            </div>
+            <div class="pager">
+              <button id="artPrev">preview</button>
+              <span id="artPageInfo" class="muted">page1</span>
+              <button id="artNext">next</button>
+              <select id="artPageSize">
+                <option value="12" selected>12</option>
+                <option value="24">24</option>
+              </select>
+            </div>
+          </div>
+          <div id="artList" class="grid"></div>
+        </section>
+      </section>
+
+      <script>
+
+        /* ===================== Config ===================== */
+        /** 같은 출처면 'same-origin', 프런트/백 분리면 'include' (서버 CORS allowCredentials 필요) */
+        const CRED = 'same-origin';
+
+        /* ===================== Meta-based CSRF helpers ===================== */
+        function getCsrf() {
+          const token = document.querySelector('meta[name="_csrf"]')?.content;
+          const header = document.querySelector('meta[name="_csrf_header"]')?.content;
+          return token && header ? { token, header } : null;
+        }
+        function withCsrfHeaders(extra = {}) {
+          const c = getCsrf();
+          return c ? { ...extra, [c.header]: c.token } : extra;
+        }
+
+        /* ===================== tiny helpers ===================== */
+        const $ = (q) => document.querySelector(q);
+        function el(tag, props = {}, children = []) {
+          const n = document.createElement(tag);
+          for (const [k, v] of Object.entries(props)) {
+            if (k === 'class') n.className = v;
+            else if (k.startsWith('on') && typeof v === 'function') n.addEventListener(k.slice(2), v);
+            else n.setAttribute(k, v);
+          }
+          for (const ch of children) n.appendChild(typeof ch === 'string' ? document.createTextNode(ch) : ch);
+          return n;
+        }
+        function on(node, evt, handler) { if (node) node.addEventListener(evt, handler); }
+        const fmtYM = (s) => s;
+
+        /* ===================== state ===================== */
+        const state = {
+          exhPage: 0, exhSize: 12, exhHasNext: true,
+          artPage: 0, artSize: 12, artHasNext: true,
+          currentExhId: null,
+          cachedExhibitions: [],
+        };
+
+        /* ===================== Exhibition: preview ===================== */
+        const posterInput = $('#exhPoster');
+        const posterPreview = $('#posterPreview');
+        on(posterInput, 'change', () => {
+          const f = posterInput?.files?.[0];
+          if (!f) { posterPreview?.removeAttribute('src'); return; }
+          posterPreview.src = URL.createObjectURL(f);
+        });
+
+        /* ===================== Exhibition: create ===================== */
+        on($('#exhForm'), 'submit', async (e) => {
+          e.preventDefault();
+          const msg = $('#exhMsg'); if (msg) { msg.textContent = 'loding…'; msg.className = 'muted'; }
+          try {
+            const fd = new FormData();
+            fd.append('title', $('#exhTitle').value.trim());
+            fd.append('yearMonth', $('#exhYM').value);
+            const file = posterInput?.files?.[0];
+            if (!file) throw new Error('Select poster');
+            fd.append('poster', file);
+
+            const res = await fetch('/admin/solo/exhibitions', {
+              method: 'POST',
+              credentials: CRED,
+              headers: withCsrfHeaders(), // ✅ 메타 기반 CSRF 헤더
+              body: fd // ❗️multipart는 Content-Type 자동
+            });
+            if (!res.ok) throw new Error('False: ' + res.status);
+            const data = await res.json();
+            if (msg) { msg.textContent = 'success: id=' + data.id; msg.className = 'success'; }
+
+            state.exhPage = 0; await loadExhibitions();
+            setCurrentExhibition(data.id);
+            $('#exhForm').reset(); posterPreview?.removeAttribute('src');
+          } catch (err) {
+            if (msg) { msg.textContent = err.message; msg.className = 'danger'; }
+          }
+        });
+
+        /* ===================== Exhibition: list/paging ===================== */
+        on($('#exhPageSize'), 'change', async (e) => {
+          state.exhSize = +e.target.value; state.exhPage = 0; await loadExhibitions();
+        });
+        on($('#exhPrev'), 'click', async () => {
+          if (state.exhPage > 0) { state.exhPage--; await loadExhibitions(); }
+        });
+        on($('#exhNext'), 'click', async () => {
+          if (state.exhHasNext) { state.exhPage++; await loadExhibitions(); }
+        });
+
+        async function loadExhibitions() {
+          const page = state.exhPage, size = state.exhSize;
+          const info = $('#exhPageInfo'); if (info) info.textContent = `page ${page + 1}`;
+          const res = await fetch(`/api/solo/exhibitions?page=${page}&size=${size}`, { credentials: CRED });
+          if (!res.ok) { $('#exhList').innerHTML = '<div class="muted">로드 실패</div>'; return; }
+          const arr = await res.json();
+          state.exhHasNext = arr.length === size;
+          state.cachedExhibitions = arr;
+          renderExhibitionList(arr);
+          updateExhibitionSelect(arr, page === 0);
+        }
+
+        function renderExhibitionList(list) {
+          const wrap = $('#exhList'); if (!wrap) return;
+          wrap.innerHTML = '';
+          if (!Array.isArray(list) || list.length === 0) {
+            wrap.appendChild(el('div', { class: 'muted' }, ['empty']));
+            return;
+          }
+          list.forEach(x => {
+            const card = el('div', { class: 'card' });
+            const img = el('img', { src: x.posterImagePath || '', alt: x.title });
+            const title = el('div', {}, [x.title || '(no title)']);
+            const meta = el('div', { class: 'muted' }, [`ID ${x.id} · ${fmtYM(x.yearMonth)}`]);
+            const actions = el('div', { class: 'row', style: 'margin-top:.5rem; align-items:center;' });
+            const useBtn = el('button', { onclick: () => setCurrentExhibition(x.id) }, ['Select']);
+            const delBtn = el('button', { onclick: () => deleteExhibition(x.id) }, ['delate']);
+            actions.append(useBtn, delBtn);
+            card.append(img, title, meta, actions);
+            wrap.appendChild(card);
+          });
+        }
+
+        async function deleteExhibition(id) {
+          if (!confirm(`Delete #${id}?`)) return;
+          const res = await fetch(`/admin/solo/exhibitions/${id}`, {
+            method: 'DELETE',
+            credentials: CRED,
+            headers: withCsrfHeaders()
+          });
+          if (res.status === 204) {
+            await loadExhibitions();
+            if (state.currentExhId === id) setCurrentExhibition(null);
+          } else if (res.status === 404) {
+            alert('It has already been deleted or does not exist.');
+          } else {
+            alert('Deletion failed: ' + res.status);
+          }
+        }
+
+        function updateExhibitionSelect(list, onFirstPage) {
+          const sel = $('#artExhSelect'); if (!sel) return;
+          if (onFirstPage) sel.innerHTML = '';
+          sel.innerHTML = '';
+          sel.appendChild(el('option', { value: '' }, ['exhibition selection…']));
+          list.forEach(x => {
+            const opt = el('option', { value: String(x.id) }, [`#${x.id} · ${fmtYM(x.yearMonth)} · ${x.title}`]);
+            sel.appendChild(opt);
+          });
+          if (state.currentExhId) sel.value = String(state.currentExhId);
+        }
+
+        function setCurrentExhibition(id) {
+          state.currentExhId = id ? +id : null;
+          const sel = $('#artExhSelect'); if (sel) sel.value = id ? String(id) : '';
+          const label = $('#artListLabel'); if (label) label.textContent = id ? `(exhibitionId=${id})` : '(Select exhibition)';
+          state.artPage = 0;
+          if (id) loadArts();
+          else { const w = $('#artList'); if (w) w.innerHTML = ''; }
+        }
+
+        /* ===================== Artwork: preview ===================== */
+        const artInput = $('#artImage');
+        const artPreview = $('#artPreview');
+        on(artInput, 'change', () => {
+          const f = artInput?.files?.[0];
+          if (!f) { artPreview?.removeAttribute('src'); return; }
+          artPreview.src = URL.createObjectURL(f);
+        });
+
+        /* ===================== Artwork: create ===================== */
+        on($('#artForm'), 'submit', async (e) => {
+          e.preventDefault();
+          const msg = $('#artMsg'); if (msg) { msg.textContent = 'Uploading…'; msg.className = 'muted'; }
+          if (!state.currentExhId) { if (msg) { msg.textContent = 'Please select an exhibition first.'; msg.className = 'danger'; } return; }
+
+          try {
+            const fd = new FormData();
+            fd.append('title', $('#artTitle').value.trim());
+            const file = artInput?.files?.[0]; if (!file) throw new Error('Select image');
+            fd.append('image', file);
+
+            const res = await fetch(`/admin/solo/exhibitions/${state.currentExhId}/arts`, {
+              method: 'POST',
+              credentials: CRED,
+              headers: withCsrfHeaders(), // ✅ 메타 기반 CSRF 헤더
+              body: fd
+            });
+            if (!res.ok) throw new Error('Upload failed: ' + res.status);
+            const data = await res.json();
+            if (msg) { msg.textContent = `Upload completed: soloArtId=${data.id}`; msg.className = 'success'; }
+
+            $('#artForm').reset(); artPreview?.removeAttribute('src');
+            state.artPage = 0; await loadArts();
+          } catch (err) {
+            if (msg) { msg.textContent = err.message; msg.className = 'danger'; }
+          }
+        });
+
+        /* ===================== Artwork: list/paging ===================== */
+        on($('#artPageSize'), 'change', async (e) => { state.artSize = +e.target.value; state.artPage = 0; await loadArts(); });
+        on($('#artPrev'), 'click', async () => { if (state.artPage > 0) { state.artPage--; await loadArts(); } });
+        on($('#artNext'), 'click', async () => { if (state.artHasNext) { state.artPage++; await loadArts(); } });
+
+        async function loadArts() {
+          if (!state.currentExhId) { const w = $('#artList'); if (w) w.innerHTML = ''; return; }
+          const page = state.artPage, size = state.artSize;
+          const info = $('#artPageInfo'); if (info) info.textContent = `page ${page + 1}`;
+          const res = await fetch(`/api/solo/exhibitions/${state.currentExhId}/arts?page=${page}&size=${size}`, { credentials: CRED });
+          if (!res.ok) { $('#artList').innerHTML = '<div class="muted">로드 실패</div>'; return; }
+          const arr = await res.json();
+          state.artHasNext = arr.length === size;
+          renderArtList(arr);
+        }
+
+        function renderArtList(list) {
+          const wrap = $('#artList'); if (!wrap) return;
+          wrap.innerHTML = '';
+          if (!Array.isArray(list) || list.length === 0) {
+            wrap.appendChild(el('div', { class: 'muted' }, ['no works']));
+            return;
+          }
+          list.forEach(x => {
+            const card = el('div', { class: 'card' });
+            const img = el('img', { src: x.imagePath || '', alt: x.title });
+            const title = el('div', {}, [x.title || '(no title)']);
+            const meta = el('div', { class: 'muted' }, [`ID ${x.id} · EXH ${x.exhibitionId}`]);
+            const actions = el('div', { class: 'row', style: 'margin-top:.5rem; align-items:center;' });
+            const delBtn = el('button', { onclick: () => deleteArt(x.exhibitionId, x.id) }, ['Delete']);
+            actions.append(delBtn);
+            card.append(img, title, meta, actions);
+            wrap.appendChild(card);
+          });
+        }
+
+        async function deleteArt(exhibitionId, soloArtId) {
+          if (!confirm(`Delete #${soloArtId}?`)) return;
+          const res = await fetch(`/admin/solo/exhibitions/${exhibitionId}/arts/${soloArtId}`, {
+            method: 'DELETE',
+            credentials: CRED,
+            headers: withCsrfHeaders()
+          });
+          if (res.status === 204) { await loadArts(); }
+          else if (res.status === 404) { alert('It has already been deleted or does not exist.'); }
+          else { alert('Deletion failed: ' + res.status); }
+        }
+
+        /* ===================== boot ===================== */
+        (async function init() {
+          // 메타 기반이라 별도 토큰 발급 호출 필요 없음(서버 템플릿이 메타를 렌더링함)
+          await loadExhibitions();
+          if (state.cachedExhibitions.length > 0) setCurrentExhibition(state.cachedExhibitions[0].id);
+        })();
+
+
+      </script>
+
+      <!--   -->
+
+      <!--artwork-->
+
+      <section class="artwork-manage" data-section="ARTWORK">
+        <h2>Artwork Management</h2>
+        <div class="shop-box">
+          <div class="image-preview" id="artworkPreviewContainer">
+            <img id="artworkPreviewImage" src="" alt="Preview Image"
+              style="display:none; width:100%; height:100%; object-fit:contain;" />
+            <span id="artworkPlaceholderText">Image</span>
+          </div>
+          <div class="file-input-wrapper">
+            <label for="artworkFile">Attach File</label>
+            <input type="file" id="artworkFile" accept="image/*" hidden />
+          </div>
+          <div class="info-inputs">
+            <label for="artworkId">Artwork ID</label>
+            <div class="id-search-group" style="display:flex; gap:0.5rem;">
+              <input type="text" id="artworkId" placeholder="Artwork ID" />
+              <button id="btnApply">Search</button>
+            </div>
+            <div class="btn-group">
+              <button id="btnRegisterArtwork" type="button">Register</button>
+              <button id="btnUpdateArtwork" type="button">Update</button>
+              <button id="btnDeleteArtwork" type="button">Delete</button>
+              <button id="btnCancelArtwork" type="button">Clear</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <style>
+        #btnApply,
+        #btnRegisterArtwork,
+        #btnUpdateArtwork,
+        #btnDeleteArtwork,
+        #btnCancelArtwork {
+          background: #000 !important;
+          color: #fff !important;
+          border: none !important;
+          padding: .5rem 1rem !important;
+          border-radius: .25rem !important;
+          cursor: pointer !important;
+          font-weight: 600 !important;
+        }
+
+        .artwork-manage h2 {
+          font-size: 2rem;
+          /* 글자 크기 (약 32px) */
+          font-weight: bold;
+          /* 글자 굵게 */
+          text-align: left !important;
+        }
+      </style>
+
+      <!--  shop-manage -->
+
+      <hr style="margin: 2.5rem 0; border-top: .125rem solid #eee;" />
+
+      <section class="shop-manage" data-section="SHOP">
+        <h2>Artshop Management</h2>
+        <div class="shop-box">
+          <div class="image-preview" id="shopPreviewContainer">
+            <img id="shopPreviewImage" src="" alt="Preview Image"
+              style="display:none; width:100%; height:100%; object-fit:contain;" />
+            <span id="shopPlaceholderText">Image</span>
+          </div>
+          <div class="file-input-wrapper">
+            <label for="shopImage">Attach File</label>
+            <input type="file" id="shopImage" accept="image/*" hidden />
+          </div>
+          <div class="info-inputs">
+            <label for="productId">Artwork ID</label>
+            <div class="id-search-group">
+              <input type="text" id="productId" placeholder="Artwork ID" />
+              <button id="btnSearch">Search</button>
+            </div>
+            <label for="titleInput">Title</label>
+            <input type="text" id="titleInput" placeholder="Enter title" />
+            <label for="descInput">Description</label>
+            <textarea id="descInput" placeholder="Enter artwork description"></textarea>
+            <label for="priceInput">Price</label>
+            <input type="number" id="priceInput" placeholder="Enter price" />
+            <div class="btn-group">
+              <button id="btnRegister">Register</button>
+              <button id="btnUpdate">Update</button>
+              <button id="btnDelete">Delete</button>
+              <button id="btnClear">Clear</button>
+            </div>
+          </div>
+        </div>
+      </section>
+  </main>
+
+  <!---->
+
+
+
+  <style>
+    .shop-manage h2 {
+      font-size: 2rem;
+      /* 글자 크기 (약 32px) */
+      font-weight: bold;
+      /* 글자 굵게 */
+      text-align: left !important;
+    }
+
+    .shop-manage button {
+      background-color: #000 !important;
+      /* 검은색 배경 (강제 적용) */
+      color: #fff !important;
+      /* 흰 글씨 (강제 적용) */
+      border: none !important;
+      /* 기존 테두리 제거 */
+      padding: 0.5rem 1rem;
+      /* 여백(버튼 크기) */
+      border-radius: 0.25rem;
+      /* 모서리 약간 둥글게 */
+      cursor: pointer;
+    }
+
+    .shop-manage[data-section="SHOP"] label {
+      font-size: 0.85rem;
+      /* 글씨 크기 줄이기 */
+      font-weight: 400;
+      /* 두께 조절 (옵션) */
+      color: #333;
+      /* 색상도 필요하면 지정 */
+    }
+
+    /* 카드 스타일 */
+    .solo-admin-card {
+      background-color: #f9f9f9 !important;
+      border: none !important;
+      border-radius: .625rem !important;
+      padding: 1.5rem !important;
+      margin-bottom: 1.875rem !important;
+      box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.05) !important;
+    }
+
+    /* 미리보기 박스 */
+    .solo-dropzone {
+      background-color: #f3f3f3 !important;
+      border: none !important;
+      border-radius: .625rem !important;
+      height: 20rem !important;
+      display: grid !important;
+      place-items: center !important;
+      overflow: hidden !important;
+      box-shadow: 0 .25rem .75rem rgba(0, 0, 0, 0.06) !important;
+    }
+
+    /* Artwork Attach File 버튼 강제 스타일 */
+    .file-input-wrapper label[for="artworkFile"] {
+      cursor: pointer !important;
+      background-color: #000 !important;
+      /* 검은색 배경 (강제 적용) */
+      color: #fff !important;
+      /* 흰 글씨 (강제 적용) */
+      border: none !important;
+      /* 기존 테두리 제거 */
+      padding: 0.5rem 1rem;
+      /* 여백(버튼 크기) */
+      border-radius: 0.25rem;
+      /* 모서리 약간 둥글게 */
+    }
+  </style>
+  <!--  -->
 
 
   </main>

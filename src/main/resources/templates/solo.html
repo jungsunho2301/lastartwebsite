@@ -15,19 +15,17 @@
         body {
             margin: 0;
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #fff;
+            background-color: #f9f9f9;
             color: #111;
         }
 
         .hero-section {
             width: 100%;
             padding: 6rem 0;
-            /* 6rem top & bottom */
             background-color: #f9f9f9;
             text-align: center;
             font-family: 'Roboto Serif', serif;
             font-size: 3.75rem;
-            /* 사용자 요청 */
             font-weight: 800;
             font-style: italic;
             letter-spacing: -0.0625rem;
@@ -42,10 +40,192 @@
 
         .hero-title {
             font-family: 'Playfair Display', serif;
-            font-size: 5rem;
-            /* 약 5rem */
+            font-size: clamp(3rem, 10vw, 6rem);
+            /* 최소 3rem(48px), 화면 너비의 10% 비율, 최대 6rem(96px) */
             font-weight: 600;
             margin-bottom: 0.5rem;
+        }
+
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* 카드(포스터) 타이틀 버튼 */
+        .title-btn {
+            /* 모바일~데스크톱까지 부드럽게 커지는 크기 */
+            font-size: clamp(1.5rem, 4.2vw, 2rem);
+            line-height: 1.1;
+            text-underline-offset: 4px;
+            letter-spacing: 0.01em;
+        }
+
+        /* ========================= 카드 썸네일(그리드) ========================== */
+        #grid>* {
+            min-height: 40rem;
+            display: flex;
+            flex-direction: column;
+            border-radius: .75rem;
+            overflow: hidden;
+            box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .08);
+            background: #fff;
+        }
+
+        #grid>*> :first-child {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #grid>*> :first-child img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 썸네일은 꽉 채우기 */
+            display: block;
+        }
+
+        /* 상태 라벨 숨김 */
+        #metaInfo {
+            display: none !important;
+        }
+
+        /* ========================= 모달(풀스크린 뷰어) ========================== */
+        /* 헤더(타이틀/ESC) 숨김 — 헤더 래퍼에 id="modalHeader" 반드시 존재 */
+        #modalHeader {
+            display: none !important;
+        }
+
+        /* 모달 박스: 화면 전체 사용 */
+        #modal .modal-box {
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
+            max-height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            display: flex;
+            flex-direction: column;
+            background: #000;
+            overflow: hidden;
+            /* 스크롤 대신 축소 */
+        }
+
+        /* 뷰어: 전체 화면 채움 */
+        #viewer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        /* ===== 부드러운 슬라이드/페이드 전환 핵심 =====
+       - 이미지 두 장을 겹쳐두고(active/inactive) 부드럽게 교차
+       - JS에서 src 주입 후 클래스 토글로 트랜지션 발생
+    */
+        .viewer-layer {
+            position: absolute !important;
+            inset: 0 !important;
+            margin: auto !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+            object-fit: contain !important;
+            display: block !important;
+            user-select: none;
+            pointer-events: none;
+            /* 화살표/배경 클릭에 방해 안 되도록 */
+            opacity: 0;
+            transform: translateX(1.25rem);
+            /* 살짝 오른쪽에서 들어오게 */
+            transition: opacity 280ms ease, transform 320ms ease;
+            will-change: opacity, transform;
+        }
+
+        .viewer-layer.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 2;
+        }
+
+        .viewer-layer.inactive {
+            opacity: 0;
+            transform: translateX(-1.25rem);
+            /* 이전 이미지는 살짝 왼쪽으로 사라짐 */
+            z-index: 1;
+        }
+
+        /* 하단 캡션: 반투명 오버레이(항상 보임) */
+        #viewer .caption-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: .6rem .9rem;
+            background: rgba(0, 0, 0, .55);
+            color: #fff;
+            font-size: 1rem;
+            line-height: 1.25;
+            text-align: center;
+            z-index: 5;
+            /* 화살표 아래/위는 상관없음 */
+        }
+
+        /* 화살표: 좌/우 측면 중앙 고정 */
+        #modal .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, .9);
+            color: #111;
+            font-size: 2rem;
+            font-weight: 800;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
+            z-index: 6;
+            user-select: none;
+        }
+
+        #prevBtn {
+            left: 1rem;
+        }
+
+        #nextBtn {
+            right: 1rem;
+        }
+
+        #modal .nav-btn:hover {
+            background: #fff;
+        }
+
+        #modal .nav-btn:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+        }
+
+        /* 안전장치: 모달 내부의 다른 img 전역 규칙 무력화 */
+        #modal .modal-box img {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+            object-fit: contain !important;
+            position: static;
+        }
+
+        footer {
+            margin-top: 3rem;
+            /* 본문(#f9f9f9) 배경이 드러나는 여백 */
+            background: #111;
+            /* 푸터 배경은 유지 */
+            color: #fff;
         }
     </style>
 </head>
@@ -129,402 +309,320 @@
 
 
     <!-- 솔로 시작 -->
+    <main class="max-w-7xl mx-auto px-[1rem] pb-[3rem]">
+        <!-- 상단 상태 라벨 -->
+        <div class="flex items-center justify-between mb-[1rem]">
+            <div class="text-sm text-gray-500" id="metaInfo">Loading…</div>
+        </div>
 
+        <!-- 3열 카드 그리드 -->
+        <section id="grid" class="grid grid-cols-1 md:grid-cols-3 gap-[1rem]"></section>
 
+        <!-- 바닥 상태 (무한 스크롤 쓴다면 필요하지만 지금은 참고용) -->
+        <div id="infiniteSentinel" class="py-[2rem] text-center text-gray-400 text-sm hidden">Loading more…</div>
+    </main>
 
-    <!-- (선택) 미리보기 프리로드 -->
-    <link rel="preload" as="image" href="/images/placeholder-hero.jpg" />
-
-    <style>
-        :root {
-            --fg: #111;
-            --muted: #6b7280;
-            --line: #e5e7eb;
-            --chip: #f3f4f6;
-        }
-
-        * {
-            box-sizing: border-box
-        }
-
-        body {
-            margin: 0;
-            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Apple SD Gothic Neo, Malgun Gothic, sans-serif;
-            color: var(--fg);
-            background: #fff;
-        }
-
-        /* Hero */
-        .solo-hero {
-            position: relative;
-            width: 100%;
-            height: clamp(18rem, 42vw, 36rem);
-            background: #000;
-            display: grid;
-            place-items: center;
-            overflow: hidden
-        }
-
-        .solo-hero img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: .9;
-            filter: contrast(1.05) saturate(1.05)
-        }
-
-        .solo-hero .veil {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(0, 0, 0, .35), rgba(0, 0, 0, .25))
-        }
-
-        .solo-hero .meta {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            color: #fff;
-            padding: 0 1rem
-        }
-
-        .solo-hero .title {
-            font-size: clamp(1.5rem, 4vw, 3rem);
-            font-weight: 800;
-            letter-spacing: .02em
-        }
-
-        .solo-hero .date {
-            margin-top: .25rem;
-            font-size: clamp(.9rem, 1.6vw, 1.125rem);
-            opacity: .9
-        }
-
-        .container {
-            max-width: 76rem;
-            margin: 0 auto;
-            padding: 2rem 1rem
-        }
-
-        .section {
-            margin-top: 2rem
-        }
-
-        .btn {
-            appearance: none;
-            border: 1px solid var(--fg);
-            background: var(--fg);
-            color: #fff;
-            padding: .625rem 1rem;
-            border-radius: .75rem;
-            font-weight: 700;
-            cursor: pointer
-        }
-
-        .btn.ghost {
-            background: transparent;
-            color: var(--fg)
-        }
-
-        /* Modal */
-        .backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 50
-        }
-
-        .backdrop.show {
-            display: flex
-        }
-
-        .modal {
-            width: min(64rem, 92vw);
-            max-height: 88vh;
-            background: #fff;
-            border-radius: .75rem;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
-            display: flex;
-            flex-direction: column
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1rem .75rem;
-            border-bottom: 1px solid var(--line)
-        }
-
-        .modal-title {
-            margin: 0;
-            font-size: 1.125rem;
-            font-weight: 800
-        }
-
-        .modal-close {
-            appearance: none;
-            border: none;
-            background: transparent;
-            font-size: 1.5rem;
-            cursor: pointer
-        }
-
-        .modal-body {
-            padding: 1rem;
-            overflow: auto
-        }
-
-        /* Intro + Gallery */
-        .intro {
-            background: var(--chip);
-            border: 1px solid var(--line);
-            border-radius: .5rem;
-            padding: 1rem;
-            white-space: pre-wrap;
-            color: #222
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 1rem
-        }
-
-        .g-item {
-            border: 1px solid var(--line);
-            border-radius: .5rem;
-            overflow: hidden;
-            background: #fff
-        }
-
-        .g-thumb {
-            width: 100%;
-            aspect-ratio: 4/3;
-            display: block;
-            object-fit: cover
-        }
-
-        .g-caption {
-            padding: .5rem .75rem;
-            font-size: .9375rem
-        }
-
-        @media (max-width:900px) {
-            .gallery {
-                grid-template-columns: 1fr 1fr
-            }
-        }
-
-        @media (max-width:520px) {
-            .gallery {
-                grid-template-columns: 1fr
-            }
-        }
-
-        /* Skeleton */
-        .skeleton {
-            position: relative;
-            overflow: hidden;
-            background: #f3f4f6
-        }
-
-        .skeleton::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            transform: translateX(-100%);
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .5), transparent);
-            animation: shimmer 1.2s infinite;
-        }
-
-        @keyframes shimmer {
-            100% {
-                transform: translateX(100%)
-            }
-        }
-
-        .muted {
-            color: var(--muted)
-        }
-    </style>
-
-    <!-- sanitize (defer: DOMContentLoaded 전에 실행됨) -->
-    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
-    </head>
-
-    <body data-default-title="">
-        <!-- Hero -->
-        <header class="solo-hero" aria-label="Solo exhibition header">
-            <img id="heroImg" alt="" src="/images/placeholder-hero.jpg" />
-            <div class="veil" aria-hidden="true"></div>
-            <div class="meta">
-                <h1 id="heroTitle" class="title">Loading…</h1>
-                <p id="heroDate" class="date"></p>
-                <div style="margin-top:1rem">
-                    <button class="btn" id="openModalBtn">미리보기</button>
-                    <button class="btn ghost" id="shareBtn" aria-label="링크 복사">공유</button>
-                </div>
+    <!-- 상세 모달 (풀스크린 뷰어 + 좌/우 내비 + 캡션) -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-[1rem]">
+        <div class="modal-box bg-white rounded-2xl overflow-hidden flex flex-col w-full max-w-[80rem] h-[90vh]">
+            <!-- Header (숨김) -->
+            <div id="modalHeader" class="flex items-start justify-between px-[0.75rem] py-[0.5rem] border-b flex-none">
+                <h2 id="modalTitle" class="text-[3rem] font-extrabold leading-tight break-words font-playfair"></h2>
+                <button id="closeModal"
+                    class="ml-[0.5rem] text-[0.9rem] bg-white text-gray-900 px-[0.5rem] py-[0.25rem] rounded-md shadow"
+                    title="Escape key to close">
+                    Esc
+                </button>
             </div>
-        </header>
 
-        <main class="container">
-            <section class="section">
-                <p class="muted">* 대시보드에서 등록된 타이틀(ID)의 헤더/모달 데이터를 표시합니다.</p>
-            </section>
-        </main>
-
-        <!-- Modal -->
-        <div class="backdrop" id="backdrop" aria-hidden="true" role="dialog" aria-modal="true">
-            <div class="modal" role="document">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="modalTitle">Loading…</h3>
-                    <button class="modal-close" id="modalClose" aria-label="Close">×</button>
-                </div>
-                <div class="modal-body">
-                    <div id="intro" class="intro skeleton"></div>
-                    <div id="gallery" class="gallery" aria-live="polite" aria-busy="true" style="margin-top:1rem"></div>
+            <!-- Body: 풀스크린 뷰어 -->
+            <div class="flex-1">
+                <div id="viewer" class="relative w-full h-full">
+                    <!-- 두 레이어로 크로스페이드 -->
+                    <img id="viewerImgA" alt="" class="viewer-layer inactive" draggable="false" />
+                    <img id="viewerImgB" alt="" class="viewer-layer inactive" draggable="false" />
+                    <!-- 좌/우 화살표 -->
+                    <button id="prevBtn" class="nav-btn">‹</button>
+                    <button id="nextBtn" class="nav-btn">›</button>
+                    <!-- 하단 오버레이 캡션 -->
+                    <div id="viewerCaption" class="caption-overlay"></div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script>
-            // 모든 DOM + defer 스크립트(=DOMPurify) 로드 이후 실행
-            window.addEventListener('DOMContentLoaded', () => {
-                const params = new URLSearchParams(location.search);
-                const DEFAULT_TITLE = document.body.getAttribute('data-default-title') || '';
-                const title = params.get('title') || DEFAULT_TITLE || '';
 
-                const heroImg = document.getElementById('heroImg');
-                const heroTitle = document.getElementById('heroTitle');
-                const heroDate = document.getElementById('heroDate');
-                const openBtn = document.getElementById('openModalBtn');
-                const shareBtn = document.getElementById('shareBtn');
+    <!-- ===== 솔로 페이지 동작 스크립트 (부드러운 슬라이드 전환 포함) ===== -->
+    <script>
+        /* ========= Solo Exhibitions – Title click => Large Image Viewer ========= */
 
-                const backdrop = document.getElementById('backdrop');
-                const modalClose = document.getElementById('modalClose');
-                const modalTitle = document.getElementById('modalTitle');
-                const intro = document.getElementById('intro');
-                const gallery = document.getElementById('gallery');
+        /* ---- 상태 ---- */
+        const state = { page: 0, size: 12, totalLoaded: 0 };
 
-                if (!title) {
-                    heroTitle.textContent = '타이틀이 없습니다';
-                    heroDate.textContent = 'URL에 ?title=YOUR_ID 를 넣어주세요';
-                    openBtn.disabled = true;
-                    shareBtn.disabled = true;
+        /* ---- 유틸 ---- */
+        const $ = (s) => document.querySelector(s);
+        function escapeHtml(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        /* ---- DOM 캐시 ---- */
+        const grid = $('#grid');
+        const metaInfo = $('#metaInfo');
+        const modal = $('#modal');
+        const closeModalBtn = $('#closeModal');
+        const modalTitle = $('#modalTitle');
+
+        // 뷰어 관련(더블 버퍼링용 이미지 두 장)
+        const layerA = $('#viewerImgA');
+        const layerB = $('#viewerImgB');
+        const viewerCaption = $('#viewerCaption');
+        const prevBtn = $('#prevBtn');
+        const nextBtn = $('#nextBtn');
+
+        /* ---- 슬라이드 상태 ---- */
+        let currentArts = [];
+        let currentIdx = 0;
+        let keyHandlerBound = false;
+        let activeLayer = 'A'; // 현재 화면에 보이는 레이어 ('A' | 'B')
+
+        /* ==================== 전시 목록 로드 ==================== */
+        async function loadExhibitions() {
+            if (metaInfo) metaInfo.textContent = 'Loading…';
+            try {
+                const res = await fetch(`/api/solo/exhibitions?page=${state.page}&size=${state.size}`);
+                if (!res.ok) {
+                    grid.innerHTML = `<div class="text-gray-500">Failed to load (${res.status}).</div>`;
+                    if (metaInfo) metaInfo.textContent = 'Load error.';
                     return;
                 }
+                const list = await res.json(); // [{id,title,yearMonth,posterImagePath}, ...]
+                state.totalLoaded = list.length;
+                if (metaInfo) metaInfo.textContent = `Loaded ${state.totalLoaded} item(s)`;
+                renderExhibitionGrid(list);
+            } catch (e) {
+                console.error(e);
+                grid.innerHTML = `<div class="text-gray-500">Load error.</div>`;
+                if (metaInfo) metaInfo.textContent = 'Load error.';
+            }
+        }
 
-                // ===== API 연결 지점 (주석만) =====
-                // [API: HEADER] GET /api/solo/{title}       → { title, date, bgImageUrl }
-                // [API: MODAL ] GET /api/solo/{title}/modal → { intro, photos:[{ url, title }] }
+        /* ==================== 카드 렌더 ==================== */
+        function renderExhibitionGrid(list) {
+            grid.innerHTML = '';
+            if (!list.length) {
+                grid.innerHTML = `<div class="text-gray-500">No exhibitions yet.</div>`;
+                return;
+            }
 
-                // 안정성 있는 sanitize
-                const sanitize = (html) => (window.DOMPurify ? DOMPurify.sanitize(html) : String(html || ''));
+            list.forEach(x => {
+                const card = document.createElement('article');
+                card.className = 'rounded-2xl overflow-hidden border bg-white';
+                card.innerHTML = `
+          <div class="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden">
+            <img src="${x.posterImagePath ? escapeHtml(x.posterImagePath) : ''}"
+                 alt="${escapeHtml(x.title || '')}"
+                 class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-[1rem]">
+              <div class="text-sm md:text-base text-gray-100 mb-[0.25rem]">
+                ${escapeHtml(x.yearMonth || '')}
+              </div>
+              <button class="title-btn text-[1.25rem] md:text-[1.5rem] font-extrabold text-white underline font-playfair"
+                      data-id="${x.id}"
+                      data-title="${escapeHtml(x.title || '(untitled)')}">
+                ${escapeHtml(x.title || '(untitled)')}
+              </button>
+            </div>
+          </div>
+        `;
 
-                // --- Header 로드 (MOCK) ---
-                async function loadHeader() {
-                    try {
-                        // const res = await fetch(`/api/solo/${encodeURIComponent(title)}`);
-                        // const data = await res.json();
-                        const data = { title, date: '2025-09-20', bgImageUrl: '' }; // MOCK
-
-                        heroTitle.textContent = data.title || title;
-                        heroDate.textContent = data.date || '';
-                        if (data.bgImageUrl) heroImg.src = data.bgImageUrl;
-                    } catch (e) {
-                        heroTitle.textContent = title;
-                        heroDate.textContent = '';
-                        console.error('HEADER load failed:', e);
-                    }
-                }
-
-                // --- Modal 로드 (MOCK) ---
-                async function loadModal() {
-                    try {
-                        // const res = await fetch(`/api/solo/${encodeURIComponent(title)}/modal`);
-                        // const data = await res.json();
-                        const data = {
-                            intro: '샘플 설명입니다.\n모달 상단에 표시됩니다.',
-                            photos: [
-                                { url: '/images/sample1.jpg', title: 'Installation View' },
-                                { url: '/images/sample2.jpg', title: 'Painting #1' },
-                                { url: '/images/sample3.jpg', title: 'Painting #2' }
-                            ]
-                        }; // MOCK
-
-                        intro.classList.remove('skeleton');
-                        intro.textContent = sanitize(data.intro);
-
-                        gallery.innerHTML = '';
-                        const list = Array.isArray(data.photos) ? data.photos : [];
-                        if (!list.length) {
-                            gallery.innerHTML = '<p class="muted">등록된 이미지가 없습니다.</p>';
-                        } else {
-                            for (const item of list) {
-                                const fig = document.createElement('figure');
-                                fig.className = 'g-item';
-
-                                const img = document.createElement('img');
-                                img.loading = 'lazy';
-                                img.alt = item.title || '';
-                                img.src = item.url || '/images/placeholder-hero.jpg';
-                                img.className = 'g-thumb';
-
-                                const cap = document.createElement('figcaption');
-                                cap.className = 'g-caption';
-                                cap.textContent = item.title || '';
-
-                                fig.appendChild(img);
-                                fig.appendChild(cap);
-                                gallery.appendChild(fig);
-                            }
-                        }
-                        gallery.setAttribute('aria-busy', 'false');
-                    } catch (e) {
-                        intro.classList.remove('skeleton');
-                        intro.textContent = '';
-                        gallery.innerHTML = '<p class="muted">데이터를 불러오지 못했습니다.</p>';
-                        gallery.setAttribute('aria-busy', 'false');
-                        console.error('MODAL load failed:', e);
-                    }
-                }
-
-                // 공유 버튼
-                shareBtn.addEventListener('click', async () => {
-                    try {
-                        const url = new URL(location.href);
-                        url.searchParams.set('title', title);
-                        await navigator.clipboard.writeText(url.toString());
-                        const prev = shareBtn.textContent;
-                        shareBtn.textContent = '복사됨!';
-                        setTimeout(() => (shareBtn.textContent = prev), 1200);
-                    } catch {
-                        alert('클립보드 복사 실패');
-                    }
+                // 타이틀 클릭 → 첫 번째 사진부터 큰 뷰어로
+                card.querySelector('button.title-btn').addEventListener('click', async (ev) => {
+                    ev.stopPropagation();
+                    const id = Number(ev.currentTarget.getAttribute('data-id'));
+                    const title = ev.currentTarget.getAttribute('data-title');
+                    await openDetail({ id, title });
                 });
 
-                // 모달 열기/닫기
-                const openModal = () => { backdrop.classList.add('show'); backdrop.setAttribute('aria-hidden', 'false'); };
-                const closeModal = () => { backdrop.classList.remove('show'); backdrop.setAttribute('aria-hidden', 'true'); };
-
-                openBtn.addEventListener('click', () => { modalTitle.textContent = title; openModal(); });
-                modalClose.addEventListener('click', closeModal);
-                backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeModal(); });
-                window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-
-                // 초기 로드
-                loadHeader();
-                loadModal();
+                grid.appendChild(card);
             });
-        </script>
-        <!-- 솔로 끝 -->
+        }
+
+        /* ==================== 상세 모달: 첫 사진부터 ==================== */
+        async function openDetail(exh) {
+            if (!modal || !modalTitle || !layerA || !layerB) return;
+
+            modalTitle.textContent = exh.title || '(untitled)';
+            resetLayers(); // 초기화
+            viewerCaption.textContent = 'Loading…';
+            setNavDisabled(true, true);
+
+            try {
+                const res = await fetch(`/api/solo/exhibitions/${exh.id}/arts?page=0&size=200`);
+                currentArts = res.ok ? await res.json() : [];
+                currentIdx = 0;
+                if (!currentArts.length) {
+                    viewerCaption.textContent = 'No artworks.';
+                } else {
+                    showSlide(0, /*direction*/ 0);
+                }
+            } catch (e) {
+                console.error(e);
+                viewerCaption.textContent = 'Load error.';
+            }
+
+            openModal();
+        }
+
+        // 레이어 상태 초기화
+        function resetLayers() {
+            [layerA, layerB].forEach(l => {
+                l.src = '';
+                l.alt = '';
+                l.classList.remove('active', 'inactive');
+                l.classList.add('inactive');
+            });
+            activeLayer = 'A';
+        }
+
+        // 슬라이드 표시 (direction: -1 왼쪽으로, +1 오른쪽으로, 0 초기)
+        function showSlide(idx, direction = 0) {
+            if (!currentArts.length) return;
+            const nextIdx = Math.max(0, Math.min(idx, currentArts.length - 1));
+            const a = currentArts[nextIdx] || {};
+            const nextSrc = a.imagePath || '';
+            const nextAlt = a.title || '';
+
+            viewerCaption.textContent = nextAlt;
+            setNavDisabled(nextIdx === 0, nextIdx === currentArts.length - 1);
+
+            // 비활성 레이어에 먼저 로드 → 로드 완료되면 크로스페이드
+            const incoming = (activeLayer === 'A') ? layerB : layerA;
+            const outgoing = (activeLayer === 'A') ? layerA : layerB;
+
+            // 방향감(살짝 이동 방향만 바꿔줌)
+            incoming.style.transform = direction < 0 ? 'translateX(-1.25rem)' : 'translateX(1.25rem)';
+            outgoing.style.transform = 'translateX(0)';
+
+            const img = new Image();
+            img.onload = () => {
+                // 새 이미지 주입
+                incoming.src = nextSrc;
+                incoming.alt = nextAlt;
+
+                // 트랜지션 시작: incoming 활성화, outgoing 비활성화
+                // 먼저 현재 클래스 정리
+                incoming.classList.remove('inactive');
+                outgoing.classList.remove('active');
+
+                // 브라우저가 스타일 적용을 인지하도록 한 프레임 쉬고 active 부여
+                requestAnimationFrame(() => {
+                    // outgoing을 inactive로 만들어 서서히 사라지게
+                    outgoing.classList.add('inactive');
+                    // incoming을 active로 만들어 서서히 나타나게
+                    incoming.classList.add('active');
+                });
+
+                // 현재 활성 레이어 스왑
+                activeLayer = (activeLayer === 'A') ? 'B' : 'A';
+
+                // 인덱스 갱신
+                currentIdx = nextIdx;
+
+                // 프리로드
+                preloadAround(currentIdx);
+            };
+            img.onerror = () => {
+                // 이미지 로드 실패 시 캡션만 표시
+                incoming.src = '';
+                incoming.alt = '';
+                viewerCaption.textContent = nextAlt || '(image failed to load)';
+                // 인덱스만 갱신
+                currentIdx = nextIdx;
+                preloadAround(currentIdx);
+            };
+            img.src = nextSrc;
+        }
+
+        function setNavDisabled(disablePrev, disableNext) {
+            if (prevBtn) prevBtn.disabled = !!disablePrev;
+            if (nextBtn) nextBtn.disabled = !!disableNext;
+        }
+
+        function preloadAround(i) {
+            [i - 1, i + 1].forEach(k => {
+                if (k >= 0 && k < currentArts.length) {
+                    const p = new Image();
+                    p.src = currentArts[k].imagePath || '';
+                }
+            });
+        }
+
+        /* 좌/우 버튼 */
+        prevBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIdx > 0) showSlide(currentIdx - 1, -1);
+        });
+        nextBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIdx < currentArts.length - 1) showSlide(currentIdx + 1, +1);
+        });
+
+        /* 모달 열고 닫기 */
+        function openModal() {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            if (!keyHandlerBound) {
+                keyHandlerBound = true;
+                window.addEventListener('keydown', onKey);
+            }
+        }
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            if (keyHandlerBound) {
+                keyHandlerBound = false;
+                window.removeEventListener('keydown', onKey);
+            }
+        }
+        function onKey(e) {
+            if (modal.classList.contains('hidden')) return;
+            if (e.key === 'ArrowLeft' && currentIdx > 0) showSlide(currentIdx - 1, -1);
+            if (e.key === 'ArrowRight' && currentIdx < currentArts.length - 1) showSlide(currentIdx + 1, +1);
+            if (e.key === 'Escape') closeModal();
+        }
+
+        closeModalBtn && closeModalBtn.addEventListener('click', closeModal);
+
+        // 배경(모달 바깥 검은 덮개) 클릭 시 닫기
+        modal && modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // 사진 이외 영역(뷰어 배경/캡션/여백) 클릭 시 닫기
+        const viewerEl = document.getElementById('viewer');
+        viewerEl && viewerEl.addEventListener('click', (e) => {
+            const t = e.target;
+            if (t === layerA || t === layerB || t === prevBtn || t === nextBtn) return; // 이미지/화살표 클릭이면 닫지 않음
+            if (t.id === 'viewerCaption' || t.closest('#viewerCaption')) return closeModal();
+            if (t === viewerEl) closeModal();
+        });
+
+        // 화살표/이미지는 닫기 이벤트 전파 방지
+        [prevBtn, nextBtn, layerA, layerB].forEach(el => {
+            el && el.addEventListener('click', (e) => e.stopPropagation());
+        });
+
+        /* 초기 로드 */
+        loadExhibitions();
+    </script>
+    <!-- ===== 솔로 끝 ===== -->
+
+
+
+    <!-- 솔로 끝 -->
 
 
 
@@ -534,53 +632,52 @@
 
 
 
-        <footer>
-            <nav>
-                <a th:href="@{/index}">HOME</a>
-                <a th:href="@{/privacy}">PRIVACY POLICY</a>
-                <a th:href="@{/terms}">TERMS OF USE</a>
-                <a th:href="@{/contact}">CONTACT</a>
-            </nav>
-            <div class="footer-sns">
-                <!-- 인스타 -->
-                <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram"
-                    style="display:none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path
-                            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
-                    </svg>
-                </a>
-
-                <!-- 페이스북 -->
-                <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook"
-                    style="display:none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path
-                            d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
-                    </svg>
-            </div>
+    <footer>
+        <nav>
+            <a th:href="@{/index}">HOME</a>
+            <a th:href="@{/privacy}">PRIVACY POLICY</a>
+            <a th:href="@{/terms}">TERMS OF USE</a>
+            <a th:href="@{/contact}">CONTACT</a>
+        </nav>
+        <div class="footer-sns">
+            <!-- 인스타 -->
+            <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram"
+                style="display:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path
+                        d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
+                </svg>
             </a>
 
-            <div class="footer-logo">Walid Jahin Art Studio</div>
-            <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
-        </footer>
+            <!-- 페이스북 -->
+            <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path
+                        d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
+                </svg>
+        </div>
+        </a>
+
+        <div class="footer-logo">Walid Jahin Art Studio</div>
+        <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+    </footer>
 
 
 
 
 
-        <script>
-            window.gtranslateSettings = {
-                "default_language": "en",
-                "native_language_names": true,
-                "languages": ["en", "ar", "ko"],
-                "wrapper_selector": ".gtranslate_wrapper",
-                "flag_size": 24,
-                "switcher_horizontal_position": "inline"
-            };
-        </script>
-        <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
-        <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
-    </body>
+    <script>
+        window.gtranslateSettings = {
+            "default_language": "en",
+            "native_language_names": true,
+            "languages": ["en", "ar", "ko"],
+            "wrapper_selector": ".gtranslate_wrapper",
+            "flag_size": 24,
+            "switcher_horizontal_position": "inline"
+        };
+    </script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+</body>
 
 </html>
