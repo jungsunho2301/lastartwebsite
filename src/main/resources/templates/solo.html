@@ -174,23 +174,24 @@
             /* 화살표 아래/위는 상관없음 */
         }
 
-        /* 화살표: 좌/우 측면 중앙 고정 */
         #modal .nav-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
+            /* 수직 중앙 */
             width: 3rem;
             height: 3rem;
             border-radius: 9999px;
             background: rgba(255, 255, 255, .9);
             color: #111;
-            font-size: 2rem;
-            font-weight: 800;
-            display: grid;
-            place-items: center;
+            /* SVG stroke가 이 색을 따라감 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
             z-index: 6;
             user-select: none;
+            line-height: 1;
         }
 
         #prevBtn {
@@ -201,6 +202,13 @@
             right: 1rem;
         }
 
+        #modal .nav-btn svg {
+            display: block;
+        }
+
+        /* 폰트 영향 제거, 진짜 중앙 */
+
+
         #modal .nav-btn:hover {
             background: #fff;
         }
@@ -209,6 +217,8 @@
             opacity: .35;
             cursor: not-allowed;
         }
+
+
 
         /* 안전장치: 모달 내부의 다른 img 전역 규칙 무력화 */
         #modal .modal-box img {
@@ -318,8 +328,9 @@
         <!-- 3열 카드 그리드 -->
         <section id="grid" class="grid grid-cols-1 md:grid-cols-3 gap-[1rem]"></section>
 
-        <!-- 바닥 상태 (무한 스크롤 쓴다면 필요하지만 지금은 참고용) -->
-        <div id="infiniteSentinel" class="py-[2rem] text-center text-gray-400 text-sm hidden">Loading more…</div>
+        <!-- 바닥 상태 (무한 스크롤 sentinel) -->
+        <div id="sentinel" class="py-[2rem] text-center text-gray-400 text-sm">Loading more…</div>
+
     </main>
 
     <!-- 상세 모달 (풀스크린 뷰어 + 좌/우 내비 + 캡션) -->
@@ -342,8 +353,19 @@
                     <img id="viewerImgA" alt="" class="viewer-layer inactive" draggable="false" />
                     <img id="viewerImgB" alt="" class="viewer-layer inactive" draggable="false" />
                     <!-- 좌/우 화살표 -->
-                    <button id="prevBtn" class="nav-btn">‹</button>
-                    <button id="nextBtn" class="nav-btn">›</button>
+                    <button id="prevBtn" class="nav-btn" aria-label="Previous">
+                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                            <path d="M15 6 L9 12 L15 18" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+
+                    <button id="nextBtn" class="nav-btn" aria-label="Next">
+                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                            <path d="M9 6 L15 12 L9 18" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
                     <!-- 하단 오버레이 캡션 -->
                     <div id="viewerCaption" class="caption-overlay"></div>
                 </div>
@@ -352,7 +374,6 @@
     </div>
 
 
-    <!-- ===== 솔로 페이지 동작 스크립트 (부드러운 슬라이드 전환 포함) ===== -->
     <script>
         /* ========= Solo Exhibitions – Title click => Large Image Viewer ========= */
 
@@ -387,31 +408,60 @@
         let keyHandlerBound = false;
         let activeLayer = 'A'; // 현재 화면에 보이는 레이어 ('A' | 'B')
 
+        /* ---- 페이징/로딩 상태 ---- */
+        let loading = false;
+        let hasNext = true;
+
         /* ==================== 전시 목록 로드 ==================== */
         async function loadExhibitions() {
+            if (loading || !hasNext) return;
+            loading = true;
             if (metaInfo) metaInfo.textContent = 'Loading…';
+
             try {
                 const res = await fetch(`/api/solo/exhibitions?page=${state.page}&size=${state.size}`);
                 if (!res.ok) {
-                    grid.innerHTML = `<div class="text-gray-500">Failed to load (${res.status}).</div>`;
-                    if (metaInfo) metaInfo.textContent = 'Load error.';
+                    if (metaInfo) metaInfo.textContent = `Load error (${res.status}).`;
+                    loading = false;
                     return;
                 }
-                const list = await res.json(); // [{id,title,yearMonth,posterImagePath}, ...]
-                state.totalLoaded = list.length;
+                const raw = await res.json();
+
+                // 다양한 응답 포맷 처리
+                let items = [];
+                let next = false;
+
+                if (Array.isArray(raw)) {
+                    items = raw;
+                    next = items.length === state.size; // 꽉 채우면 다음 페이지 있다고 가정
+                } else if (raw && Array.isArray(raw.items)) {
+                    items = raw.items;
+                    next = typeof raw.hasNext === 'boolean' ? raw.hasNext : (items.length === state.size);
+                } else if (raw && Array.isArray(raw.content)) {
+                    items = raw.content;
+                    next = raw.last === false; // Spring Page: last=false면 다음 있음
+                }
+
+                renderExhibitionGrid(items, { append: state.page > 0 });
+
+                state.totalLoaded += items.length;
                 if (metaInfo) metaInfo.textContent = `Loaded ${state.totalLoaded} item(s)`;
-                renderExhibitionGrid(list);
+
+                hasNext = next;
+                if (hasNext) state.page += 1;
+
             } catch (e) {
                 console.error(e);
-                grid.innerHTML = `<div class="text-gray-500">Load error.</div>`;
                 if (metaInfo) metaInfo.textContent = 'Load error.';
+            } finally {
+                loading = false;
             }
         }
 
         /* ==================== 카드 렌더 ==================== */
-        function renderExhibitionGrid(list) {
-            grid.innerHTML = '';
-            if (!list.length) {
+        function renderExhibitionGrid(list, { append = false } = {}) {
+            if (!append) grid.innerHTML = '';
+            if (!list.length && !append) {
                 grid.innerHTML = `<div class="text-gray-500">No exhibitions yet.</div>`;
                 return;
             }
@@ -420,23 +470,23 @@
                 const card = document.createElement('article');
                 card.className = 'rounded-2xl overflow-hidden border bg-white';
                 card.innerHTML = `
-          <div class="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden">
-            <img src="${x.posterImagePath ? escapeHtml(x.posterImagePath) : ''}"
-                 alt="${escapeHtml(x.title || '')}"
-                 class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-            <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-[1rem]">
-              <div class="text-sm md:text-base text-gray-100 mb-[0.25rem]">
-                ${escapeHtml(x.yearMonth || '')}
-              </div>
-              <button class="title-btn text-[1.25rem] md:text-[1.5rem] font-extrabold text-white underline font-playfair"
-                      data-id="${x.id}"
-                      data-title="${escapeHtml(x.title || '(untitled)')}">
-                ${escapeHtml(x.title || '(untitled)')}
-              </button>
+        <div class="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden">
+          <img src="${x.posterImagePath ? escapeHtml(x.posterImagePath) : ''}"
+               alt="${escapeHtml(x.title || '')}"
+               class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+          <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-[1rem]">
+            <div class="text-sm md:text-base text-gray-100 mb-[0.25rem]">
+              ${escapeHtml(x.yearMonth || '')}
             </div>
+            <button class="title-btn text-[1.25rem] md:text-[1.5rem] font-extrabold text-white underline font-playfair"
+                    data-id="${x.id}"
+                    data-title="${escapeHtml(x.title || '(untitled)')}">
+              ${escapeHtml(x.title || '(untitled)')}
+            </button>
           </div>
-        `;
+        </div>
+      `;
 
                 // 타이틀 클릭 → 첫 번째 사진부터 큰 뷰어로
                 card.querySelector('button.title-btn').addEventListener('click', async (ev) => {
@@ -505,7 +555,6 @@
             incoming.style.transform = 'translateX(0)';
             outgoing.style.transform = 'translateX(0)';
 
-
             const img = new Image();
             img.onload = () => {
                 // 새 이미지 주입
@@ -513,16 +562,12 @@
                 incoming.alt = nextAlt;
 
                 // 트랜지션 시작: incoming 활성화, outgoing 비활성화
-                // 먼저 현재 클래스 정리
                 incoming.classList.remove('inactive');
                 outgoing.classList.remove('active');
 
-                // 브라우저가 스타일 적용을 인지하도록 한 프레임 쉬고 active 부여
                 requestAnimationFrame(() => {
-                    // outgoing을 inactive로 만들어 서서히 사라지게
-                    outgoing.classList.add('inactive');
-                    // incoming을 active로 만들어 서서히 나타나게
-                    incoming.classList.add('active');
+                    outgoing.classList.add('inactive'); // 서서히 사라짐
+                    incoming.classList.add('active');   // 서서히 나타남
                 });
 
                 // 현재 활성 레이어 스왑
@@ -535,11 +580,9 @@
                 preloadAround(currentIdx);
             };
             img.onerror = () => {
-                // 이미지 로드 실패 시 캡션만 표시
                 incoming.src = '';
                 incoming.alt = '';
                 viewerCaption.textContent = nextAlt || '(image failed to load)';
-                // 인덱스만 갱신
                 currentIdx = nextIdx;
                 preloadAround(currentIdx);
             };
@@ -615,10 +658,19 @@
             el && el.addEventListener('click', (e) => e.stopPropagation());
         });
 
+        /* ==================== 무한 스크롤 ==================== */
+        const sentinel = document.getElementById('sentinel');
+        if (sentinel) {
+            const io = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) loadExhibitions();
+            }, { rootMargin: '120px 0px' });
+            io.observe(sentinel);
+        }
+
         /* 초기 로드 */
         loadExhibitions();
     </script>
-    <!-- ===== 솔로 끝 ===== -->
+
 
 
 
