@@ -502,9 +502,9 @@
             const incoming = (activeLayer === 'A') ? layerB : layerA;
             const outgoing = (activeLayer === 'A') ? layerA : layerB;
 
-            // 방향감(살짝 이동 방향만 바꿔줌)
-            incoming.style.transform = direction < 0 ? 'translateX(-1.25rem)' : 'translateX(1.25rem)';
+            incoming.style.transform = 'translateX(0)';
             outgoing.style.transform = 'translateX(0)';
+
 
             const img = new Image();
             img.onload = () => {
