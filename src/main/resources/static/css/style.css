@@ -1685,7 +1685,6 @@ footer nav a:focus-visible {
 .footer-bottom {
   margin-top: .25rem;
   text-align: center;
-  color: #1a1a1a;
   font-size: clamp(.8rem, .7rem + .6vw, .95rem);
 }
 
