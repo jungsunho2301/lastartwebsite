@@ -40,7 +40,7 @@ public class ExhibitionCommandService {
             return exhibitionRepository.save(e);
         } catch (Exception e) {
             // 유틸이 IOException 등 던지므로 런타임으로 감싸서 실패 응답
-            throw new RuntimeException("포스터 업로드 실패: " + e.getMessage(), e);
+            throw new RuntimeException("Poster Upload failed: " + e.getMessage(), e);
         }
     }
 

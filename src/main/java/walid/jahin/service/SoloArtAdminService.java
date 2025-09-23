@@ -39,7 +39,7 @@ public class SoloArtAdminService {
 
             return soloArtRepository.save(soloArt);
         } catch (Exception e) {
-            throw new RuntimeException("SoloArt 업로드 실패: " + e.getMessage(), e);
+            throw new RuntimeException("SoloArt Upload failed: " + e.getMessage(), e);
         }
     }
 
