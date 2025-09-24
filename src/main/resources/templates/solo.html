@@ -107,10 +107,11 @@
             border-radius: 0;
             display: flex;
             flex-direction: column;
-            background: #000;
+            background: rgba(0, 0, 0, 0.4);
+            /* 🔹 검정 + 20% 투명 */
             overflow: hidden;
-            /* 스크롤 대신 축소 */
         }
+
 
         /* 뷰어: 전체 화면 채움 */
         #viewer {
@@ -136,7 +137,7 @@
             object-fit: contain !important;
             display: block !important;
             user-select: none;
-            pointer-events: none;
+
             /* 화살표/배경 클릭에 방해 안 되도록 */
             opacity: 0;
             transform: translateX(1.25rem);
@@ -158,21 +159,8 @@
             z-index: 1;
         }
 
-        /* 하단 캡션: 반투명 오버레이(항상 보임) */
-        #viewer .caption-overlay {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            padding: .6rem .9rem;
-            background: rgba(0, 0, 0, .55);
-            color: #fff;
-            font-size: 1rem;
-            line-height: 1.25;
-            text-align: center;
-            z-index: 5;
-            /* 화살표 아래/위는 상관없음 */
-        }
+
+
 
         #modal .nav-btn {
             position: absolute;
@@ -236,6 +224,83 @@
             background: #111;
             /* 푸터 배경은 유지 */
             color: #fff;
+        }
+
+        /* 뷰어 박스 안에서 중앙 정렬 + 전체 보이기 */
+        #viewer {
+            max-width: 70rem;
+            /* 가로 제한 */
+            max-height: 90vh;
+            /* 세로 제한 */
+            margin-left: auto;
+            margin-right: auto;
+            /* margin-top: 2rem;  🔹 여백 제거 */
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(0, 0, 0, 0);
+            /* 🔹 반투명 처리 */
+            border-radius: 0.5rem;
+            /* 선택: 모서리 둥글게 */
+        }
+
+
+
+        /* 두 레이어 공통: 박스를 꽉 채우되 '잘리지 않게' 전체 표시 */
+        .viewer-layer {
+            position: absolute;
+            /* 서로 겹치기 */
+            inset: 0;
+            /* viewer를 꽉 채움 */
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* 비율 유지 + 전체 보이기 */
+            transition: opacity .35s ease;
+            opacity: 1;
+        }
+
+        /* 전환용 상태 클래스 */
+        .viewer-layer.inactive {
+            opacity: 0;
+        }
+
+        #viewerCaption {
+            position: absolute;
+            bottom: 1.5rem;
+            /* 화면 아래쪽 여백 */
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            /* 가운데 정렬 */
+            font-size: 1.5rem !important;
+            /* 🔹 글자 크기 확대 (원하면 더 키울 수 있음) */
+            font-weight: 600;
+            color: #fff;
+            /* 밝은 글씨 */
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+            /* 가독성 보정 */
+            z-index: 10;
+            white-space: normal;
+            /* 여러 줄 허용 */
+        }
+
+
+
+        footer {
+            margin-top: 3rem;
+            /* 본문(#f9f9f9) 배경이 드러나는 여백 */
+            background: #111;
+            /* 푸터 배경은 유지 */
+            color: #fff;
+        }
+
+        /* ===== 강제 지정 패치 ===== */
+        #modal .viewer-layer {
+            pointer-events: auto !important;
+            /* 이미지도 클릭 가능하게 강제 */
         }
     </style>
 </head>
@@ -326,18 +391,19 @@
             <div class="text-sm text-gray-500" id="metaInfo">Loading…</div>
         </div>
 
-        <!-- 3열 카드 그리드 -->
-        <section id="grid" class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-4"></section>
+        <!-- 1열 카드 그리드 (가로 긴 직사각형) -->
+        <section id="grid" class="grid grid-cols-1 gap-y-4"></section>
 
         <!-- 바닥 상태 (무한 스크롤 sentinel) -->
         <div id="sentinel" class="py-4 text-center text-gray-400 text-sm">Loading more…</div>
     </main>
 
-    <!-- 상세 모달 (풀스크린 뷰어 + 좌/우 내비 + 캡션) -->
-    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-[1rem]">
+    <!-- ===== 상세 모달 (풀스크린 뷰어 + 좌/우 내비 + 캡션) ===== -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center p-[1rem]">
         <div class="modal-box bg-white rounded-2xl overflow-hidden flex flex-col w-full max-w-[80rem] h-[90vh]">
-            <!-- Header (숨김) -->
-            <div id="modalHeader" class="flex items-start justify-between px-[0.75rem] py-[0.5rem] border-b flex-none">
+            <!-- Header (필요 시 보여주기; 기본은 숨김) -->
+            <div id="modalHeader"
+                class="hidden flex items-start justify-between px-[0.75rem] py-[0.5rem] border-b flex-none">
                 <h2 id="modalTitle" class="text-[3rem] font-extrabold leading-tight break-words font-playfair"></h2>
                 <button id="closeModal"
                     class="ml-[0.5rem] text-[0.9rem] bg-white text-gray-900 px-[0.5rem] py-[0.25rem] rounded-md shadow"
@@ -347,30 +413,35 @@
             </div>
 
             <!-- Body: 풀스크린 뷰어 -->
-            <div class="flex-1">
-                <div id="viewer" class="relative w-full h-full">
+            <div class="flex-1 relative">
+                <!-- 뷰어(상대 위치 컨테이너) -->
+                <div id="viewer"
+                    class="relative w-full h-full max-w-[70rem] max-h-[80vh] mx-auto flex items-center justify-center">
                     <!-- 두 레이어로 크로스페이드 -->
                     <img id="viewerImgA" alt="" class="viewer-layer inactive" draggable="false" />
                     <img id="viewerImgB" alt="" class="viewer-layer inactive" draggable="false" />
-                    <!-- 좌/우 화살표 -->
-                    <button id="prevBtn" class="nav-btn" aria-label="Previous">
-                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                            <path d="M15 6 L9 12 L15 18" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </button>
-
-                    <button id="nextBtn" class="nav-btn" aria-label="Next">
-                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-                            <path d="M9 6 L15 12 L9 18" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <!-- 하단 오버레이 캡션 -->
-                    <div id="viewerCaption" class="caption-overlay"></div>
                 </div>
+
+                <!-- 좌/우 화살표 (뷰어 위에 겹치도록 절대 위치) -->
+                <button id="prevBtn" class="nav-btn left-2" aria-label="Previous">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                        <path d="M15 6 L9 12 L15 18" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
+                <button id="nextBtn" class="nav-btn right-2" aria-label="Next">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                        <path d="M9 6 L15 12 L9 18" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
+                <!-- 하단 오버레이 캡션 -->
+                <div id="viewerCaption" class="caption-overlay" aria-live="polite"></div>
             </div>
         </div>
+    </div>
     </div>
 
 
@@ -614,22 +685,29 @@
         });
 
         /* 모달 열고 닫기 */
+        /* ===== 모달 열고 닫기 (리빌드) ===== */
+        /* ===== 모달 열고 닫기 (modal 바깥 클릭으로 닫기) ===== */
+        /* ===== 모달 열고 닫기 (최종) ===== */
         function openModal() {
             modal.classList.remove('hidden');
             modal.classList.add('flex');
+            document.documentElement.style.overflow = 'hidden'; // 스크롤 잠금
             if (!keyHandlerBound) {
                 keyHandlerBound = true;
                 window.addEventListener('keydown', onKey);
             }
         }
+
         function closeModal() {
             modal.classList.add('hidden');
             modal.classList.remove('flex');
+            document.documentElement.style.overflow = ''; // 스크롤 해제
             if (keyHandlerBound) {
                 keyHandlerBound = false;
                 window.removeEventListener('keydown', onKey);
             }
         }
+
         function onKey(e) {
             if (modal.classList.contains('hidden')) return;
             if (e.key === 'ArrowLeft' && currentIdx > 0) showSlide(currentIdx - 1, -1);
@@ -637,26 +715,26 @@
             if (e.key === 'Escape') closeModal();
         }
 
-        closeModalBtn && closeModalBtn.addEventListener('click', closeModal);
-
-        // 배경(모달 바깥 검은 덮개) 클릭 시 닫기
-        modal && modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
+        /* 닫기 버튼 */
+        closeModalBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeModal();
         });
 
-        // 사진 이외 영역(뷰어 배경/캡션/여백) 클릭 시 닫기
-        const viewerEl = document.getElementById('viewer');
-        viewerEl && viewerEl.addEventListener('click', (e) => {
-            const t = e.target;
-            if (t === layerA || t === layerB || t === prevBtn || t === nextBtn) return; // 이미지/화살표 클릭이면 닫지 않음
-            if (t.id === 'viewerCaption' || t.closest('#viewerCaption')) return closeModal();
-            if (t === viewerEl) closeModal();
+        /* 🔹 모달 박스 배경 클릭 시 닫기 */
+        const modalBox = document.querySelector('#modal .modal-box');
+        modalBox?.addEventListener('click', (e) => {
+            // modal-box 안에 있는 viewer, 이미지, 버튼은 닫히지 않음
+            if (e.target === e.currentTarget) {
+                closeModal();
+            }
         });
 
-        // 화살표/이미지는 닫기 이벤트 전파 방지
-        [prevBtn, nextBtn, layerA, layerB].forEach(el => {
-            el && el.addEventListener('click', (e) => e.stopPropagation());
+        /* 이미지/화살표/캡션은 닫기 이벤트 전파 방지 */
+        [prevBtn, nextBtn, layerA, layerB, viewerCaption].forEach(el => {
+            el?.addEventListener('click', (e) => e.stopPropagation());
         });
+
 
         /* ==================== 무한 스크롤 ==================== */
         const sentinel = document.getElementById('sentinel');
