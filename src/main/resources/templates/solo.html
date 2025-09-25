@@ -61,7 +61,7 @@
 
         /* ========================= 카드 썸네일(그리드) ========================== */
         #grid>* {
-            min-height: 40rem;
+            min-height: 20rem;
             display: flex;
             flex-direction: column;
             border-radius: .75rem;
@@ -297,10 +297,10 @@
             color: #fff;
         }
 
-        /* ===== 강제 지정 패치 ===== */
+        /* ===== 강제 지정 패치 (수정) ===== */
         #modal .viewer-layer {
-            pointer-events: auto !important;
-            /* 이미지도 클릭 가능하게 강제 */
+            pointer-events: none !important;
+            /* 이미지 위 클릭도 아래(#viewer)로 통과 */
         }
     </style>
 </head>
@@ -395,7 +395,7 @@
         <section id="grid" class="grid grid-cols-1 gap-y-4"></section>
 
         <!-- 바닥 상태 (무한 스크롤 sentinel) -->
-        <div id="sentinel" class="py-4 text-center text-gray-400 text-sm">Loading more…</div>
+        <div id="sentinel" class="py-4 text-center text-gray-400 text-sm"></div>
     </main>
 
     <!-- ===== 상세 모달 (풀스크린 뷰어 + 좌/우 내비 + 캡션) ===== -->
@@ -460,6 +460,7 @@
         }
 
         /* ---- DOM 캐시 ---- */
+        const viewer = $('#viewer');  // 추가
         const grid = $('#grid');
         const metaInfo = $('#metaInfo');
         const modal = $('#modal');
@@ -688,6 +689,16 @@
         /* ===== 모달 열고 닫기 (리빌드) ===== */
         /* ===== 모달 열고 닫기 (modal 바깥 클릭으로 닫기) ===== */
         /* ===== 모달 열고 닫기 (최종) ===== */
+        /* 🔹 모달 바깥(백드롭) 클릭 시 닫기 */
+        modal?.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        /* 🔹 뷰어의 '빈 영역'(이미지 외) 클릭 시 닫기 */
+        viewer?.addEventListener('click', (e) => {
+            if (e.target === viewer) closeModal();
+        });
+
         function openModal() {
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -728,11 +739,6 @@
             if (e.target === e.currentTarget) {
                 closeModal();
             }
-        });
-
-        /* 이미지/화살표/캡션은 닫기 이벤트 전파 방지 */
-        [prevBtn, nextBtn, layerA, layerB, viewerCaption].forEach(el => {
-            el?.addEventListener('click', (e) => e.stopPropagation());
         });
 
 
