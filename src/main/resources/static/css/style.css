@@ -1981,3 +1981,72 @@ select,
   -ms-user-select: text !important;
   user-select: text !important;
 }
+
+.logo-img {
+  height: 15rem;
+  /* 로고 높이 조정 */
+  width: auto;
+  /* 비율 유지 */
+  display: block;
+  /* 정렬 깨짐 방지 */
+  margin-top: 2.5rem;
+  /* 🔹 위쪽 여백 */
+  margin-bottom: -4rem;
+  /* 아주 살짝 위로 당기기 */
+}
+
+@media (max-width: 48rem) {
+  .logo-img {
+    height: 8rem !important;
+    /* 🔹 모바일용 로고 높이 */
+    margin-top: 2rem !important;
+    /* 🔹 여백 줄이기 */
+    margin-bottom: -4rem !important;
+  }
+}
+
+@media (max-width: 53.125rem) and (min-width: 50rem) {
+  .hero-section {
+    margin-top: 5rem !important;
+    /* 🔹 iPad Air 크기일 때만 적용 */
+  }
+}
+
+/* 모바일 전용 */
+@media (max-width: 53.125rem) {
+  .banner-text h1 {
+    font-size: 1.5rem;
+    /* 모바일 제목 축소 */
+  }
+
+  .banner-text p {
+    font-size: 0.9rem;
+    /* 본문 축소 */
+    line-height: 1.4;
+  }
+
+  .banner-text .copyright-text {
+    /* 폭을 줄여서 줄 수 고정 */
+    max-width: 15rem;
+    /* 약 240px 폭 → 4줄 맞춤 */
+    margin: 0 auto;
+    /* 가운데 정렬 */
+    text-align: center;
+
+    /* 폰트 크기와 줄 간격 */
+    font-size: 0.9rem;
+    /* 줄 수 맞추는 크기 */
+    line-height: 1.4;
+
+    /* 글자가 줄 수 넘어가면 자동 줄임 */
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+}
+
+@media (max-width: 64rem) {
+  #adminButton {
+    display: none !important;
+  }
+}

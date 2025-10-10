@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+  <link rel="icon" type="image/png" href="/image/walidjahineye.png">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Artist - Walid Jahin</title>
@@ -300,6 +301,18 @@
     .hidden {
       display: none !important;
     }
+
+    .full-width-banner {
+      margin-top: 5rem !important;
+      /* 헤더 높이만큼 바깥쪽으로 내리기 */
+    }
+
+    @media (max-width: 768px) {
+      .full-width-banner {
+        margin-top: 1.5rem !important;
+        /* 🔹 모바일에서 여백 줄이기 */
+      }
+    }
   </style>
 </head>
 
@@ -308,7 +321,11 @@
   <header>
     <div class="header-inner">
       <div class="nav-wrapper">
-        <div class="logo">Walid Jahin</div>
+        <div class="logo">
+          <a th:href="@{/index}">
+            <img src="/image/walidjahinlogo.png" alt="Walid Jahin Logo" class="logo-img">
+          </a>
+        </div>
         <div class="nav-links">
           <a th:href="@{/index}">HOME</a>
           <a th:href="@{/artist}">ARTIST</a>
@@ -324,6 +341,7 @@
       </div>
     </div>
   </header>
+
 
   <!-- Artshop Banner -->
   <section class="full-width-banner">
@@ -748,7 +766,10 @@
           .forEach(el => el.classList.remove('show-actions'));
       });
     });
+
+
   </script>
+
 
 
 

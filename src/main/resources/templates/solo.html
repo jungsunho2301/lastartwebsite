@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <link rel="icon" type="image/png" href="/image/walidjahineye.png">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Solo Art - Walid Jahin</title>
@@ -309,7 +310,11 @@
     <header>
         <div class="header-inner">
             <div class="nav-wrapper">
-                <div class="logo">Walid Jahin</div>
+                <div class="logo">
+                    <a th:href="@{/index}">
+                        <img src="/image/walidjahinlogo.png" alt="Walid Jahin Logo" class="logo-img">
+                    </a>
+                </div>
                 <div class="nav-links">
                     <a th:href="@{/index}">HOME</a>
                     <a th:href="@{/artist}">ARTIST</a>
@@ -325,6 +330,7 @@
             </div>
         </div>
     </header>
+
 
     <script>
         const adminButton = document.getElementById('adminButton');

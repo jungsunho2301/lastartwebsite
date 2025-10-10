@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
+  <link rel="icon" type="image/png" href="/image/walidjahineye.png">
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Login | Walid Jahin</title>
   <link rel="stylesheet" th:href="@{/css/style.css}" />
   <style>
@@ -14,10 +16,12 @@
       border-radius: .5rem;
       background: #f9f9f9;
     }
+
     .login-container h2 {
       text-align: center;
       margin-bottom: 1.5rem;
     }
+
     .login-container input {
       width: 100%;
       padding: 0.5rem;
@@ -25,6 +29,7 @@
       border: .0625rem solid #aaa;
       border-radius: .25rem;
     }
+
     .login-container button {
       width: 100%;
       padding: 0.6rem;
@@ -34,6 +39,7 @@
       border-radius: .25rem;
       cursor: pointer;
     }
+
     .error {
       color: red;
       margin-top: .625rem;
@@ -41,6 +47,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="login-container">
     <h2>Admin Login</h2>
@@ -100,4 +107,5 @@
   <!-- DOMPurify -->
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
 </body>
+
 </html>

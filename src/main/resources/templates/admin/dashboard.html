@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+  <link rel="icon" type="image/png" href="/image/walidjahineye.png">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="_csrf" th:content="${_csrf.token}" />
@@ -217,6 +218,10 @@
     .form-section button:hover {
       background-color: #eee;
     }
+
+    .dashboard {
+      margin-top: 5rem !important;
+    }
   </style>
 </head>
 
@@ -224,7 +229,11 @@
   <header>
     <div class="header-inner">
       <div class="nav-wrapper">
-        <div class="logo">Walid Jahin</div>
+        <div class="logo">
+          <a th:href="@{/index}">
+            <img src="/image/walidjahinlogo.png" alt="Walid Jahin Logo" class="logo-img">
+          </a>
+        </div>
         <div class="nav-links">
           <a th:href="@{/index}">HOME</a>
           <a th:href="@{/artist}">ARTIST</a>
@@ -235,16 +244,12 @@
       </div>
       <div class="lang">
         <div class="gtranslate_wrapper"></div>
-
-        <!-- 로그아웃 버튼 -->
-        <button id="logoutButton" type="button"
-          style="background:#f9f9f9;color:black;border:none;padding:.375rem .875rem;border-radius:.25rem;cursor:pointer;">
-          LOGOUT
-        </button>
-
+        <button id="adminButton"
+          style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
       </div>
     </div>
   </header>
+
 
   <!-- Main (기존 코드 복원됨) -->
   <main class="dashboard">
@@ -978,8 +983,6 @@
       </style>
 
       <!--  shop-manage -->
-
-      <hr style="margin: 2.5rem 0; border-top: .125rem solid #eee;" />
 
       <section class="shop-manage" data-section="SHOP">
         <h2>Artshop Management</h2>
