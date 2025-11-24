@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link rel="icon" type="image/png" href="/image/walidjahineye.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Use - Walid Jahin</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #f9f9f9;
+      ;
+      color: #111;
+    }
+
+
+    .terms-section {
+      max-width: 50rem;
+      margin: 5rem auto;
+      padding: 0 1.25rem;
+      line-height: 1.8;
+    }
+
+    .terms-section h2 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      font-family: 'Roboto Serif', serif;
+      font-size: 3.75rem;
+      /* 사용자 요청 */
+      font-weight: 800;
+      font-style: italic;
+      letter-spacing: -0.0625rem;
+      color: #111;
+    }
+
+    .terms-section h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 2.5rem;
+      font-family: 'Roboto Serif', serif;
+      font-size: 1.75rem;
+      /* 사용자 요청 */
+      font-weight: 800;
+      font-style: italic;
+      letter-spacing: -0.0625rem;
+      color: #111;
+    }
+
+    .terms-section p {
+      font-size: .875rem;
+      color: #333;
+    }
+
+    .terms-section h4 {
+      font-family: 'Roboto Serif', serif;
+      font-style: italic;
+      letter-spacing: -0.0625rem;
+      color: #767676;
+    }
+
+    .terms-section p {
+      font-size: .875rem;
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">
+          <a th:href="@{/index}">
+            <img src="/image/walidjahinlogo.png" alt="Walid Jahin Logo" class="logo-img">
+          </a>
+        </div>
+        <div class="nav-links">
+          <a th:href="@{/index}">HOME</a>
+          <a th:href="@{/artist}">ARTIST</a>
+          <a th:href="@{/solo}">SOLO ART</a>
+          <a th:href="@{/artwork}">ART WORK</a>
+          <a th:href="@{/artshop}">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">
+        <div class="gtranslate_wrapper"></div>
+        <button id="adminButton"
+          style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
+      </div>
+    </div>
+  </header>
+
+
+  <script>
+    const adminButton = document.getElementById('adminButton');
+    function updateAdminButton() {
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+      adminButton.onclick = () => {
+        if (isAdmin) {
+          localStorage.removeItem('isAdmin');
+          location.reload();
+        } else {
+          location.href = '/admin/login';
+        }
+      };
+    }
+    document.addEventListener('DOMContentLoaded', updateAdminButton);
+  </script>
+
+  <section class="terms-section">
+    <h2>Terms Of Use</h2>
+    <p class="effective-date" th:utext="${privacyContent}"></p>
+    <p class="effective-date">
+
+    <h3>Article 1 (Purpose)</h3>
+    <h4><br />These Terms of Service (“Terms”) are intended to set forth the terms, conditions, rights, obligations,
+      and responsibilities between Walid Jahin (“Operator”) and users (“Users”) regarding the use of the Walid Jahin
+      website (“Site”) and all related services (“Services”).
+      <br /><br />
+    </h4>
+
+    <h3>Article 2 (Definitions)</h3>
+
+    <ul style="list-style-type: disc; padding-left: 20px;">
+      <h4>
+        <li>“Services” refer to all content and features provided by the Site, including but not limited
+          to information about Walid Jahin’s artwork, images, news, community features, and other related services.</li>
+        <li>“User” means any individual who accesses and uses the Site, whether as a registered member or a guest.</li>
+    </ul>
+    </h4>
+
+
+    <h3>Article 3 (Effect and Modification of the Terms)</h3>
+
+    <ul style="list-style-type: disc; padding-left: 20px;">
+      <h4>
+        <li>These Terms become effective when posted on the Site or otherwise made available to Users.</li>
+        <li>The Operator may amend these Terms as necessary, and any changes will become effective upon posting on the
+          Site.</li>
+    </ul>
+    </h4>
+
+
+    <h3>Article 4 (Copyright and Content Usage)</h3>
+
+    <ul style="list-style-type: disc; padding-left: 20px;">
+      <h4>
+        <li>All images, text, and materials posted on the Site are the intellectual property of Walid Jahin or other
+          rightful owners.</li>
+        <li>Users may not copy, distribute, publish, display, create derivative works from, or otherwise use any content
+          from the Site for commercial or non-commercial purposes without prior written consent from the Operator.</li>
+        <li>If a User posts content on the Site, the copyright remains with the User,
+          but the Operator is granted a royalty-free license to use such content for Site operation and promotion.</li>
+    </ul>
+    </h4>
+
+
+
+    <h3>Article 5 (User Obligations)</h3>
+
+    <ul style="list-style-type: disc; padding-left: 20px;">
+      <h4>
+        <li>Users must comply with these Terms, Site guidelines, and applicable laws.</li>
+        <li>Users must not:<ul>
+            <li>Provide false information or impersonate others.</li>
+            <li>Infringe on the rights, including copyrights, of the Operator or third parties.</li>
+            <li>Post or transmit unlawful, offensive, or inappropriate content.</li>
+            <li>Disrupt the normal operation of the Site.</li>
+        </li>
+    </ul>
+    <li>Users may not use information obtained from the Site for commercial purposes without prior approval from the
+      Operator.</li>
+    </ul>
+    </h4>
+
+    <h3>Article 6 (Restriction and Suspension of Service)</h3>
+
+    <ul style="list-style-type: disc; padding-left: 20px;">
+      <h4>
+        <li>The Operator may restrict or suspend all or part of the Services without prior notice in the following
+          cases:
+          <ul>
+            <li>For system maintenance or unavoidable technical reasons.</li>
+            <li>In the event of force majeure, such as natural disasters.</li>
+            <li>If a User violates these Terms.</li>
+        </li>
+    </ul>
+    </ul>
+    </h4>
+
+    <h3>Article 7 (Disclaimer)</h3>
+
+    <ul style="list-style-type: disc; padding-left: 20px;">
+      <h4>
+        <li>The Operator is not liable for any interruption or suspension of Services due to force majeure or reasons
+          attributable to the User.</li>
+        <li>The Operator does not guarantee the accuracy or reliability of external links or materials posted on the
+          Site.
+        </li>
+    </ul>
+    </h4>
+
+
+    <h3>Article 8 (Dispute Resolution)</h3>
+
+    <ul style="list-style-type: disc; padding-left: 20px;">
+      <h4>
+        <li>Any disputes arising in connection with these Terms shall be governed by the laws of the Operator’s
+          jurisdiction,
+          and the competent court at the Operator’s place of business shall have exclusive jurisdiction.</li>
+    </ul>
+    </h4>
+
+  </section>
+
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const igEl = document.getElementById('footerInstagram');
+      const fbEl = document.getElementById('footerFacebook');
+
+      try {
+        const [igRes, fbRes] = await Promise.all([
+          fetch('/api/social/instagram'),
+          fetch('/api/social/facebook'),
+        ]);
+
+        const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
+        const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
+
+        if (igEl) {
+          if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
+          else igEl.style.display = 'none';
+        }
+        if (fbEl) {
+          if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
+          else fbEl.style.display = 'none';
+        }
+      } catch (e) {
+        console.error('SNS link load failed:', e);
+        if (igEl) igEl.style.display = 'none';
+        if (fbEl) fbEl.style.display = 'none';
+      }
+    });
+  </script>
+
+
+  <footer>
+    <nav>
+      <a th:href="@{/index}">HOME</a>
+      <a th:href="@{/privacy}">PRIVACY POLICY</a>
+      <a th:href="@{/terms}">TERMS OF USE</a>
+      <a th:href="@{/contact}">CONTACT</a>
+    </nav>
+    <div class="footer-sns">
+      <!-- 인스타 -->
+      <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
+        </svg>
+      </a>
+
+      <!-- 페이스북 -->
+      <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
+        </svg>
+    </div>
+    </a>
+
+    <div class="footer-logo">Walid Jahin Art Studio</div>
+    <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+  </footer>
+
+  <script>
+    window.gtranslateSettings = {
+      "default_language": "en",
+      "native_language_names": true,
+      "languages": ["en", "ar", "ko"],
+      "wrapper_selector": ".gtranslate_wrapper",
+      "flag_size": 24,
+      "switcher_horizontal_position": "inline"
+    };
+  </script>
+  <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+</body>
+
+</html>

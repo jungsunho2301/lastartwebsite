@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link rel="icon" type="image/png" href="/image/walidjahineye.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="_csrf" th:content="${_csrf.token}" />
+  <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+
+
+  <title>Walid Jahin Art Studio</title>
+
+  <meta name="_csrf" th:content="${_csrf.token}" />
+
+  <!-- Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Static CSS/JS -->
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+
+  <!-- GTranslate -->
+  <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+  <script>
+    window.gtranslateSettings = {
+      "default_language": "en",
+      "native_language_names": true,
+      "languages": ["en", "ar", "ko"],
+      "wrapper_selector": ".gtranslate_wrapper",
+      "flag_size": 24,
+      "switcher_horizontal_position": "inline"
+    };
+  </script>
+
+  <style>
+    .gtranslate_wrapper {
+      margin-right: .625rem;
+    }
+
+    button {
+      font-size: .875rem;
+      padding: .5rem 1rem;
+      background-color: #f9f9f9;
+      color: black;
+      border: none;
+      border-radius: .375rem;
+      cursor: pointer;
+    }
+
+
+    .dashboard {
+      max-width: 62.5rem;
+      margin: 2.5rem auto;
+      padding: 0 1.25rem;
+    }
+
+    .upload-section,
+    .artwork-manage,
+    .shop-manage {
+      background: #f9f9f9;
+      padding: 1.5rem;
+      margin-bottom: 1.875rem;
+      border-radius: .625rem;
+      box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.05);
+    }
+
+    .upload-section h3,
+    .artwork-manage h2,
+    .shop-manage h2 {
+      margin-bottom: 1.25rem;
+    }
+
+    .upload-section form,
+    .shop-box,
+    .artwork-box {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+    }
+
+    input[type='text'],
+    input[type='email'],
+    input[type='url'],
+    input[type='number'],
+    textarea,
+    select {
+      padding: .625rem;
+      border: .0625rem solid #ccc;
+      border-radius: .375rem;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+    .image-preview {
+      width: 100%;
+      height: 15rem;
+      border: .0625rem solid #ccc;
+      border-radius: .375rem;
+      background-color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    footer {
+      background-color: #191A1B;
+      color: #fff;
+      padding: 3.75rem 1.25rem 2.5rem;
+      text-align: center;
+    }
+
+    footer nav a {
+      color: #ccc;
+      margin: 0 .75rem;
+      font-size: .875rem;
+      text-decoration: none;
+    }
+
+    footer nav a:hover {
+      color: #fff;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-top: 1.25rem;
+    }
+
+    .footer-bottom {
+      font-size: .75rem;
+      color: #888;
+      margin-top: 1.25rem;
+    }
+
+    .footer-sns {
+      display: flex;
+      gap: .875rem;
+      justify-content: center;
+      margin: .625rem 0 1.125rem;
+    }
+
+    .footer-sns a {
+      display: inline-flex;
+      line-height: 0;
+      color: #fff;
+    }
+
+    /* SVG가 currentColor 사용 */
+    .footer-sns svg {
+      margin-top: 1.25rem;
+      transition: fill 0.3s;
+      fill: #888;
+    }
+
+    .footer-sns svg:hover {
+      fill: #fff;
+    }
+
+    .upload-section {
+      background: #f9f9f9;
+      padding: 1.5rem;
+      margin-bottom: 1.875rem;
+      border-radius: .625rem;
+      box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.05);
+    }
+
+    .upload-section h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-section h3 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: .75rem;
+    }
+
+    .form-section label {
+      display: block;
+      font-size: .875rem;
+      margin-bottom: .375rem;
+      color: #333;
+    }
+
+    .form-section input[type="text"],
+    .form-section input[type="file"],
+    .form-section textarea {
+      width: 100%;
+      padding: .625rem;
+      border: .0625rem solid #ccc;
+      border-radius: .375rem;
+      margin-bottom: .75rem;
+      font-size: .875rem;
+    }
+
+    .form-section button {
+      padding: .5rem 1rem;
+      background-color: rgb(0, 0, 0);
+      border: .0625rem solid #ccc;
+      border-radius: .375rem;
+      cursor: pointer;
+    }
+
+    .form-section button:hover {
+      background-color: #eee;
+    }
+
+    .dashboard {
+      margin-top: 5rem !important;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">
+          <a th:href="@{/index}">
+            <img src="/image/walidjahinlogo.png" alt="Walid Jahin Logo" class="logo-img">
+          </a>
+        </div>
+        <div class="nav-links">
+          <a th:href="@{/index}">HOME</a>
+          <a th:href="@{/artist}">ARTIST</a>
+          <a th:href="@{/solo}">SOLO ART</a>
+          <a th:href="@{/artwork}">ART WORK</a>
+          <a th:href="@{/artshop}">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">
+        <div class="gtranslate_wrapper"></div>
+        <button id="adminButton"
+          style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- Main (기존 코드 복원됨) -->
+  <main class="dashboard">
+
+    <!-- 이메일 SNS 뉴스레터  -->
+    <section class="upload-section" data-section="EMAILSNS">
+      <h3>Update Artist Email</h3>
+      <form id="emailForm">
+        <label for="newEmail">New Email Address</label>
+        <input type="email" id="newEmail" required />
+        <button type="submit">Update</button>
+      </form>
+    </section>
+
+    <section class="upload-section" data-section="EMAILSNS">
+      <h3>Instagram Connection</h3>
+      <form id="instagramForm">
+        <label for="instagramUrl">Instagram URL</label>
+        <input type="url" id="instagramUrl" required />
+        <button type="submit">Connect</button>
+      </form>
+    </section>
+
+    <section class="upload-section" data-section="EMAILSNS">
+      <h3>Facebook Connection</h3>
+      <form id="facebookForm">
+        <label for="facebookUrl">Facebook URL</label>
+        <input type="url" id="facebookUrl" required />
+        <button type="submit">Connect</button>
+      </form>
+    </section>
+
+    <section class="upload-section" data-section="NEWSLETTER">
+      <h3>Send Newsletter</h3>
+      <form id="newsletterForm">
+        <label for="newsletterTitle">Newsletter Title</label>
+        <input type="text" id="newsletterTitle" required />
+        <label for="newsletterContent">Newsletter Content</label>
+        <textarea id="newsletterContent" rows="5" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </section>
+
+    <style>
+      .upload-section[data-section="EMAILSNS"] label {
+        font-size: 0.85rem;
+        /* 글씨 크기 줄이기 */
+        font-weight: 400;
+        /* 두께 조절 (옵션) */
+        color: #333;
+        /* 색상도 필요하면 지정 */
+      }
+
+      .upload-section[data-section="NEWSLETTER"] label {
+        font-size: 0.85rem;
+        /* 글씨 크기 줄이기 */
+        font-weight: 400;
+        /* 두께 조절 (옵션) */
+        color: #333;
+        /* 색상도 필요하면 지정 */
+      }
+
+
+      .upload-section h3 {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+    </style>
+
+    <!--   -->
+
+
+    <!-- Artist Management -->
+    <section class="artist-manage upload-section" data-section="ARTIST">
+      <h2>Artist Section Content Editor</h2>
+
+      <div class="form-section">
+        <label for="sectionKey">Section:</label>
+        <select id="sectionKey">
+          <option value="major_solo">Major Solo Shows In Cairo</option>
+          <option value="international">International Solo Exhibitions</option>
+          <option value="solo">Solo Exhibitions</option>
+          <option value="group">Group Exhibitions</option>
+          <option value="achievement">Achievement</option>
+          <option value="collections">Collections</option>
+          <option value="work_style">Work Style</option>
+        </select>
+      </div>
+
+      <div class="form-section">
+        <label for="sectionContent">Section Content:</label>
+        <textarea id="sectionContent" rows="3" placeholder="Enter the Section Content"></textarea>
+      </div>
+
+      <button id="btnLoadSection">Load</button>
+      <button id="btnUpdateSection">Save</button>
+    </section>
+
+    <style>
+      .artist-manage h2 {
+        font-size: 2rem;
+        /* 글자 크기 (약 32px) */
+        font-weight: bold;
+        /* 글자 굵게 */
+      }
+
+      .artist-manage[data-section="ARTIST"] label {
+        font-size: 0.85rem;
+        /* 글씨 크기 줄이기 */
+        font-weight: 400;
+        /* 두께 조절 (옵션) */
+        color: #333;
+        /* 색상도 필요하면 지정 */
+      }
+    </style>
+    <!--  -->
+
+
+    <!-- ===== Solo Dashboard ===== -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Solo Admin Dashboard (v1)</title>
+    <style>
+      /* 최소 스타일: 나중에 커스텀 예정 */
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        line-height: 1.4;
+        margin: 0;
+        padding: 1rem;
+        background: #fafafa;
+      }
+
+      h1 {
+        font-size: 2rem;
+        /* 글자 크기 (약 32px) */
+        font-weight: bold;
+        /* 글자 굵게 */
+      }
+
+      h2 {
+        font-size: 1rem;
+        margin: 2rem 0 .75rem;
+      }
+
+      form,
+      .card,
+      .list {
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: .5rem;
+        padding: 1rem;
+      }
+
+      .row {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      label {
+        display: block;
+        font-size: .9rem;
+        color: #444;
+        margin-bottom: .25rem;
+      }
+
+      input[type="text"],
+      input[type="month"],
+      select {
+        width: 100%;
+        padding: .5rem .6rem;
+        border: 1px solid #ddd;
+        border-radius: .375rem;
+      }
+
+      input[type="file"] {
+        width: 100%;
+      }
+
+      button {
+        background: #000;
+        color: #fff;
+        border: none;
+        padding: .5rem 1rem;
+        border-radius: .25rem;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+
+      .card img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        background: #f3f3f3;
+        border-radius: .375rem;
+      }
+
+      .muted {
+        color: #666;
+        font-size: .9rem;
+      }
+
+      .danger {
+        color: #c0392b;
+      }
+
+      .success {
+        color: #0a7;
+      }
+
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: .75rem 0;
+      }
+
+      .toolbar .pager {
+        display: flex;
+        gap: .5rem;
+        align-items: center;
+      }
+
+      .preview {
+        width: 160px;
+        height: 160px;
+        background: #f3f3f3;
+        display: grid;
+        place-items: center;
+        border: 1px dashed #ddd;
+        border-radius: .375rem;
+        overflow: hidden;
+      }
+
+      .preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .help {
+        font-size: .85rem;
+        color: #777;
+      }
+
+      .hr {
+        height: 1px;
+        background: #eee;
+        margin: 1rem 0;
+      }
+    </style>
+    </head>
+
+    <body>
+      <section class="solo-admin-card" data-section="SOLO" style="display:none">
+        <h1>Solo Exhibitions </h1>
+
+        <!-- ===================== Exhibition Admin ===================== -->
+        <section>
+
+          <!-- Create Exhibition -->
+          <form id="exhForm" enctype="multipart/form-data">
+            <style>
+              .image-preview {
+                width: 100%;
+                height: 15rem;
+                border: .0625rem solid #ccc;
+                border-radius: .375rem;
+                background-color: #f0f0f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+              }
+
+              .image-preview img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                /* 이미지가 잘리지 않고 전체 보이도록 */
+              }
+            </style>
+
+            <div class="row" style="margin-top:.5rem; align-items:center;">
+              <label for="exhTitle" style="font-size:1.25rem; font-weight:bold;">
+                Exhibition Title & Date, Poster
+              </label>
+
+              <div class="image-preview">
+                <img id="posterPreview" alt="poster preview" />
+              </div>
+              <div id="exhMsg" class="muted"></div>
+            </div>
+            <div class="row">
+              <div style="flex:1 1 15rem; min-width:13.75rem;">
+                <label for="exhTitle">title</label>
+                <input id="exhTitle" name="title" type="text" placeholder="ex: solo-2025-fall" required />
+              </div>
+              <div style="flex:0 0 180px;">
+                <label for="exhYM">date</label>
+                <!-- input month는 YYYY-MM 형식과 같아 프런트 검증에 편함 -->
+                <input id="exhYM" name="yearMonth" type="month" required />
+              </div>
+              <div style="flex:1 1 12.5rem; min-width:13.75rem;">
+                <label for="exhPoster">poster</label>
+                <input id="exhPoster" name="poster" type="file" accept="image/*" required />
+                <div class="help">Transport field title <code>poster</code></div>
+              </div>
+              <div style="flex:0 0 10.625rem;">
+                <label>&nbsp;</label>
+                <button type="submit"
+                  style="background:#000; color:#fff; border:none; padding:.5rem 1rem; border-radius:.25rem; cursor:pointer;">Register</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="hr"></div>
+
+          <!-- List Exhibitions -->
+          <div class="toolbar">
+            <div>
+              <strong>List Exhibitions</strong>
+              <span class="muted">(List: yearMonth desc, id desc)</span>
+            </div>
+            <div class="pager">
+              <button id="exhPrev">preview</button>
+              <span id="exhPageInfo" class="muted">page1</span>
+              <button id="exhNext">next</button>
+              <select id="exhPageSize">
+                <option value="6">6</option>
+                <option value="12" selected>12</option>
+                <option value="24">24</option>
+              </select>
+            </div>
+          </div>
+          <div id="exhList" class="grid"></div>
+        </section>
+
+        <!-- ===================== Artwork Admin (by Exhibition) ===================== -->
+        <section>
+          <div class="row">
+            <div style="width:1rem; height:1rem; min-width:1rem; min-height:1rem;">
+              <label for="artExhSelect"></label>
+            </div>
+          </div>
+
+          <form id="artForm" enctype="multipart/form-data" style="margin-top:.75rem;">
+            <style>
+              .image-preview {
+                width: 100%;
+                height: 15rem;
+                border: .0625rem solid #ccc;
+                border-radius: .375rem;
+                background-color: #f0f0f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+              }
+
+              .image-preview img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                /* 이미지 전체 보이도록 */
+              }
+            </style>
+
+            <div class="row" style="margin-top:.5rem; align-items:center;">
+              <label for="artTitle" style="font-size:1.25rem; font-weight:bold;">Exhibition Images & Titles </label>
+              <div class="image-preview">
+                <img id="artPreview" alt="art preview" />
+              </div>
+              <div id="artMsg" class="muted"></div>
+            </div>
+
+
+            <div class="row">
+              <div style="flex:1 1 260px; min-width:220px;">
+                <label for="artTitle">title</label>
+                <input id="artTitle" name="title" type="text" placeholder="ex: Untitled #3" required />
+              </div>
+              <div style="flex:1 1 260px; min-width:220px;">
+                <label for="artImage">images</label>
+                <input id="artImage" name="image" type="file" accept="image/*" required />
+                <div class="help">Transport field title <code>image</code></div>
+              </div>
+              <div style="flex:0 0 170px;">
+                <label>&nbsp;</label>
+                <button type="submit">Register</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="toolbar">
+            <div>
+              <strong>List images</strong>
+              <span id="artListLabel" class="muted"></span>
+            </div>
+            <div class="pager">
+              <button id="artPrev">preview</button>
+              <span id="artPageInfo" class="muted">page1</span>
+              <button id="artNext">next</button>
+              <select id="artPageSize">
+                <option value="12" selected>12</option>
+                <option value="24">24</option>
+              </select>
+            </div>
+          </div>
+          <div id="artList" class="grid"></div>
+        </section>
+      </section>
+
+      <script>
+
+        /* ===================== Config ===================== */
+        /** 같은 출처면 'same-origin', 프런트/백 분리면 'include' (서버 CORS allowCredentials 필요) */
+        const CRED = 'same-origin';
+
+        /* ===================== Meta-based CSRF helpers ===================== */
+        function getCsrf() {
+          const token = document.querySelector('meta[name="_csrf"]')?.content;
+          const header = document.querySelector('meta[name="_csrf_header"]')?.content;
+          return token && header ? { token, header } : null;
+        }
+        function withCsrfHeaders(extra = {}) {
+          const c = getCsrf();
+          return c ? { ...extra, [c.header]: c.token } : extra;
+        }
+
+        /* ===================== tiny helpers ===================== */
+        const $ = (q) => document.querySelector(q);
+        function el(tag, props = {}, children = []) {
+          const n = document.createElement(tag);
+          for (const [k, v] of Object.entries(props)) {
+            if (k === 'class') n.className = v;
+            else if (k.startsWith('on') && typeof v === 'function') n.addEventListener(k.slice(2), v);
+            else n.setAttribute(k, v);
+          }
+          for (const ch of children) n.appendChild(typeof ch === 'string' ? document.createTextNode(ch) : ch);
+          return n;
+        }
+        function on(node, evt, handler) { if (node) node.addEventListener(evt, handler); }
+        const fmtYM = (s) => s;
+
+        /* ===================== state ===================== */
+        const state = {
+          exhPage: 0, exhSize: 12, exhHasNext: true,
+          artPage: 0, artSize: 12, artHasNext: true,
+          currentExhId: null,
+          cachedExhibitions: [],
+        };
+
+        /* ===================== Exhibition: preview ===================== */
+        const posterInput = $('#exhPoster');
+        const posterPreview = $('#posterPreview');
+        on(posterInput, 'change', () => {
+          const f = posterInput?.files?.[0];
+          if (!f) { posterPreview?.removeAttribute('src'); return; }
+          posterPreview.src = URL.createObjectURL(f);
+        });
+
+        /* ===================== Exhibition: create ===================== */
+        on($('#exhForm'), 'submit', async (e) => {
+          e.preventDefault();
+          const msg = $('#exhMsg'); if (msg) { msg.textContent = 'loding…'; msg.className = 'muted'; }
+          try {
+            const fd = new FormData();
+            fd.append('title', $('#exhTitle').value.trim());
+            fd.append('yearMonth', $('#exhYM').value);
+            const file = posterInput?.files?.[0];
+            if (!file) throw new Error('Select poster');
+            fd.append('poster', file);
+
+            const res = await fetch('/admin/solo/exhibitions', {
+              method: 'POST',
+              credentials: CRED,
+              headers: withCsrfHeaders(), // ✅ 메타 기반 CSRF 헤더
+              body: fd // ❗️multipart는 Content-Type 자동
+            });
+            if (!res.ok) throw new Error('False: ' + res.status);
+            const data = await res.json();
+            if (msg) { msg.textContent = 'success: id=' + data.id; msg.className = 'success'; }
+
+            state.exhPage = 0; await loadExhibitions();
+            setCurrentExhibition(data.id);
+            $('#exhForm').reset(); posterPreview?.removeAttribute('src');
+          } catch (err) {
+            if (msg) { msg.textContent = err.message; msg.className = 'danger'; }
+          }
+        });
+
+        /* ===================== Exhibition: list/paging ===================== */
+        on($('#exhPageSize'), 'change', async (e) => {
+          state.exhSize = +e.target.value; state.exhPage = 0; await loadExhibitions();
+        });
+        on($('#exhPrev'), 'click', async () => {
+          if (state.exhPage > 0) { state.exhPage--; await loadExhibitions(); }
+        });
+        on($('#exhNext'), 'click', async () => {
+          if (state.exhHasNext) { state.exhPage++; await loadExhibitions(); }
+        });
+
+        async function loadExhibitions() {
+          const page = state.exhPage, size = state.exhSize;
+          const info = $('#exhPageInfo'); if (info) info.textContent = `page ${page + 1}`;
+          const res = await fetch(`/api/solo/exhibitions?page=${page}&size=${size}`, { credentials: CRED });
+          if (!res.ok) { $('#exhList').innerHTML = '<div class="muted">로드 실패</div>'; return; }
+          const arr = await res.json();
+          state.exhHasNext = arr.length === size;
+          state.cachedExhibitions = arr;
+          renderExhibitionList(arr);
+          updateExhibitionSelect(arr, page === 0);
+        }
+
+        function renderExhibitionList(list) {
+          const wrap = $('#exhList'); if (!wrap) return;
+          wrap.innerHTML = '';
+          if (!Array.isArray(list) || list.length === 0) {
+            wrap.appendChild(el('div', { class: 'muted' }, ['empty']));
+            return;
+          }
+          list.forEach(x => {
+            const card = el('div', { class: 'card' });
+            const img = el('img', { src: x.posterImagePath || '', alt: x.title });
+            const title = el('div', {}, [x.title || '(no title)']);
+            const meta = el('div', { class: 'muted' }, [`ID ${x.id} · ${fmtYM(x.yearMonth)}`]);
+            const actions = el('div', { class: 'row', style: 'margin-top:.5rem; align-items:center;' });
+            const useBtn = el('button', { onclick: () => setCurrentExhibition(x.id) }, ['Select']);
+            const delBtn = el('button', { onclick: () => deleteExhibition(x.id) }, ['delate']);
+            actions.append(useBtn, delBtn);
+            card.append(img, title, meta, actions);
+            wrap.appendChild(card);
+          });
+        }
+
+        async function deleteExhibition(id) {
+          if (!confirm(`Delete #${id}?`)) return;
+          const res = await fetch(`/admin/solo/exhibitions/${id}`, {
+            method: 'DELETE',
+            credentials: CRED,
+            headers: withCsrfHeaders()
+          });
+          if (res.status === 204) {
+            await loadExhibitions();
+            if (state.currentExhId === id) setCurrentExhibition(null);
+          } else if (res.status === 404) {
+            alert('It has already been deleted or does not exist.');
+          } else {
+            alert('Deletion failed: ' + res.status);
+          }
+        }
+
+        function updateExhibitionSelect(list, onFirstPage) {
+          const sel = $('#artExhSelect'); if (!sel) return;
+          if (onFirstPage) sel.innerHTML = '';
+          sel.innerHTML = '';
+          sel.appendChild(el('option', { value: '' }, ['exhibition selection…']));
+          list.forEach(x => {
+            const opt = el('option', { value: String(x.id) }, [`#${x.id} · ${fmtYM(x.yearMonth)} · ${x.title}`]);
+            sel.appendChild(opt);
+          });
+          if (state.currentExhId) sel.value = String(state.currentExhId);
+        }
+
+        function setCurrentExhibition(id) {
+          state.currentExhId = id ? +id : null;
+          const sel = $('#artExhSelect'); if (sel) sel.value = id ? String(id) : '';
+          const label = $('#artListLabel'); if (label) label.textContent = id ? `(exhibitionId=${id})` : '(Select exhibition)';
+          state.artPage = 0;
+          if (id) loadArts();
+          else { const w = $('#artList'); if (w) w.innerHTML = ''; }
+        }
+
+        /* ===================== Artwork: preview ===================== */
+        const artInput = $('#artImage');
+        const artPreview = $('#artPreview');
+        on(artInput, 'change', () => {
+          const f = artInput?.files?.[0];
+          if (!f) { artPreview?.removeAttribute('src'); return; }
+          artPreview.src = URL.createObjectURL(f);
+        });
+
+        /* ===================== Artwork: create ===================== */
+        on($('#artForm'), 'submit', async (e) => {
+          e.preventDefault();
+          const msg = $('#artMsg'); if (msg) { msg.textContent = 'Uploading…'; msg.className = 'muted'; }
+          if (!state.currentExhId) { if (msg) { msg.textContent = 'Please select an exhibition first.'; msg.className = 'danger'; } return; }
+
+          try {
+            const fd = new FormData();
+            fd.append('title', $('#artTitle').value.trim());
+            const file = artInput?.files?.[0]; if (!file) throw new Error('Select image');
+            fd.append('image', file);
+
+            const res = await fetch(`/admin/solo/exhibitions/${state.currentExhId}/arts`, {
+              method: 'POST',
+              credentials: CRED,
+              headers: withCsrfHeaders(), // ✅ 메타 기반 CSRF 헤더
+              body: fd
+            });
+            if (!res.ok) throw new Error('Upload failed: ' + res.status);
+            const data = await res.json();
+            if (msg) { msg.textContent = `Upload completed: soloArtId=${data.id}`; msg.className = 'success'; }
+
+            $('#artForm').reset(); artPreview?.removeAttribute('src');
+            state.artPage = 0; await loadArts();
+          } catch (err) {
+            if (msg) { msg.textContent = err.message; msg.className = 'danger'; }
+          }
+        });
+
+        /* ===================== Artwork: list/paging ===================== */
+        on($('#artPageSize'), 'change', async (e) => { state.artSize = +e.target.value; state.artPage = 0; await loadArts(); });
+        on($('#artPrev'), 'click', async () => { if (state.artPage > 0) { state.artPage--; await loadArts(); } });
+        on($('#artNext'), 'click', async () => { if (state.artHasNext) { state.artPage++; await loadArts(); } });
+
+        async function loadArts() {
+          if (!state.currentExhId) { const w = $('#artList'); if (w) w.innerHTML = ''; return; }
+          const page = state.artPage, size = state.artSize;
+          const info = $('#artPageInfo'); if (info) info.textContent = `page ${page + 1}`;
+          const res = await fetch(`/api/solo/exhibitions/${state.currentExhId}/arts?page=${page}&size=${size}`, { credentials: CRED });
+          if (!res.ok) { $('#artList').innerHTML = '<div class="muted">로드 실패</div>'; return; }
+          const arr = await res.json();
+          state.artHasNext = arr.length === size;
+          renderArtList(arr);
+        }
+
+        function renderArtList(list) {
+          const wrap = $('#artList'); if (!wrap) return;
+          wrap.innerHTML = '';
+          if (!Array.isArray(list) || list.length === 0) {
+            wrap.appendChild(el('div', { class: 'muted' }, ['no works']));
+            return;
+          }
+          list.forEach(x => {
+            const card = el('div', { class: 'card' });
+            const img = el('img', { src: x.imagePath || '', alt: x.title });
+            const title = el('div', {}, [x.title || '(no title)']);
+            const meta = el('div', { class: 'muted' }, [`ID ${x.id} · EXH ${x.exhibitionId}`]);
+            const actions = el('div', { class: 'row', style: 'margin-top:.5rem; align-items:center;' });
+            const delBtn = el('button', { onclick: () => deleteArt(x.exhibitionId, x.id) }, ['Delete']);
+            actions.append(delBtn);
+            card.append(img, title, meta, actions);
+            wrap.appendChild(card);
+          });
+        }
+
+        async function deleteArt(exhibitionId, soloArtId) {
+          if (!confirm(`Delete #${soloArtId}?`)) return;
+          const res = await fetch(`/admin/solo/exhibitions/${exhibitionId}/arts/${soloArtId}`, {
+            method: 'DELETE',
+            credentials: CRED,
+            headers: withCsrfHeaders()
+          });
+          if (res.status === 204) { await loadArts(); }
+          else if (res.status === 404) { alert('It has already been deleted or does not exist.'); }
+          else { alert('Deletion failed: ' + res.status); }
+        }
+
+        /* ===================== boot ===================== */
+        (async function init() {
+          // 메타 기반이라 별도 토큰 발급 호출 필요 없음(서버 템플릿이 메타를 렌더링함)
+          await loadExhibitions();
+          if (state.cachedExhibitions.length > 0) setCurrentExhibition(state.cachedExhibitions[0].id);
+        })();
+
+
+      </script>
+
+      <!--   -->
+
+      <!--artwork-->
+
+      <section class="artwork-manage" data-section="ARTWORK">
+        <h2>Artwork Management</h2>
+        <div class="shop-box">
+          <div class="image-preview" id="artworkPreviewContainer">
+            <img id="artworkPreviewImage" src="" alt="Preview Image"
+              style="display:none; width:100%; height:100%; object-fit:contain;" />
+            <span id="artworkPlaceholderText">Image</span>
+          </div>
+          <div class="file-input-wrapper">
+            <label for="artworkFile">Attach File</label>
+            <input type="file" id="artworkFile" accept="image/*" hidden />
+          </div>
+          <div class="info-inputs">
+            <label for="artworkId">Artwork ID</label>
+            <div class="id-search-group" style="display:flex; gap:0.5rem;">
+              <input type="text" id="artworkId" placeholder="Artwork ID" />
+              <button id="btnApply">Search</button>
+            </div>
+            <div class="btn-group">
+              <button id="btnRegisterArtwork" type="button">Register</button>
+              <button id="btnUpdateArtwork" type="button">Update</button>
+              <button id="btnDeleteArtwork" type="button">Delete</button>
+              <button id="btnCancelArtwork" type="button">Clear</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <style>
+        #btnApply,
+        #btnRegisterArtwork,
+        #btnUpdateArtwork,
+        #btnDeleteArtwork,
+        #btnCancelArtwork {
+          background: #000 !important;
+          color: #fff !important;
+          border: none !important;
+          padding: .5rem 1rem !important;
+          border-radius: .25rem !important;
+          cursor: pointer !important;
+          font-weight: 600 !important;
+        }
+
+        .artwork-manage h2 {
+          font-size: 2rem;
+          /* 글자 크기 (약 32px) */
+          font-weight: bold;
+          /* 글자 굵게 */
+          text-align: left !important;
+        }
+      </style>
+
+      <!--  shop-manage -->
+
+      <section class="shop-manage" data-section="SHOP">
+        <h2>Artshop Management</h2>
+        <div class="shop-box">
+          <div class="image-preview" id="shopPreviewContainer">
+            <img id="shopPreviewImage" src="" alt="Preview Image"
+              style="display:none; width:100%; height:100%; object-fit:contain;" />
+            <span id="shopPlaceholderText">Image</span>
+          </div>
+          <div class="file-input-wrapper">
+            <label for="shopImage">Attach File</label>
+            <input type="file" id="shopImage" accept="image/*" hidden />
+          </div>
+          <div class="info-inputs">
+            <label for="productId">Artwork ID</label>
+            <div class="id-search-group">
+              <input type="text" id="productId" placeholder="Artwork ID" />
+              <button id="btnSearch">Search</button>
+            </div>
+            <label for="titleInput">Title</label>
+            <input type="text" id="titleInput" placeholder="Enter title" />
+            <label for="descInput">Description</label>
+            <textarea id="descInput" placeholder="Enter artwork description"></textarea>
+            <label for="priceInput">Price</label>
+            <input type="number" id="priceInput" placeholder="Enter price" />
+            <div class="btn-group">
+              <button id="btnRegister">Register</button>
+              <button id="btnUpdate">Update</button>
+              <button id="btnDelete">Delete</button>
+              <button id="btnClear">Clear</button>
+            </div>
+          </div>
+        </div>
+      </section>
+  </main>
+
+  <!---->
+
+
+
+  <style>
+    .shop-manage h2 {
+      font-size: 2rem;
+      /* 글자 크기 (약 32px) */
+      font-weight: bold;
+      /* 글자 굵게 */
+      text-align: left !important;
+    }
+
+    .shop-manage button {
+      background-color: #000 !important;
+      /* 검은색 배경 (강제 적용) */
+      color: #fff !important;
+      /* 흰 글씨 (강제 적용) */
+      border: none !important;
+      /* 기존 테두리 제거 */
+      padding: 0.5rem 1rem;
+      /* 여백(버튼 크기) */
+      border-radius: 0.25rem;
+      /* 모서리 약간 둥글게 */
+      cursor: pointer;
+    }
+
+    .shop-manage[data-section="SHOP"] label {
+      font-size: 0.85rem;
+      /* 글씨 크기 줄이기 */
+      font-weight: 400;
+      /* 두께 조절 (옵션) */
+      color: #333;
+      /* 색상도 필요하면 지정 */
+    }
+
+    /* 카드 스타일 */
+    .solo-admin-card {
+      background-color: #f9f9f9 !important;
+      border: none !important;
+      border-radius: .625rem !important;
+      padding: 1.5rem !important;
+      margin-bottom: 1.875rem !important;
+      box-shadow: 0 0 .5rem rgba(0, 0, 0, 0.05) !important;
+    }
+
+    /* 미리보기 박스 */
+    .solo-dropzone {
+      background-color: #f3f3f3 !important;
+      border: none !important;
+      border-radius: .625rem !important;
+      height: 20rem !important;
+      display: grid !important;
+      place-items: center !important;
+      overflow: hidden !important;
+      box-shadow: 0 .25rem .75rem rgba(0, 0, 0, 0.06) !important;
+    }
+
+    /* Artwork Attach File 버튼 강제 스타일 */
+    .file-input-wrapper label[for="artworkFile"] {
+      cursor: pointer !important;
+      background-color: #000 !important;
+      /* 검은색 배경 (강제 적용) */
+      color: #fff !important;
+      /* 흰 글씨 (강제 적용) */
+      border: none !important;
+      /* 기존 테두리 제거 */
+      padding: 0.5rem 1rem;
+      /* 여백(버튼 크기) */
+      border-radius: 0.25rem;
+      /* 모서리 약간 둥글게 */
+    }
+  </style>
+  <!--  -->
+
+
+  </main>
+  <!-- 로그아웃 -->
+  <script>
+    (function () {
+      var btn = document.getElementById('logoutButton');
+      if (!btn) return;
+
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        var tokenEl = document.querySelector('meta[name="_csrf"]');
+        var headerEl = document.querySelector('meta[name="_csrf_header"]');
+        var token = tokenEl ? tokenEl.content : '';
+        var header = headerEl ? headerEl.content : 'X-CSRF-TOKEN';
+
+        var headers = { 'Content-Type': 'application/json' };
+        if (token) headers[header] = token;
+
+        fetch('/api/admin/logout', {
+          method: 'POST',
+          headers: headers,
+          credentials: 'include'
+        })
+          .then(function (res) {
+            if (res.ok) {
+              alert('Logout Completed');
+              window.location.replace('/index');
+            } else {
+              return res.text().then(function (t) { throw new Error(t || res.status); });
+            }
+          })
+          .catch(function (err) {
+            console.error('Logout error:', err);
+            alert('Logout Failed: ' + err.message);
+          });
+      });
+    })();
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const igEl = document.getElementById('footerInstagram');
+      const fbEl = document.getElementById('footerFacebook');
+
+      try {
+        const [igRes, fbRes] = await Promise.all([
+          fetch('/api/social/instagram'),
+          fetch('/api/social/facebook'),
+        ]);
+
+        const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
+        const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
+
+        if (igEl) {
+          if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
+          else igEl.style.display = 'none';
+        }
+        if (fbEl) {
+          if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
+          else fbEl.style.display = 'none';
+        }
+      } catch (e) {
+        console.error('SNS link load failed:', e);
+        if (igEl) igEl.style.display = 'none';
+        if (fbEl) fbEl.style.display = 'none';
+      }
+    });
+  </script>
+
+  <!-- Fixed Side Rail -->
+  <nav class="dash-rail" aria-label="Dashboard quick nav">
+    <button class="rail-btn" data-goto="EMAILSNS">EMAIL/SNS</button>
+    <button class="rail-btn" data-goto="NEWSLETTER">NEWSLETTER</button>
+    <button class="rail-btn" data-goto="ARTIST">ARTIST</button>
+    <button class="rail-btn" data-goto="SOLO">SOLO ART</button>
+    <button class="rail-btn" data-goto="ARTWORK">ART WORK</button>
+    <button class="rail-btn" data-goto="SHOP">ART SHOP</button>
+  </nav>
+
+  <!-- 표시할 내용이 없거나 미정일 때 보여줄 자리표시 카드 -->
+  <section id="dash-placeholder" class="dash-placeholder" hidden>
+    <h3>이 탭에서 사용되는 기능(미정)</h3>
+    <p>아직 연결된 관리 블럭이 없습니다. 필요 기능이 확정되면 연결해 주세요.</p>
+  </section>
+
+  <style>
+    .dash-rail {
+      position: fixed;
+      right: 1rem;
+      top: 30%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 50;
+    }
+
+    .dash-rail .rail-btn {
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: .5rem;
+      padding: .5rem .75rem;
+      font-size: .875rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+      opacity: .9;
+      transition: transform .15s ease, opacity .15s ease;
+    }
+
+    .dash-rail .rail-btn:hover {
+      transform: translateY(-1px);
+      opacity: 1;
+    }
+
+    .dash-rail .rail-btn.active {
+      outline: 2px solid #60a5fa;
+    }
+
+    .dash-placeholder {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      width: min(26rem, 90vw);
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: .75rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .12);
+      padding: 1rem 1.125rem;
+      z-index: 40;
+    }
+
+    .dash-placeholder h3 {
+      margin: 0 0 .25rem;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .dash-placeholder p {
+      margin: 0;
+      color: #6b7280;
+      font-size: .925rem;
+    }
+
+    /* 작은 화면에서 레일이 너무 겹치면 살짝 투명도만 */
+    @media (max-width: 768px) {
+      .dash-rail {
+        top: auto;
+        bottom: 1rem;
+        right: .75rem;
+        flex-direction: row;
+      }
+    }
+  </style>
+
+  <script>
+    (function () {
+      const rail = document.querySelector('.dash-rail');
+      const placeholder = document.getElementById('dash-placeholder');
+
+      // 대시보드 내 관리 블럭(표시 대상) 셀렉터
+      const BLOCK_SELECTOR = [
+        '.upload-section',
+        '.artist-manage.upload-section',
+        '.solo-admin-card',
+        '.artwork-manage',
+        '.shop-manage'
+      ].join(',');
+
+      function showSection(key) {
+        const blocks = document.querySelectorAll(BLOCK_SELECTOR);
+        let anyShown = false;
+
+        blocks.forEach(b => {
+          const k = b.dataset.section?.toUpperCase?.() || '';
+          const match = (k === key);
+          b.style.display = match ? '' : 'none';
+          if (match) anyShown = true;
+        });
+
+        // 자리표시 카드 토글
+        placeholder.hidden = anyShown;
+
+        // 버튼 active 표시
+        document.querySelectorAll('.dash-rail .rail-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.goto === key);
+        });
+
+        // 접근성(화면리더 등)에 힌트
+        document.body.setAttribute('data-dashboard-view', key);
+      }
+
+      // 레일 버튼 클릭 이벤트
+      rail?.addEventListener('click', (e) => {
+        const btn = e.target.closest('.rail-btn');
+        if (!btn) return;
+        showSection(btn.dataset.goto);
+      });
+
+      // 초기 진입은 EMAILSNS만
+      showSection('EMAILSNS');
+
+      // 개발 시 콘솔에서 강제로 바꾸고 싶다면:
+      window.__dashShow = showSection; // 예: __dashShow('ARTIST');
+    })();
+  </script>
+
+
+  <footer>
+    <nav>
+      <a th:href="@{/index}">HOME</a>
+      <a th:href="@{/privacy}">PRIVACY POLICY</a>
+      <a th:href="@{/terms}">TERMS OF USE</a>
+      <a th:href="@{/contact}">CONTACT</a>
+    </nav>
+    <div class="footer-sns">
+      <!-- 인스타 -->
+      <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
+        </svg>
+      </a>
+
+      <!-- 페이스북 -->
+      <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path
+            d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
+        </svg>
+    </div>
+    </a>
+
+    <div class="footer-logo">Walid Jahin Art Studio</div>
+    <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
+
+
+
+
+
+      // 인스타그램 URL 불러오기
+      async function loadInstagramUrl() {
+        try {
+          const res = await fetch('/api/social/instagram');
+          const text = await res.text();
+          if (text) {
+            const data = JSON.parse(text);
+            document.getElementById('instagramUrl').value = data.url || '';
+          }
+        } catch (err) {
+          console.error('Instagram URL load error:', err);
+        }
+      }
+
+      // 페이스북 URL 불러오기
+      async function loadFacebookUrl() {
+        try {
+          const res = await fetch('/api/social/facebook');
+          const text = await res.text();
+          if (text) {
+            const data = JSON.parse(text);
+            document.getElementById('facebookUrl').value = data.url || '';
+          }
+        } catch (err) {
+          console.error('Facebook URL load error:', err);
+        }
+      }
+
+      loadInstagramUrl();
+      loadFacebookUrl();
+    });
+
+    // 인스타 저장
+    await fetch('/admin/api/social/instagram', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ instagram: instagramInput.value.trim() })
+    });
+
+    // 페북 저장
+    await fetch('/admin/api/social/facebook', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ facebook: facebookInput.value.trim() })
+    });
+
+
+  </script>
+
+
+  <script>
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+
+    async function getSection() {
+      const key = document.getElementById('sectionKey').value;
+      const res = await fetch(`/admin/api/artist/section/${key}`);
+      const data = await res.json();
+      document.getElementById('sectionContent').value = data.content || '';
+    }
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('artworkFile')?.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        const previewImage = document.getElementById('artworkPreviewImage');
+        const placeholder = document.getElementById('artworkPlaceholderText');
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            previewImage.src = event.target.result;
+            previewImage.style.display = 'block';
+            placeholder.style.display = 'none';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // 아트워크 조회
+      document.getElementById('btnApply').addEventListener('click', async () => {
+        const id = document.getElementById('artworkId').value.trim();
+        if (!id) {
+          alert('Enter the ID.');
+          return;
+        }
+
+        try {
+          const res = await fetch(`/admin/api/artwork/${id}`, {
+            credentials: 'include' // 세션 인증 포함
+          });
+
+          if (!res.ok) {
+            alert('No artwork found with the given ID.');
+            return;
+          }
+
+          const item = await res.json();
+
+          const imageUrl = item.imagePath;
+          document.getElementById('artworkPreviewImage').src = imageUrl;
+          document.getElementById('artworkPreviewImage').style.display = 'block';
+          document.getElementById('artworkPlaceholderText').style.display = 'none';
+        } catch (err) {
+          console.error('Retrieval error:', err);
+          alert('Failed to retrieve');
+        }
+      });
+
+
+      // 아트워크 등록
+      document.getElementById('btnRegisterArtwork')?.addEventListener('click', async () => {
+        const file = document.getElementById('artworkFile').files[0];
+
+        if (!file) {
+          alert('Please attach a file.');
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const res = await fetch('/admin/api/artwork/upload', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-XSRF-TOKEN': csrfToken   // 👉 CSRF 토큰 헤더 추가
+          },
+          credentials: 'include'
+        });
+
+        alert(res.ok ? 'Artwork registered!' : 'Failed to register artwork.');
+      });
+
+
+      // 아트워크 수정
+      document.getElementById('btnUpdateArtwork')?.addEventListener('click', async () => {
+        const id = document.getElementById('artworkId').value;
+        const file = document.getElementById('artworkFile').files[0];
+        if (!id || !file) {
+          alert('Please attach a file.');
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+        try {
+          const res = await fetch(`/admin/api/artwork/${id}`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+              [csrfHeader]: csrfToken
+            },
+            body: formData
+          });
+
+          alert(res.ok ? 'Artwork updated!' : 'Failed to update artwork.');
+        } catch (err) {
+          console.error(err);
+          alert('Error');
+        }
+      });
+
+
+      // 아트워크 삭제
+      document.getElementById('btnDeleteArtwork')?.addEventListener('click', async () => {
+        const id = document.getElementById('artworkId').value;
+        if (!id || !confirm(`Are you sure you want to delete?`)) return;
+
+        // ✅ CSRF 토큰 읽기
+        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+        try {
+          const res = await fetch(`/admin/api/artwork/${id}`, {
+            method: 'DELETE',
+            credentials: 'include',
+            headers: {
+              [csrfHeader]: csrfToken
+            }
+          });
+
+          if (res.ok) {
+            alert('Artwork deleted!');
+            document.getElementById('artworkFile').value = '';
+            document.getElementById('artworkPreviewImage').style.display = 'none';
+            document.getElementById('artworkPlaceholderText').style.display = 'block';
+          } else {
+            alert('Failed to delete artwork.');
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Error');
+        }
+      });
+
+
+      // 아트워크 폼 초기화
+      document.getElementById('btnCancelArtwork')?.addEventListener('click', clearArtworkFields);
+
+      function clearArtworkFields() {
+        document.getElementById('artworkId').value = '';
+        document.getElementById('artworkFile').value = '';
+        document.getElementById('artworkPreviewImage').src = '';
+        document.getElementById('artworkPreviewImage').style.display = 'none';
+        document.getElementById('artworkPlaceholderText').style.display = 'block';
+      }
+
+
+
+    });
+  </script>
+
+
+
+  <script>
+    // 아티스트 텍스트 수정
+
+    // 조회 버튼 클릭 시 콘텐츠 로드
+    document.getElementById('btnLoadSection').addEventListener('click', async () => {
+      const sectionKey = document.getElementById('sectionKey').value;
+
+      try {
+        const res = await fetch(`/admin/api/artist/section/${sectionKey}`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('sectionContent').value = data.content || '';
+        } else {
+          alert('Failed to load content');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error');
+      }
+    });
+
+
+    // 저장 버튼 클릭 시 수정 요청
+    document.getElementById('btnUpdateSection')?.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const key = document.getElementById('sectionKey').value;
+      const content = document.getElementById('sectionContent').value;
+      await fetch(`/admin/api/artist/section/${key}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-XSRF-TOKEN': csrfToken
+        },
+        credentials: 'include',
+        body: JSON.stringify({ content })
+      });
+      alert('Section updated!');
+    });
+
+    // ✅ 쿠키에서 XSRF-TOKEN 읽기 함수
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+
+  </script>
+
+
+  <script>
+
+
+    /*
+    async function loadInstagramUrl() {
+      try {
+        const res = await fetch('/admin/api/social/instagram');
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('instagramUrl').value = data.url || '';
+        }
+      } catch (err) {
+        console.error('Instagram URL load error:', err);
+      }
+    }
+
+    async function loadFacebookUrl() {
+      try {
+        const res = await fetch('/admin/api/social/facebook');
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('facebookUrl').value = data.url || '';
+        }
+      } catch (err) {
+        console.error('Facebook URL load error:', err);
+      }
+    }
+    */
+
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // ✅ 세션 인증 확인
+      try {
+        const res = await fetch("/api/admin/check-session", {
+          credentials: "include"
+        });
+        if (!res.ok) {
+          window.location.href = "login.html";
+        }
+      } catch (err) {
+        window.location.href = "login.html";
+      }
+
+      // ✅ 이메일 변경
+      const emailForm = document.getElementById("emailForm");
+      if (emailForm) {
+        emailForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const email = document.getElementById("newEmail").value;
+          try {
+            const res = await fetch("/admin/api/email", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-XSRF-TOKEN": csrfToken
+              },
+              body: JSON.stringify({ email }),
+              credentials: "include"
+            });
+            if (res.ok) {
+              alert("Email updated successfully.");
+            } else {
+              alert("Failed to update email.");
+            }
+          } catch (err) {
+            console.error("Error updating email:", err);
+            alert("An error occurred. Please try again.");
+          }
+        }, { once: true });
+      }
+
+      // ✅ SNS 초기값 불러오기
+      await loadInstagramUrl();
+      await loadFacebookUrl();
+    });
+
+    // ✅ SNS URL 등록
+    document.getElementById('instagramForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = document.getElementById('instagramUrl').value;
+      await fetch('/admin/api/social/instagram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-XSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ instagram: url }),
+        credentials: 'include'
+      });
+      alert('Instagram connected!');
+    });
+
+    document.getElementById('facebookForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = document.getElementById('facebookUrl').value;
+      await fetch('/admin/api/social/facebook', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-XSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ facebook: url }),
+        credentials: 'include'
+      });
+      alert('Facebook connected!');
+    });
+
+    // ✅ 뉴스레터 발송
+    document.getElementById('newsletterForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('newsletterTitle').value;
+      const content = document.getElementById('newsletterContent').value;
+
+      await fetch('/admin/api/news/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-XSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ title, content }),
+        credentials: 'include'
+      });
+      alert('Newsletter sent!');
+    });
+
+    // ✅ 섹션 조회 및 수정
+    async function getSection() {
+      const key = document.getElementById('sectionKey').value;
+      const res = await fetch(`/admin/api/artist/section/${key}`);
+      const data = await res.json();
+      document.getElementById('sectionContent').value = data.content || '';
+    }
+
+    document.getElementById('artistSectionForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const key = document.getElementById('sectionKey').value;
+      const content = document.getElementById('sectionContent').value;
+      await fetch(`/admin/api/artist/section/${key}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-XSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify({ content })
+      });
+      alert('Section updated!');
+    });
+
+
+
+    // DOM 요소 캐싱
+    const shopImageInput = document.getElementById('shopImage');
+    const shopPreviewImage = document.getElementById('shopPreviewImage');
+    const shopPlaceholderText = document.getElementById('shopPlaceholderText');
+
+    const productIdInput = document.getElementById('productId');
+    const titleInput = document.getElementById('titleInput');
+    const descInput = document.getElementById('descInput');
+    const priceInput = document.getElementById('priceInput');
+
+    // 미리보기 처리
+    shopImageInput.addEventListener('change', () => {
+      const file = shopImageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          shopPreviewImage.src = e.target.result;
+          shopPreviewImage.style.display = 'block';
+          shopPlaceholderText.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        shopPreviewImage.src = '';
+        shopPreviewImage.style.display = 'none';
+        shopPlaceholderText.style.display = 'block';
+      }
+    });
+
+    // 아트샵 등록
+    document.getElementById('btnRegister').addEventListener('click', async () => {
+      const file = shopImageInput.files[0];
+      if (!file || !titleInput.value || !descInput.value || !priceInput.value) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('title', titleInput.value);
+      formData.append('description', descInput.value);
+      formData.append('price', priceInput.value);
+
+      try {
+        const res = await fetch('/admin/api/artshop/upload', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-XSRF-TOKEN': csrfToken   // 👉 CSRF 토큰 헤더 추가
+          },
+          credentials: 'include'         // 👉 세션 쿠키 포함 (Spring 인증 시 필요)
+        });
+
+        if (res.ok) {
+          alert('Successfully Registered');
+          clearFields();
+        } else {
+          alert('Successfully Updated');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error');
+      }
+    });
+
+    // 아트샵 조회
+    document.getElementById('btnSearch').addEventListener('click', async () => {
+      const id = productIdInput.value.trim();
+      if (!id) {
+        alert('Enter the ID.');
+        return;
+      }
+
+      try {
+        const res = await fetch(`/admin/api/artshop/${id}`);
+        if (!res.ok) {
+          alert('No artwork found with the given ID.');
+          return;
+        }
+
+        const item = await res.json();
+        titleInput.value = item.title;
+        descInput.value = item.description;
+        priceInput.value = item.price;
+
+        // ✅ 이미지 경로 생성 방식에 따라 수정 필요
+        const imageUrl = item.imagePath;
+        shopPreviewImage.src = imageUrl;
+        shopPreviewImage.style.display = 'block';
+        shopPlaceholderText.style.display = 'none';
+      } catch (err) {
+        console.error(err);
+        alert('Failed to retrieve');
+      }
+    });
+
+
+    // 아트샵 수정
+    document.getElementById('btnUpdate').addEventListener('click', async () => {
+      const id = productIdInput.value.trim(); // ✅ 먼저 id 정의해야 함
+
+      if (!id) {
+        alert('Enter the ID.');
+        return;
+      }
+
+      const file = shopImageInput.files[0];
+      const formData = new FormData();
+      if (file) formData.append('image', file);
+      formData.append('title', titleInput.value);
+      formData.append('description', descInput.value);
+      formData.append('price', priceInput.value);
+
+      const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+      const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+      try {
+        const res = await fetch(`/admin/api/artshop/${id}`, {
+          method: 'PUT',
+          headers: {
+            [csrfHeader]: csrfToken
+          },
+          body: formData
+        });
+
+        if (res.ok) {
+          alert('Successfully updated');
+          clearFields();
+        } else {
+          alert('Failed to update');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error');
+      }
+    });
+
+
+
+
+    // 아트샵 삭제
+    document.getElementById('btnDelete').addEventListener('click', async () => {
+      const id = productIdInput.value.trim();
+      if (!id) {
+        alert('Enter the ID.');
+        return;
+      }
+
+      if (!confirm('Are you sure you want to delete?')) return;
+
+      // ✅ CSRF 토큰 정보 가져오기
+      const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+      const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+      try {
+        const res = await fetch(`/admin/api/artshop/${id}`, {
+          method: 'DELETE',
+          headers: {
+            [csrfHeader]: csrfToken  // ✅ CSRF 헤더 추가
+          }
+        });
+        if (res.ok) {
+          alert('Successfully deleted');
+          clearFields();
+        } else {
+          alert('Failed to delete');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error');
+      }
+    });
+
+
+    // 아트샵 폼 초기화
+    document.getElementById('btnClear').addEventListener('click', clearFields);
+
+    function clearFields() {
+      productIdInput.value = '';
+      titleInput.value = '';
+      descInput.value = '';
+      priceInput.value = '';
+      shopImageInput.value = '';
+      shopPreviewImage.src = '';
+      shopPreviewImage.style.display = 'none';
+      shopPlaceholderText.style.display = 'block';
+    }
+
+
+  </script>
+
+  <!-- DOMPurify -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+</body>
+
+</html>

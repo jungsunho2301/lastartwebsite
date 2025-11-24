@@ -8,9 +8,8 @@ group = 'walid'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
 
 configurations {
@@ -24,13 +23,34 @@ repositories {
 }
 
 dependencies {
+	// ✅ Oracle ADB용 드라이버
+	implementation 'com.oracle.database.jdbc:ojdbc11:21.9.0.0'
+	implementation 'com.oracle.database.security:oraclepki:21.9.0.0'
+    implementation 'com.oracle.database.security:osdt_core:21.9.0.0'
+    implementation 'com.oracle.database.security:osdt_cert:21.9.0.0'
+
+
+	// ✅ Hibernate Dialect 문제 해결
+	implementation 'org.hibernate.orm:hibernate-core:6.4.4.Final'
+
+	// ✅ Spring starters
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	// ✅ 기타 의존성
+	implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+
+	// ✅ Lombok
+	compileOnly 'org.projectlombok:lombok:1.18.30'
+	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+	// ✅ 개발 & 테스트 도구
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -38,4 +58,8 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+springBoot {
+	mainClass = 'walid.jahin.JahinApplication'
 }

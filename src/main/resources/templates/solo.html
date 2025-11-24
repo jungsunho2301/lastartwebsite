@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="icon" type="image/png" href="/image/walidjahineye.png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solo Art - Walid Jahin</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f9f9f9;
+            color: #111;
+        }
+
+        .hero-section {
+            width: 100%;
+            padding: 6rem 0;
+            background-color: #f9f9f9;
+            text-align: center;
+            font-family: 'Roboto Serif', serif;
+            font-size: 3.75rem;
+            font-weight: 800;
+            font-style: italic;
+            letter-spacing: -0.0625rem;
+            color: #111;
+        }
+
+        .hero-container {
+            max-width: 48rem;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            /* 최소 3rem(48px), 화면 너비의 10% 비율, 최대 6rem(96px) */
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* 카드(포스터) 타이틀 버튼 */
+        .title-btn {
+            /* 모바일~데스크톱까지 부드럽게 커지는 크기 */
+            font-size: clamp(1.5rem, 4.2vw, 2rem);
+            line-height: 1.1;
+            text-underline-offset: 4px;
+            letter-spacing: 0.01em;
+        }
+
+        /* ========================= 카드 썸네일(그리드) ========================== */
+        #grid>* {
+            min-height: 20rem;
+            display: flex;
+            flex-direction: column;
+            border-radius: .75rem;
+            overflow: hidden;
+            box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .08);
+            background: #fff;
+        }
+
+        #grid>*> :first-child {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #grid>*> :first-child img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 썸네일은 꽉 채우기 */
+            display: block;
+        }
+
+        /* 상태 라벨 숨김 */
+        #metaInfo {
+            display: none !important;
+        }
+
+        /* ========================= 모달(풀스크린 뷰어) ========================== */
+        /* 헤더(타이틀/ESC) 숨김 — 헤더 래퍼에 id="modalHeader" 반드시 존재 */
+        #modalHeader {
+            display: none !important;
+        }
+
+        /* 모달 박스: 화면 전체 사용 */
+        #modal .modal-box {
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
+            max-height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.4);
+            /* 🔹 검정 + 20% 투명 */
+            overflow: hidden;
+        }
+
+
+        /* 뷰어: 전체 화면 채움 */
+        #viewer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        /* ===== 부드러운 슬라이드/페이드 전환 핵심 =====
+       - 이미지 두 장을 겹쳐두고(active/inactive) 부드럽게 교차
+       - JS에서 src 주입 후 클래스 토글로 트랜지션 발생
+    */
+        .viewer-layer {
+            position: absolute !important;
+            inset: 0 !important;
+            margin: auto !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+            object-fit: contain !important;
+            display: block !important;
+            user-select: none;
+
+            /* 화살표/배경 클릭에 방해 안 되도록 */
+            opacity: 0;
+            transform: translateX(1.25rem);
+            /* 살짝 오른쪽에서 들어오게 */
+            transition: opacity 280ms ease, transform 320ms ease;
+            will-change: opacity, transform;
+        }
+
+        .viewer-layer.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 2;
+        }
+
+        .viewer-layer.inactive {
+            opacity: 0;
+            transform: translateX(-1.25rem);
+            /* 이전 이미지는 살짝 왼쪽으로 사라짐 */
+            z-index: 1;
+        }
+
+
+
+
+        #modal .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            /* 수직 중앙 */
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, .9);
+            color: #111;
+            /* SVG stroke가 이 색을 따라감 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
+            z-index: 6;
+            user-select: none;
+            line-height: 1;
+        }
+
+        #prevBtn {
+            left: 1rem;
+        }
+
+        #nextBtn {
+            right: 1rem;
+        }
+
+        #modal .nav-btn svg {
+            display: block;
+        }
+
+        /* 폰트 영향 제거, 진짜 중앙 */
+
+
+        #modal .nav-btn:hover {
+            background: #fff;
+        }
+
+        #modal .nav-btn:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+        }
+
+
+
+        /* 안전장치: 모달 내부의 다른 img 전역 규칙 무력화 */
+        #modal .modal-box img {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+            object-fit: contain !important;
+            position: static;
+        }
+
+        footer {
+            margin-top: 3rem;
+            /* 본문(#f9f9f9) 배경이 드러나는 여백 */
+            background: #111;
+            /* 푸터 배경은 유지 */
+            color: #fff;
+        }
+
+        /* 뷰어 박스 안에서 중앙 정렬 + 전체 보이기 */
+        #viewer {
+            max-width: 70rem;
+            /* 가로 제한 */
+            max-height: 90vh;
+            /* 세로 제한 */
+            margin-left: auto;
+            margin-right: auto;
+            /* margin-top: 2rem;  🔹 여백 제거 */
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(0, 0, 0, 0);
+            /* 🔹 반투명 처리 */
+            border-radius: 0.5rem;
+            /* 선택: 모서리 둥글게 */
+        }
+
+
+
+        /* 두 레이어 공통: 박스를 꽉 채우되 '잘리지 않게' 전체 표시 */
+        .viewer-layer {
+            position: absolute;
+            /* 서로 겹치기 */
+            inset: 0;
+            /* viewer를 꽉 채움 */
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* 비율 유지 + 전체 보이기 */
+            transition: opacity .35s ease;
+            opacity: 1;
+        }
+
+        /* 전환용 상태 클래스 */
+        .viewer-layer.inactive {
+            opacity: 0;
+        }
+
+        #viewerCaption {
+            position: absolute;
+            bottom: 1.5rem;
+            /* 화면 아래쪽 여백 */
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            /* 가운데 정렬 */
+            font-size: 1.5rem !important;
+            /* 🔹 글자 크기 확대 (원하면 더 키울 수 있음) */
+            font-weight: 600;
+            color: #fff;
+            /* 밝은 글씨 */
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+            /* 가독성 보정 */
+            z-index: 10;
+            white-space: normal;
+            /* 여러 줄 허용 */
+        }
+
+
+
+        footer {
+            margin-top: 3rem;
+            /* 본문(#f9f9f9) 배경이 드러나는 여백 */
+            background: #111;
+            /* 푸터 배경은 유지 */
+            color: #fff;
+        }
+
+        /* ===== 강제 지정 패치 (수정) ===== */
+        #modal .viewer-layer {
+            pointer-events: none !important;
+            /* 이미지 위 클릭도 아래(#viewer)로 통과 */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-inner">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a th:href="@{/index}">
+                        <img src="/image/walidjahinlogo.png" alt="Walid Jahin Logo" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-links">
+                    <a th:href="@{/index}">HOME</a>
+                    <a th:href="@{/artist}">ARTIST</a>
+                    <a th:href="@{/solo}">SOLO ART</a>
+                    <a th:href="@{/artwork}">ART WORK</a>
+                    <a th:href="@{/artshop}">ART SHOP</a>
+                </div>
+            </div>
+            <div class="lang">
+                <div class="gtranslate_wrapper"></div>
+                <button id="adminButton"
+                    style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
+            </div>
+        </div>
+    </header>
+
+
+    <script>
+        const adminButton = document.getElementById('adminButton');
+        function updateAdminButton() {
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+            adminButton.onclick = () => {
+                if (isAdmin) {
+                    localStorage.removeItem('isAdmin');
+                    location.reload();
+                } else {
+                    location.href = '/admin/login';
+                }
+            };
+        }
+        document.addEventListener('DOMContentLoaded', updateAdminButton);
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const igEl = document.getElementById('footerInstagram');
+            const fbEl = document.getElementById('footerFacebook');
+
+            try {
+                const [igRes, fbRes] = await Promise.all([
+                    fetch('/api/social/instagram'),
+                    fetch('/api/social/facebook'),
+                ]);
+
+                const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
+                const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
+
+                if (igEl) {
+                    if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
+                    else igEl.style.display = 'none';
+                }
+                if (fbEl) {
+                    if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
+                    else fbEl.style.display = 'none';
+                }
+            } catch (e) {
+                console.error('SNS link load failed:', e);
+                if (igEl) igEl.style.display = 'none';
+                if (fbEl) fbEl.style.display = 'none';
+            }
+        });
+    </script>
+
+    <section class="hero-section">
+        <div class="hero-container">
+            <h2 class="hero-title">
+                SOLO<br>
+                EXHIBITIONS
+            </h2>
+        </div>
+    </section>
+
+
+    <!-- 솔로 시작 -->
+
+    <main class="max-w-7xl mx-auto px-4 pb-4">
+        <!-- 상단 상태 라벨 -->
+        <div class="flex items-center justify-between mb-3">
+            <div class="text-sm text-gray-500" id="metaInfo">Loading…</div>
+        </div>
+
+        <!-- 1열 카드 그리드 (가로 긴 직사각형) -->
+        <section id="grid" class="grid grid-cols-1 gap-y-4"></section>
+
+        <!-- 바닥 상태 (무한 스크롤 sentinel) -->
+        <div id="sentinel" class="py-4 text-center text-gray-400 text-sm"></div>
+    </main>
+
+    <!-- ===== 상세 모달 (풀스크린 뷰어 + 좌/우 내비 + 캡션) ===== -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center p-[1rem]">
+        <div class="modal-box bg-white rounded-2xl overflow-hidden flex flex-col w-full max-w-[80rem] h-[90vh]">
+            <!-- Header (필요 시 보여주기; 기본은 숨김) -->
+            <div id="modalHeader"
+                class="hidden flex items-start justify-between px-[0.75rem] py-[0.5rem] border-b flex-none">
+                <h2 id="modalTitle" class="text-[3rem] font-extrabold leading-tight break-words font-playfair"></h2>
+                <button id="closeModal"
+                    class="ml-[0.5rem] text-[0.9rem] bg-white text-gray-900 px-[0.5rem] py-[0.25rem] rounded-md shadow"
+                    title="Escape key to close">
+                    Esc
+                </button>
+            </div>
+
+            <!-- Body: 풀스크린 뷰어 -->
+            <div class="flex-1 relative">
+                <!-- 뷰어(상대 위치 컨테이너) -->
+                <div id="viewer"
+                    class="relative w-full h-full max-w-[70rem] max-h-[80vh] mx-auto flex items-center justify-center">
+                    <!-- 두 레이어로 크로스페이드 -->
+                    <img id="viewerImgA" alt="" class="viewer-layer inactive" draggable="false" />
+                    <img id="viewerImgB" alt="" class="viewer-layer inactive" draggable="false" />
+                </div>
+
+                <!-- 좌/우 화살표 (뷰어 위에 겹치도록 절대 위치) -->
+                <button id="prevBtn" class="nav-btn left-2" aria-label="Previous">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                        <path d="M15 6 L9 12 L15 18" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
+                <button id="nextBtn" class="nav-btn right-2" aria-label="Next">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                        <path d="M9 6 L15 12 L9 18" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
+                <!-- 하단 오버레이 캡션 -->
+                <div id="viewerCaption" class="caption-overlay" aria-live="polite"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    <script>
+        /* ========= Solo Exhibitions – Title click => Large Image Viewer ========= */
+
+        /* ---- 상태 ---- */
+        const state = { page: 0, size: 12, totalLoaded: 0 };
+
+        /* ---- 유틸 ---- */
+        const $ = (s) => document.querySelector(s);
+        function escapeHtml(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        /* ---- DOM 캐시 ---- */
+        const viewer = $('#viewer');  // 추가
+        const grid = $('#grid');
+        const metaInfo = $('#metaInfo');
+        const modal = $('#modal');
+        const closeModalBtn = $('#closeModal');
+        const modalTitle = $('#modalTitle');
+
+        // 뷰어 관련(더블 버퍼링용 이미지 두 장)
+        const layerA = $('#viewerImgA');
+        const layerB = $('#viewerImgB');
+        const viewerCaption = $('#viewerCaption');
+        const prevBtn = $('#prevBtn');
+        const nextBtn = $('#nextBtn');
+
+        /* ---- 슬라이드 상태 ---- */
+        let currentArts = [];
+        let currentIdx = 0;
+        let keyHandlerBound = false;
+        let activeLayer = 'A'; // 현재 화면에 보이는 레이어 ('A' | 'B')
+
+        /* ---- 페이징/로딩 상태 ---- */
+        let loading = false;
+        let hasNext = true;
+
+        /* ==================== 전시 목록 로드 ==================== */
+        async function loadExhibitions() {
+            if (loading || !hasNext) return;
+            loading = true;
+            if (metaInfo) metaInfo.textContent = 'Loading…';
+
+            try {
+                const res = await fetch(`/api/solo/exhibitions?page=${state.page}&size=${state.size}`);
+                if (!res.ok) {
+                    if (metaInfo) metaInfo.textContent = `Load error (${res.status}).`;
+                    loading = false;
+                    return;
+                }
+                const raw = await res.json();
+
+                // 다양한 응답 포맷 처리
+                let items = [];
+                let next = false;
+
+                if (Array.isArray(raw)) {
+                    items = raw;
+                    next = items.length === state.size; // 꽉 채우면 다음 페이지 있다고 가정
+                } else if (raw && Array.isArray(raw.items)) {
+                    items = raw.items;
+                    next = typeof raw.hasNext === 'boolean' ? raw.hasNext : (items.length === state.size);
+                } else if (raw && Array.isArray(raw.content)) {
+                    items = raw.content;
+                    next = raw.last === false; // Spring Page: last=false면 다음 있음
+                }
+
+                renderExhibitionGrid(items, { append: state.page > 0 });
+
+                state.totalLoaded += items.length;
+                if (metaInfo) metaInfo.textContent = `Loaded ${state.totalLoaded} item(s)`;
+
+                hasNext = next;
+                if (hasNext) state.page += 1;
+
+            } catch (e) {
+                console.error(e);
+                if (metaInfo) metaInfo.textContent = 'Load error.';
+            } finally {
+                loading = false;
+            }
+        }
+
+        /* ==================== 카드 렌더 ==================== */
+        function renderExhibitionGrid(list, { append = false } = {}) {
+            if (!append) grid.innerHTML = '';
+            if (!list.length && !append) {
+                grid.innerHTML = `<div class="text-gray-500">No exhibitions yet.</div>`;
+                return;
+            }
+
+            list.forEach(x => {
+                const card = document.createElement('article');
+                card.className = 'rounded-2xl overflow-hidden border bg-white';
+                card.innerHTML = `
+        <div class="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden">
+          <img src="${x.posterImagePath ? escapeHtml(x.posterImagePath) : ''}"
+               alt="${escapeHtml(x.title || '')}"
+               class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+          <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-[1rem]">
+            <div class="text-sm md:text-base text-gray-100 mb-[0.25rem]">
+              ${escapeHtml(x.yearMonth || '')}
+            </div>
+            <button class="title-btn text-[1.25rem] md:text-[1.5rem] font-extrabold text-white underline font-playfair"
+                    data-id="${x.id}"
+                    data-title="${escapeHtml(x.title || '(untitled)')}">
+              ${escapeHtml(x.title || '(untitled)')}
+            </button>
+          </div>
+        </div>
+      `;
+
+                // 타이틀 클릭 → 첫 번째 사진부터 큰 뷰어로
+                card.querySelector('button.title-btn').addEventListener('click', async (ev) => {
+                    ev.stopPropagation();
+                    const id = Number(ev.currentTarget.getAttribute('data-id'));
+                    const title = ev.currentTarget.getAttribute('data-title');
+                    await openDetail({ id, title });
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        /* ==================== 상세 모달: 첫 사진부터 ==================== */
+        async function openDetail(exh) {
+            if (!modal || !modalTitle || !layerA || !layerB) return;
+
+            modalTitle.textContent = exh.title || '(untitled)';
+            resetLayers(); // 초기화
+            viewerCaption.textContent = 'Loading…';
+            setNavDisabled(true, true);
+
+            try {
+                const res = await fetch(`/api/solo/exhibitions/${exh.id}/arts?page=0&size=200`);
+                currentArts = res.ok ? await res.json() : [];
+                currentIdx = 0;
+                if (!currentArts.length) {
+                    viewerCaption.textContent = 'No artworks.';
+                } else {
+                    showSlide(0, /*direction*/ 0);
+                }
+            } catch (e) {
+                console.error(e);
+                viewerCaption.textContent = 'Load error.';
+            }
+
+            openModal();
+        }
+
+        // 레이어 상태 초기화
+        function resetLayers() {
+            [layerA, layerB].forEach(l => {
+                l.src = '';
+                l.alt = '';
+                l.classList.remove('active', 'inactive');
+                l.classList.add('inactive');
+            });
+            activeLayer = 'A';
+        }
+
+        // 슬라이드 표시 (direction: -1 왼쪽으로, +1 오른쪽으로, 0 초기)
+        function showSlide(idx, direction = 0) {
+            if (!currentArts.length) return;
+            const nextIdx = Math.max(0, Math.min(idx, currentArts.length - 1));
+            const a = currentArts[nextIdx] || {};
+            const nextSrc = a.imagePath || '';
+            const nextAlt = a.title || '';
+
+            viewerCaption.textContent = nextAlt;
+            setNavDisabled(nextIdx === 0, nextIdx === currentArts.length - 1);
+
+            // 비활성 레이어에 먼저 로드 → 로드 완료되면 크로스페이드
+            const incoming = (activeLayer === 'A') ? layerB : layerA;
+            const outgoing = (activeLayer === 'A') ? layerA : layerB;
+
+            incoming.style.transform = 'translateX(0)';
+            outgoing.style.transform = 'translateX(0)';
+
+            const img = new Image();
+            img.onload = () => {
+                // 새 이미지 주입
+                incoming.src = nextSrc;
+                incoming.alt = nextAlt;
+
+                // 트랜지션 시작: incoming 활성화, outgoing 비활성화
+                incoming.classList.remove('inactive');
+                outgoing.classList.remove('active');
+
+                requestAnimationFrame(() => {
+                    outgoing.classList.add('inactive'); // 서서히 사라짐
+                    incoming.classList.add('active');   // 서서히 나타남
+                });
+
+                // 현재 활성 레이어 스왑
+                activeLayer = (activeLayer === 'A') ? 'B' : 'A';
+
+                // 인덱스 갱신
+                currentIdx = nextIdx;
+
+                // 프리로드
+                preloadAround(currentIdx);
+            };
+            img.onerror = () => {
+                incoming.src = '';
+                incoming.alt = '';
+                viewerCaption.textContent = nextAlt || '(image failed to load)';
+                currentIdx = nextIdx;
+                preloadAround(currentIdx);
+            };
+            img.src = nextSrc;
+        }
+
+        function setNavDisabled(disablePrev, disableNext) {
+            if (prevBtn) prevBtn.disabled = !!disablePrev;
+            if (nextBtn) nextBtn.disabled = !!disableNext;
+        }
+
+        function preloadAround(i) {
+            [i - 1, i + 1].forEach(k => {
+                if (k >= 0 && k < currentArts.length) {
+                    const p = new Image();
+                    p.src = currentArts[k].imagePath || '';
+                }
+            });
+        }
+
+        /* 좌/우 버튼 */
+        prevBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIdx > 0) showSlide(currentIdx - 1, -1);
+        });
+        nextBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIdx < currentArts.length - 1) showSlide(currentIdx + 1, +1);
+        });
+
+        /* 모달 열고 닫기 */
+        /* ===== 모달 열고 닫기 (리빌드) ===== */
+        /* ===== 모달 열고 닫기 (modal 바깥 클릭으로 닫기) ===== */
+        /* ===== 모달 열고 닫기 (최종) ===== */
+        /* 🔹 모달 바깥(백드롭) 클릭 시 닫기 */
+        modal?.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        /* 🔹 뷰어의 '빈 영역'(이미지 외) 클릭 시 닫기 */
+        viewer?.addEventListener('click', (e) => {
+            if (e.target === viewer) closeModal();
+        });
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.documentElement.style.overflow = 'hidden'; // 스크롤 잠금
+            if (!keyHandlerBound) {
+                keyHandlerBound = true;
+                window.addEventListener('keydown', onKey);
+            }
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.documentElement.style.overflow = ''; // 스크롤 해제
+            if (keyHandlerBound) {
+                keyHandlerBound = false;
+                window.removeEventListener('keydown', onKey);
+            }
+        }
+
+        function onKey(e) {
+            if (modal.classList.contains('hidden')) return;
+            if (e.key === 'ArrowLeft' && currentIdx > 0) showSlide(currentIdx - 1, -1);
+            if (e.key === 'ArrowRight' && currentIdx < currentArts.length - 1) showSlide(currentIdx + 1, +1);
+            if (e.key === 'Escape') closeModal();
+        }
+
+        /* 닫기 버튼 */
+        closeModalBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeModal();
+        });
+
+        /* 🔹 모달 박스 배경 클릭 시 닫기 */
+        const modalBox = document.querySelector('#modal .modal-box');
+        modalBox?.addEventListener('click', (e) => {
+            // modal-box 안에 있는 viewer, 이미지, 버튼은 닫히지 않음
+            if (e.target === e.currentTarget) {
+                closeModal();
+            }
+        });
+
+
+        /* ==================== 무한 스크롤 ==================== */
+        const sentinel = document.getElementById('sentinel');
+        if (sentinel) {
+            const io = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) loadExhibitions();
+            }, { rootMargin: '120px 0px' });
+            io.observe(sentinel);
+        }
+
+        /* 초기 로드 */
+        loadExhibitions();
+    </script>
+
+
+
+
+    <!-- 솔로 끝 -->
+
+
+
+
+
+
+
+
+
+    <footer>
+        <nav>
+            <a th:href="@{/index}">HOME</a>
+            <a th:href="@{/privacy}">PRIVACY POLICY</a>
+            <a th:href="@{/terms}">TERMS OF USE</a>
+            <a th:href="@{/contact}">CONTACT</a>
+        </nav>
+        <div class="footer-sns">
+            <!-- 인스타 -->
+            <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram"
+                style="display:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path
+                        d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
+                </svg>
+            </a>
+
+            <!-- 페이스북 -->
+            <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path
+                        d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
+                </svg>
+        </div>
+        </a>
+
+        <div class="footer-logo">Walid Jahin Art Studio</div>
+        <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+    </footer>
+
+
+
+
+
+    <script>
+        window.gtranslateSettings = {
+            "default_language": "en",
+            "native_language_names": true,
+            "languages": ["en", "ar", "ko"],
+            "wrapper_selector": ".gtranslate_wrapper",
+            "flag_size": 24,
+            "switcher_horizontal_position": "inline"
+        };
+    </script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+</body>
+
+</html>

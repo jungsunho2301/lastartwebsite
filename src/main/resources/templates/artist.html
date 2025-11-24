@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link rel="icon" type="image/png" href="/image/walidjahineye.png">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="_csrf" th:content="${_csrf.token}" />
+  <title>Artist - Walid Jahin</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,600;1,400&display=swap"
+    rel="stylesheet">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', serif;
+      background-color: #f9f9f9;
+      color: #111;
+    }
+
+
+
+    .artwork-intro h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .artwork-intro p {
+      margin-top: .625rem;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+      gap: 1.25rem;
+      padding: 1.25rem 2.5rem 3.75rem;
+    }
+
+    .art-img {
+      width: 100%;
+      border-radius: .5rem;
+      box-shadow: 0 .25rem .375rem rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-section {
+      width: 100%;
+      padding: 6rem 0;
+      /* 6rem top & bottom */
+      background-color: #f9f9f9;
+      text-align: center;
+      font-family: 'Roboto Serif', serif;
+      font-size: 3.75rem;
+      /* 사용자 요청 */
+      font-weight: 800;
+      font-style: italic;
+      letter-spacing: -0.0625rem;
+      color: #222222
+    }
+
+    .hero-container {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      /* 약 5rem */
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-description {
+      font-weight: 100;
+      font-size: 1.5rem;
+      line-height: 2rem;
+      color: #767676
+    }
+
+    /* 좌/우 화살표 버튼 배경 투명 */
+    .carousel-btn {
+      background: transparent;
+      /* or background-color: transparent; */
+      border: none;
+      box-shadow: none;
+    }
+
+    /* (선택) hover/active에서도 계속 투명 */
+    .carousel-btn:hover,
+    .carousel-btn:active {
+      background: transparent;
+    }
+
+    /* (권장) 포커스는 보이게 */
+    .carousel-btn:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    .artist-section-group-solo {
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 53.125rem) and (min-width: 50rem) {
+      .hero-section {
+        margin-top: 5rem !important;
+        /* 🔹 iPad Air 크기일 때만 적용 */
+      }
+    }
+  </style>
+</head>
+
+
+<body>
+
+
+  <header>
+    <div class="header-inner">
+      <div class="nav-wrapper">
+        <div class="logo">
+          <a th:href="@{/index}">
+            <img src="/image/walidjahinlogo.png" alt="Walid Jahin Logo" class="logo-img">
+          </a>
+        </div>
+        <div class="nav-links">
+          <a th:href="@{/index}">HOME</a>
+          <a th:href="@{/artist}">ARTIST</a>
+          <a th:href="@{/solo}">SOLO ART</a>
+          <a th:href="@{/artwork}">ART WORK</a>
+          <a th:href="@{/artshop}">ART SHOP</a>
+        </div>
+      </div>
+      <div class="lang">
+        <div class="gtranslate_wrapper"></div>
+        <button id="adminButton"
+          style="background: #f9f9f9; color: black; border: none; padding: .375rem .875rem; border-radius: .25rem; cursor: pointer;">LOGIN</button>
+      </div>
+    </div>
+  </header>
+
+
+  <script>
+    const adminButton = document.getElementById('adminButton');
+    function updateAdminButton() {
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      adminButton.textContent = isAdmin ? 'LOGOUT' : 'LOGIN';
+      adminButton.onclick = () => {
+        if (isAdmin) {
+          localStorage.removeItem('isAdmin');
+          location.reload();
+        } else {
+          location.href = '/admin/login';
+        }
+      };
+    }
+    document.addEventListener('DOMContentLoaded', updateAdminButton);
+  </script>
+
+  <body>
+
+    <!-- Artist Page -->
+    <section class="hero-section">
+      <div class="hero-container">
+        <h2 class="hero-title">
+          WALID JAHIN
+        </h2>
+        <p class="hero-description">
+          Born in 1974.<br />
+          He lives in Alexandria and works as a professor at the Faculty of Fine Arts, Alexandria University, Department
+          of Painting.<br />
+          He received his Master's Degree in Coptic Icons in 2005, and a Doctorate in Painting Techniques in 2010.
+        </p>
+      </div>
+    </section>
+
+    <section class="artist-gallery">
+      <img src="/image/artist1.jpg" alt="studio 1 " />
+      <img src="/image/artist2.jpg" alt="studio 2 " />
+      <img src="/image/artist3.jpg" alt="portrait " />
+      <img src="/image/artist4.jpg" alt="classroom " />
+      <img src="/image/artist5.jpg" alt="lecture " />
+    </section>
+
+
+    <!-- 이미지 슬라이드 -->
+    <section class="carousel-section">
+      <h2 class="carousel-title">Major Work</h2>
+      <div class="carousel-wrapper">
+        <button class="carousel-btn left" id="prevBtn">&#10094;</button>
+        <div class="carousel-track-wrapper">
+          <div class="carousel-track" id="carouselTrack">
+          </div>
+        </div>
+        <button class="carousel-btn right" id="nextBtn">&#10095;</button>
+      </div>
+    </section>
+
+
+    <div class="artist-section-group-solo">
+
+      <div class="artist-section-wrapper">
+        <!-- Major Solo / International -->
+        <div class="artist-section">
+          <div class="section-block">
+            <h2 class="section-title">Major Solo<br>Shows In Cairo</h2>
+            <div class="section-divider"></div>
+            <div class="section-content" id="major_solo"></div>
+          </div>
+
+          <div class="section-block">
+            <h2 class="section-title">International<br>Solo Exhibitions</h2>
+            <div class="section-divider"></div>
+            <div class="section-content" id="international"></div>
+          </div>
+        </div><br>
+
+        <!-- Group Exhibitions -->
+        <div class="artist-section-group">
+          <div class="group-block">
+            <h2 class="group-title">Group<br>Exhibitions</h2>
+            <div class="group-divider"></div>
+            <div class="group-content" id="group"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Solo Exhibitions  -->
+      <div class="artist-section-solo">
+        <div class="solo-block">
+          <h2 class="solo-title">Solo<br>Exhibitions</h2>
+          <div class="solo-divider"></div>
+          <div class="solo-content" id="solo"></div>
+        </div>
+      </div>
+
+
+
+      <!-- Achivement / Collections / Work Style -->
+      <div class="artist-section-row">
+
+
+        <div class="row-block">
+          <h2 class="row-title">Achivement</h2>
+          <div class="row-divider"></div>
+          <div class="row-content" id="achievement"></div>
+        </div>
+
+        <div class="row-block">
+          <h2 class="row-title">Collections</h2>
+          <div class="row-divider"></div>
+          <div class="row-content" id="collections"></div>
+        </div>
+
+        <div class="row-block">
+          <h2 class="row-title">Work Style</h2>
+          <div class="row-divider"></div>
+          <div class="row-content" id="work_style"></div>
+        </div>
+        <br>
+      </div>
+    </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+      // 이미지 슬라이드 스크립트
+
+      const imagePaths = [
+        "/image/work1.jpg", "/image/work2.jpg", "/image/work3.jpg", "/image/work4.jpg",
+        "/image/work5.jpg", "/image/work6.jpg", "/image/work7.jpg", "/image/work8.jpg"
+      ];
+
+      const track = document.getElementById("carouselTrack");
+      const visibleCount = 4;
+      const total = imagePaths.length;
+
+      const extendedPaths = [
+        ...imagePaths.slice(-visibleCount),
+        ...imagePaths,
+        ...imagePaths.slice(0, visibleCount)
+      ];
+
+      // 렌더링
+      extendedPaths.forEach(path => {
+        const item = document.createElement("div");
+        item.classList.add("carousel-item");
+        const img = document.createElement("img");
+        img.src = path;
+        item.appendChild(img);
+        track.appendChild(item);
+      });
+
+      let currentIndex = visibleCount;
+
+      // ✅ CSS 값 기반으로 실제 이동 스텝(px) 계산: 17.5rem(아이템 너비) + .625rem(gap)
+      function computeStepPx() {
+        const firstItem = track.querySelector('.carousel-item');
+        const itemPx = firstItem.getBoundingClientRect().width; // 17.5rem → px
+        const comp = getComputedStyle(track);
+        const gapPx = parseFloat(comp.columnGap || comp.gap || '0'); // .625rem → px
+        return itemPx + gapPx; // 한 칸 이동거리
+      }
+
+      let STEP = computeStepPx();
+
+      function applyTransform(withTransition = false) {
+        track.style.transition = withTransition ? 'transform 0.5s ease-in-out' : 'none';
+        track.style.transform = `translateX(-${STEP * currentIndex}px)`;
+      }
+
+      applyTransform(false); // 초기 위치
+
+      function updateSlide() {
+        applyTransform(true);
+      }
+
+      function handleNext() {
+        currentIndex++;
+        updateSlide();
+        setTimeout(() => {
+          if (currentIndex === extendedPaths.length - visibleCount) {
+            currentIndex = visibleCount;
+            applyTransform(false);
+          }
+        }, 500); // CSS transition 0.5s와 맞춤
+      }
+
+      function handlePrev() {
+        currentIndex--;
+        updateSlide();
+        setTimeout(() => {
+          if (currentIndex === 0) {
+            currentIndex = total;
+            applyTransform(false);
+          }
+        }, 500);
+      }
+
+      document.getElementById("nextBtn").addEventListener("click", handleNext);
+      document.getElementById("prevBtn").addEventListener("click", handlePrev);
+
+      // (옵션) 폰트 크기/반응형 변화 시 스텝 재계산
+      window.addEventListener('resize', () => {
+        STEP = computeStepPx();
+        applyTransform(false);
+      });
+    </script>
+
+
+
+
+
+    <script>
+      // 1,2 텍스트 불러오기
+      async function loadArtistSection(key) {
+        try {
+          const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+          const response = await fetch(`/api/artist/section/${key}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': csrfToken
+            },
+            credentials: 'include' // 세션 쿠키 포함
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+
+          const data = await response.text();
+          document.getElementById(key).innerHTML = data;
+
+        } catch (error) {
+          document.getElementById(key).innerText = "Failed to load.";
+          console.error("Error loading section:", key, error);
+        }
+      }
+
+      const sectionKeys = ['major_solo', 'international', 'solo', 'group', 'achievement', 'collections', 'work_style'];
+      sectionKeys.forEach(loadArtistSection);
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+
+    <script>
+
+
+      document.addEventListener('DOMContentLoaded', loadArtistContent);
+    </script>
+
+
+
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        const igEl = document.getElementById('footerInstagram');
+        const fbEl = document.getElementById('footerFacebook');
+
+        try {
+          const [igRes, fbRes] = await Promise.all([
+            fetch('/api/social/instagram'),
+            fetch('/api/social/facebook'),
+          ]);
+
+          const igUrl = igRes.ok ? (await igRes.text()).trim() : '';
+          const fbUrl = fbRes.ok ? (await fbRes.text()).trim() : '';
+
+          if (igEl) {
+            if (igUrl) { igEl.href = igUrl; igEl.style.display = 'inline-flex'; }
+            else igEl.style.display = 'none';
+          }
+          if (fbEl) {
+            if (fbUrl) { fbEl.href = fbUrl; fbEl.style.display = 'inline-flex'; }
+            else fbEl.style.display = 'none';
+          }
+        } catch (e) {
+          console.error('SNS link load failed:', e);
+          if (igEl) igEl.style.display = 'none';
+          if (fbEl) fbEl.style.display = 'none';
+        }
+      });
+    </script>
+
+
+    <footer>
+      <nav>
+        <a th:href="@{/index}">HOME</a>
+        <a th:href="@{/privacy}">PRIVACY POLICY</a>
+        <a th:href="@{/terms}">TERMS OF USE</a>
+        <a th:href="@{/contact}">CONTACT</a>
+      </nav>
+      <div class="footer-sns">
+        <!-- 인스타 -->
+        <a id="footerInstagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" style="display:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zM12 7a5 5 0 1 1 0 10a5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 0-7zm4.25-.75a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5z" />
+          </svg>
+        </a>
+
+        <!-- 페이스북 -->
+        <a id="footerFacebook" href="#" target="_blank" rel="noopener" aria-label="Facebook" style="display:none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M22.675 0h-21.35C.596 0 0 .596 0 1.326v21.348C0 23.404.596 24 1.326 24H12.82v-9.294H9.692V11.41h3.128V8.797c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.794.143v3.24l-1.917.001c-1.504 0-1.794.715-1.794 1.763v2.313h3.587l-.467 3.296h-3.12V24h6.116C23.404 24 24 23.404 24 22.674V1.326C24 .596 23.404 0 22.675 0z" />
+          </svg>
+      </div>
+      </a>
+
+      <div class="footer-logo">Walid Jahin Art Studio</div>
+      <div class="footer-bottom">© 2025 Walid Jahin. All rights reserved</div>
+    </footer>
+
+    <script>
+      window.gtranslateSettings = {
+        "default_language": "en",
+        "native_language_names": true,
+        "languages": ["en", "ar", "ko"],
+        "wrapper_selector": ".gtranslate_wrapper",
+        "flag_size": 24,
+        "switcher_horizontal_position": "inline"
+      };
+    </script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/dwf.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.4/dist/purify.min.js"></script>
+  </body>
+
+</html>
